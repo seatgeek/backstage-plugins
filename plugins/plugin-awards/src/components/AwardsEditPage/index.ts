@@ -1,0 +1,1 @@
+export { AwardsEditPage } from './AwardsEditPage';

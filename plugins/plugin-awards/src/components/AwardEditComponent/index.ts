@@ -1,0 +1,1 @@
+export { AwardsEditComponent } from './AwardEditComponent';

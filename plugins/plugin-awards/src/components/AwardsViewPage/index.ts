@@ -1,0 +1,1 @@
+export { AwardsViewPage } from './AwardsViewPage';

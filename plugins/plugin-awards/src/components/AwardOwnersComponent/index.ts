@@ -1,0 +1,1 @@
+export { AwardOwnersComponent } from './AwardOwnersComponent';
