@@ -22,7 +22,7 @@
     "role": "backend-plugin"
   },
   "dependencies": {
-    "@backstage/backend-common": "^0.19.8",
+    "@backstage/backend-common": "^0.19.9",
     "@backstage/config": "^1.1.1",
     "@types/express": "*",
     "@types/uuid": "^9.0.6",
@@ -33,7 +33,7 @@
     "yn": "^4.0.0"
   },
   "devDependencies": {
-    "@backstage/cli": "^0.23.1",
+    "@backstage/cli": "^0.24.0",
     "@types/supertest": "^2.0.12",
     "msw": "^1.0.0",
     "supertest": "^6.2.4"
