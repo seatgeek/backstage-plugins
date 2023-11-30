@@ -1,4 +1,4 @@
-# @seatgeek/plugin-awards-backend
+# @seatgeek/plugin-awards
 
 This plugin offers a management system for awards that can be created and given
 to recipients in your Backstage deployment, and then displayed onto their
