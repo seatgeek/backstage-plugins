@@ -9,3 +9,7 @@ This SeatGeek Backstage Plugins Collection offers the following plugins:
 
 Each of the plugins contain instructions for installation and development within
 their respective locations.
+
+## Preview the collection
+
+We have created a demo Backstage application to preview the SeatGeek Backstage Plugins Collection. To view it, clone this repository and run `yarn install && yarn dev`.
