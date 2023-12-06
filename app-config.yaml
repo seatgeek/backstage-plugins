@@ -1,18 +1,18 @@
 app:
   title: Scaffolded Backstage App
-  baseUrl: http://localhost:3000
+  baseUrl: http://127.0.0.1:3000
 
 organization:
   name: SeatGeek
 
 backend:
-  baseUrl: http://localhost:7007
+  baseUrl: http://127.0.0.1:7007
   listen:
     port: 7007
   csp:
     connect-src: ["'self'", 'http:', 'https:']
   cors:
-    origin: http://localhost:3000
+    origin: http://127.0.0.1:3000
     methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
     credentials: true
   database:
@@ -25,3 +25,15 @@ techdocs:
     runIn: 'docker'
   publisher:
     type: 'local'
+
+auth:
+  environment: development
+  providers:
+    'dummy-auth': {}
+
+catalog:
+  rules:
+    - allow: [Component, System, API, Resource, Location, User, Group]
+  locations:
+    - type: file
+      target: ../../mock-catalog/organization.yaml

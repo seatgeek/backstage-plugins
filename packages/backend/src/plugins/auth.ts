@@ -1,10 +1,74 @@
 import {
   createRouter,
-  providers,
-  defaultAuthProviderFactories,
+  createAuthProviderIntegration,
 } from '@backstage/plugin-auth-backend';
 import { Router } from 'express';
 import { PluginEnvironment } from '../types';
+import { stringifyEntityRef } from '@backstage/catalog-model';
+import { AuthProviderRouteHandlers, AuthResolverContext, SignInResolver, prepareBackstageIdentityResponse } from '@backstage/plugin-auth-node';
+
+// a "dummy" auth provider for the local demo site used with
+// proxy sign in so that the user is always logged in as guest.
+// https://backstage.io/docs/auth/#sign-in-with-proxy-providers
+export class DummyAuthProvider implements AuthProviderRouteHandlers {
+  private readonly resolverContext: AuthResolverContext;
+  private readonly signInResolver: SignInResolver<{}>;
+
+  constructor(options: {
+    resolverContext: AuthResolverContext;
+    signInResolver: SignInResolver<{}>;
+  }) {
+    this.resolverContext = options.resolverContext;
+    this.signInResolver = options.signInResolver;
+  }
+
+  async frameHandler(): Promise<void> {
+    return;
+  }
+
+  async refresh(_: any, res: any): Promise<void> {
+    const profile = {};
+
+    const backstageSignInResult = await this.signInResolver(
+      {
+        profile,
+        result: {}
+      },
+      this.resolverContext,
+    );
+
+    res.json({
+      providerInfo: {},
+      backstageIdentity: prepareBackstageIdentityResponse(
+        backstageSignInResult,
+      ),
+      profile,
+    });
+  }
+
+  async start(): Promise<void> {
+    return;
+  }
+}
+
+// "dummy" auth provider integration that doesn't talk to
+// any external auth providers and lets the provided signIn
+// resolver do all the work
+export const dummyAuth = createAuthProviderIntegration({
+  create(options: {
+    signIn: {
+      resolver: SignInResolver<{}>;
+    };
+  }) {
+    return ({ resolverContext }) => {
+      const signInResolver = options.signIn.resolver;
+      return new DummyAuthProvider({
+        resolverContext, signInResolver
+      });
+    };
+  },
+});
+
 
 export default async function createPlugin(
   env: PluginEnvironment,
@@ -16,37 +80,21 @@ export default async function createPlugin(
     discovery: env.discovery,
     tokenManager: env.tokenManager,
     providerFactories: {
-      ...defaultAuthProviderFactories,
-
-      // This replaces the default GitHub auth provider with a customized one.
-      // The `signIn` option enables sign-in for this provider, using the
-      // identity resolution logic that's provided in the `resolver` callback.
-      //
-      // This particular resolver makes all users share a single "guest" identity.
-      // It should only be used for testing and trying out Backstage.
-      //
-      // If you want to use a production ready resolver you can switch to
-      // the one that is commented out below, it looks up a user entity in the
-      // catalog using the GitHub username of the authenticated user.
-      // That resolver requires you to have user entities populated in the catalog,
-      // for example using https://backstage.io/docs/integrations/github/org
-      //
-      // There are other resolvers to choose from, and you can also create
-      // your own, see the auth documentation for more details:
-      //
-      //   https://backstage.io/docs/auth/identity-resolver
-      github: providers.github.create({
+      // "dummy" sign in resolver that always signs
+      // into the user "guest"
+      'dummy-auth': dummyAuth.create({
         signIn: {
-          resolver(_, ctx) {
-            const userRef = 'user:default/guest'; // Must be a full entity reference
+          async resolver(_, ctx) {
+            const user = await ctx.findCatalogUser({
+              entityRef: 'user:default/guest',
+            })
             return ctx.issueToken({
               claims: {
-                sub: userRef, // The user's own identity
-                ent: [userRef], // A list of identities that the user claims ownership through
+                sub: stringifyEntityRef(user.entity),
+                ent: [stringifyEntityRef(user.entity)],
               },
             });
           },
-          // resolver: providers.github.resolvers.usernameMatchingUserEntityName(),
         },
       }),
     },
