@@ -5,7 +5,12 @@ import {
 import { Router } from 'express';
 import { PluginEnvironment } from '../types';
 import { stringifyEntityRef } from '@backstage/catalog-model';
-import { AuthProviderRouteHandlers, AuthResolverContext, SignInResolver, prepareBackstageIdentityResponse } from '@backstage/plugin-auth-node';
+import {
+  AuthProviderRouteHandlers,
+  AuthResolverContext,
+  SignInResolver,
+  prepareBackstageIdentityResponse,
+} from '@backstage/plugin-auth-node';
 
 // a "dummy" auth provider for the local demo site used with
 // proxy sign in so that the user is always logged in as guest.
@@ -32,7 +37,7 @@ export class DummyAuthProvider implements AuthProviderRouteHandlers {
     const backstageSignInResult = await this.signInResolver(
       {
         profile,
-        result: {}
+        result: {},
       },
       this.resolverContext,
     );
@@ -63,12 +68,12 @@ export const dummyAuth = createAuthProviderIntegration({
     return ({ resolverContext }) => {
       const signInResolver = options.signIn.resolver;
       return new DummyAuthProvider({
-        resolverContext, signInResolver
+        resolverContext,
+        signInResolver,
       });
     };
   },
 });
-
 
 export default async function createPlugin(
   env: PluginEnvironment,
@@ -87,7 +92,7 @@ export default async function createPlugin(
           async resolver(_, ctx) {
             const user = await ctx.findCatalogUser({
               entityRef: 'user:default/guest',
-            })
+            });
             return ctx.issueToken({
               claims: {
                 sub: stringifyEntityRef(user.entity),
