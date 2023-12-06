@@ -26,6 +26,7 @@ import {
 } from '@backstage/core-components';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
+import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
 
 const useSidebarLogoStyles = makeStyles({
   root: {
@@ -61,6 +62,10 @@ export const Root = ({ children }: PropsWithChildren<{}>) => (
       <SidebarLogo />
       <SidebarGroup label="Search" icon={<SearchIcon />} to="/search">
         <SidebarSearchModal />
+      </SidebarGroup>
+      <SidebarDivider />
+      <SidebarGroup label="SeatGeek">
+        <SidebarItem icon={EmojiEventsIcon} to="awards" text="Awards" />
       </SidebarGroup>
       <SidebarDivider />
       <SidebarGroup label="Menu" icon={<MenuIcon />}>

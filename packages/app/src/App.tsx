@@ -33,6 +33,12 @@ import { AppRouter, FlatRoutes } from '@backstage/core-app-api';
 import { CatalogGraphPage } from '@backstage/plugin-catalog-graph';
 import { RequirePermission } from '@backstage/plugin-permission-react';
 import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/alpha';
+import {
+  AwardsEditPage,
+  AwardsListPage,
+  AwardsNewPage,
+  AwardsViewPage,
+} from '@internal/plugin-awards';
 
 const app = createApp({
   apis,
@@ -93,6 +99,10 @@ const routes = (
     </Route>
     <Route path="/settings" element={<UserSettingsPage />} />
     <Route path="/catalog-graph" element={<CatalogGraphPage />} />
+    <Route path="/awards/" element={<AwardsListPage />} />
+    <Route path="/awards/new" element={<AwardsNewPage />} />
+    <Route path="/awards/edit/:uid" element={<AwardsEditPage />} />
+    <Route path="/awards/view/:uid" element={<AwardsViewPage />} />
   </FlatRoutes>
 );
 
