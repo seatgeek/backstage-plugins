@@ -42,6 +42,7 @@ import {
   AwardsNewPage,
   AwardsViewPage,
 } from '@internal/plugin-awards';
+import { EntityScaffolderContentPage } from '@internal/plugin-entity-scaffolder-content';
 
 const app = createApp({
   apis,
@@ -105,6 +106,7 @@ const routes = (
     <Route path="/awards/new" element={<AwardsNewPage />} />
     <Route path="/awards/edit/:uid" element={<AwardsEditPage />} />
     <Route path="/awards/view/:uid" element={<AwardsViewPage />} />
+    <Route path="/entity-scaffolder-content" element={<EntityScaffolderContentPage />} />
   </FlatRoutes>
 );
 
