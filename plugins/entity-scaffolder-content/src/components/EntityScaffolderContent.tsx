@@ -17,18 +17,18 @@ type TemplateGroupFilterWithEntityCapture = {
   filter: (entity: Entity, template: TemplateEntityV1beta3) => boolean;
 };
 
+/**
+ * @public
+ *
+ * Props for {@link EntityScaffolderContent}
+ * */
 export type EntityScaffolderContentProps = {
-  // Filter which template groups should display for the selected entity
   templateGroupFilters: TemplateGroupFilterWithEntityCapture[];
-  // Build the initial state (form values) for the embedded scaffolder workflow
-  //
-  // For example, if your template has a "component" input, this can be:
-  // (entity) => ({ component: stringifyEntityRef(entity) })
-  buildInitialState: (entity: Entity) => Record<string, JsonValue>;
+  buildInitialState: (entity: Entity, template: TemplateEntityV1beta3) => Record<string, JsonValue>;
 };
 
 /**
- * Use Templates from within the EntityPage.
+ * Use templates from within the EntityPage.
  *
  * @public
  */
@@ -53,7 +53,7 @@ export const EntityScaffolderContent = ({
             <EmbeddedScaffolderWorkflow
               namespace={selectedTemplate.metadata.namespace || 'default'}
               templateName={selectedTemplate.metadata.name}
-              initialState={buildInitialState(entity)}
+              initialState={buildInitialState(entity, selectedTemplate)}
               onError={(error: Error | undefined) => (
                 <h2>{error?.message ?? 'Error running workflow'}</h2>
               )}

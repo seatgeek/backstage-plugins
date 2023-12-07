@@ -5,6 +5,7 @@ import {
 
 import { rootRouteRef } from './routes';
 
+/** @public */
 export const entityScaffolderContentPlugin = createPlugin({
   id: 'entity-scaffolder-content',
   routes: {
@@ -12,6 +13,7 @@ export const entityScaffolderContentPlugin = createPlugin({
   },
 });
 
+/** @public */
 export const EntityScaffolderContent = entityScaffolderContentPlugin.provide(
   createRoutableExtension({
     name: 'EntityScaffolderContent',
