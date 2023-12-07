@@ -53,8 +53,10 @@ import {
   RELATION_HAS_PART,
   RELATION_PART_OF,
   RELATION_PROVIDES_API,
+  stringifyEntityRef,
 } from '@backstage/catalog-model';
 import { UserAwardsCard } from '@internal/plugin-awards';
+import { EntityScaffolderContent } from '@internal/plugin-entity-scaffolder-content';
 
 import { TechDocsAddons } from '@backstage/plugin-techdocs-react';
 import { ReportIssue } from '@backstage/plugin-techdocs-module-addons-contrib';
@@ -337,23 +339,27 @@ const systemPage = (
         </Grid>
       </Grid>
     </EntityLayout.Route>
-    <EntityLayout.Route path="/diagram" title="Diagram">
-      <EntityCatalogGraphCard
-        variant="gridItem"
-        direction={Direction.TOP_BOTTOM}
-        title="System Diagram"
-        height={700}
-        relations={[
-          RELATION_PART_OF,
-          RELATION_HAS_PART,
-          RELATION_API_CONSUMED_BY,
-          RELATION_API_PROVIDED_BY,
-          RELATION_CONSUMES_API,
-          RELATION_PROVIDES_API,
-          RELATION_DEPENDENCY_OF,
-          RELATION_DEPENDS_ON,
+    <EntityLayout.Route path="/scaffolder" title="Scaffolder">
+      <EntityScaffolderContent
+        templateGroupFilters={[
+          // All of our resource templates are configured so that they can be run
+          // to create a resource for an existing System
+          {
+            title: 'Resources',
+            filter: (_, template) =>
+              template.metadata?.labels?.forEntity === 'system' &&
+              template.spec.type === 'Resource',
+          },
+          // Template specifically to be used for python systems
+          {
+            title: 'Python',
+            filter: (entity, template) =>
+              template.metadata?.labels?.forEntity === 'system' &&
+              entity.metadata?.labels?.language === 'python' &&
+              template.metadata?.labels?.language === 'python',
+          },
         ]}
-        unidirectional={false}
+        buildInitialState={entity => ({ system: stringifyEntityRef(entity) })}
       />
     </EntityLayout.Route>
   </EntityLayout>

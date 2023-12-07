@@ -1,0 +1,45 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: create-postgres-database
+  title: Create Postgres Database
+  description: Creates a Postgres database for your system
+  labels:
+    forEntity: system
+spec:
+  owner: platform
+  type: Resource
+  parameters:
+    - title: Inputs
+      required:
+        - system
+        - name
+      properties:
+        system:
+          title: System
+          type: string
+          description: The system / repository to which the db will be added.
+          ui:field: EntityPicker
+          ui:options:
+            allowArbitraryValues: false
+            catalogFilter:
+              - kind: system
+        name:
+          title: Name
+          type: string
+          description: Name for the created database
+  steps:
+    - id: fetch-system
+      name: Fetch System
+      action: catalog:fetch
+      input:
+        entityRef: ${{ parameters.system }}
+
+  # some outputs which are saved along with the job for use in the frontend
+  output:
+    text:
+      - title: Next Steps
+        content: |
+          Had this tempate run, it would have created a merge request on the
+          repository connected to ${{ steps['fetch-system'].output.entity.metadata.name }}
+          with terraform configuration for the new database.
