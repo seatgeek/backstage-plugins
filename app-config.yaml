@@ -1,0 +1,39 @@
+app:
+  title: Scaffolded Backstage App
+  baseUrl: http://127.0.0.1:3000
+
+organization:
+  name: SeatGeek
+
+backend:
+  baseUrl: http://127.0.0.1:7007
+  listen:
+    port: 7007
+  csp:
+    connect-src: ["'self'", 'http:', 'https:']
+  cors:
+    origin: http://127.0.0.1:3000
+    methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
+    credentials: true
+  database:
+    client: better-sqlite3
+    connection: ':memory:'
+
+techdocs:
+  builder: 'local'
+  generator:
+    runIn: 'docker'
+  publisher:
+    type: 'local'
+
+auth:
+  environment: development
+  providers:
+    'dummy-auth': {}
+
+catalog:
+  rules:
+    - allow: [Component, System, API, Resource, Location, User, Group]
+  locations:
+    - type: file
+      target: ../../mock-catalog/organization.yaml
