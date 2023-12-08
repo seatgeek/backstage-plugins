@@ -5,7 +5,7 @@ to recipients in your Backstage deployment, and then displayed onto their
 Entity profile pages.
 
 The plugin offers a set of Page Components and an Information card to achieve
-this. It also requires the installation of its dependency 
+this. It also requires the installation of its dependency
 `@seatgeek/plugin-awards-backend`.
 
 Both the backend and the frontend rely on
@@ -31,8 +31,8 @@ the following lines:
 
 ```tsx
 // other imports
-import { 
-  AwardsListPage, 
+import {
+  AwardsListPage,
   AwardsEditPage,
   AwardsNewPage,
   AwardsViewPage,
@@ -40,12 +40,12 @@ import {
 
 // Add the routes for the plugin pages before the <FlatRoutes> block is closed.
 <FlatRoutes>
-// Many routes
-    <Route path="/awards/" element={<AwardsListPage />} />
-    <Route path="/awards/new" element={<AwardsNewPage />} />
-    <Route path="/awards/edit/:uid" element={<AwardsEditPage />} />
-    <Route path="/awards/view/:uid" element={<AwardsViewPage />} />
-</FlatRoutes>
+  // Many routes
+  <Route path="/awards/" element={<AwardsListPage />} />
+  <Route path="/awards/new" element={<AwardsNewPage />} />
+  <Route path="/awards/edit/:uid" element={<AwardsEditPage />} />
+  <Route path="/awards/view/:uid" element={<AwardsViewPage />} />
+</FlatRoutes>;
 
 // Rest of the file
 ```

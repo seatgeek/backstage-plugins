@@ -14,7 +14,7 @@ function generateTestAwards(length: number): Award[] {
       image: 'Base 64 blob here',
       owners: ['user:default/user1', 'user:default/user2'],
       recipients: ['user:default/user1', 'user:default/user2'],
-    }
+    };
   });
 }
 
@@ -26,23 +26,26 @@ describe('awards database CRUD', () => {
     // Need to do this to avoid using @backstage/backend-test-utils and run into
     // a conflict with the knex import from the plugin.
     // This means that the tests will run only on SQLite.
-    const createDatabaseManager = async () => DatabaseManager.fromConfig(
-      new ConfigReader({
-        backend: {
-          database: {
-            client: 'better-sqlite3',
-            connection: ':memory:',
+    const createDatabaseManager = async () =>
+      DatabaseManager.fromConfig(
+        new ConfigReader({
+          backend: {
+            database: {
+              client: 'better-sqlite3',
+              connection: ':memory:',
+            },
           },
-        },
-      }),
-    ).forPlugin('awards');
+        }),
+      ).forPlugin('awards');
     const dbm = await createDatabaseManager();
     db = await dbm.getClient();
 
-    store = await DatabaseAwardsStore.create({database: await createDatabaseManager()});
+    store = await DatabaseAwardsStore.create({
+      database: await createDatabaseManager(),
+    });
   });
 
-  afterEach(async() => {
+  afterEach(async () => {
     await db.destroy();
   });
 
@@ -58,7 +61,7 @@ describe('awards database CRUD', () => {
     );
 
     expect(result).toBeDefined();
-    expect(award.uid).not.toEqual("");
+    expect(award.uid).not.toEqual('');
     expect(award.name).toEqual(award.name);
     expect(award.description).toEqual(award.description);
     expect(award.image).toEqual(award.image);
@@ -75,7 +78,7 @@ describe('awards database CRUD', () => {
       award.owners,
       award.recipients,
     );
-    const results = await store.search(result.uid, "", [], []);
+    const results = await store.search(result.uid, '', [], []);
     expect(results.length > 0).toBeTruthy();
 
     const first = results[0];
@@ -91,7 +94,7 @@ describe('awards database CRUD', () => {
       award.owners,
       award.recipients,
     );
-    const results = await store.search("", award.name, [], []);
+    const results = await store.search('', award.name, [], []);
     expect(results.length > 0).toBeTruthy();
 
     const first = results[0];
@@ -107,7 +110,7 @@ describe('awards database CRUD', () => {
       award.owners,
       award.recipients,
     );
-    const results = await store.search("", "", [award.owners[0]], []);
+    const results = await store.search('', '', [award.owners[0]], []);
     expect(results.length > 0).toBeTruthy();
 
     const first = results[0];
@@ -123,7 +126,12 @@ describe('awards database CRUD', () => {
       award.owners,
       award.recipients,
     );
-    const results = await store.search("", award.name, [], [result.recipients[0]]);
+    const results = await store.search(
+      '',
+      award.name,
+      [],
+      [result.recipients[0]],
+    );
     expect(results.length > 0).toBeTruthy();
 
     const first = results[0];
@@ -146,14 +154,14 @@ describe('awards database CRUD', () => {
       `${result.description} updated`,
       `${result.image} updated`,
       [],
-      []
-    )
+      [],
+    );
 
-    const retrieved = await store.search(updated.uid, "", [], []);
+    const retrieved = await store.search(updated.uid, '', [], []);
     expect(retrieved.length > 0);
 
     const upd = retrieved[0];
-    
+
     expect(upd).toBeDefined();
     expect(upd.uid).toEqual(updated.uid);
     expect(upd.name).toEqual(updated.name);
@@ -167,11 +175,11 @@ describe('awards database CRUD', () => {
     const award = generateTestAwards(1)[0];
     try {
       await store.add(
-      award.name,
-      award.description,
-      award.image,
-      [],
-      award.recipients,
+        award.name,
+        award.description,
+        award.image,
+        [],
+        award.recipients,
       );
       // Should not get here
       expect(true).toBeFalsy();
@@ -189,11 +197,10 @@ describe('awards database CRUD', () => {
       award.owners,
       [],
     );
-    const results = await store.search("", "", [award.owners[0]], []);
+    const results = await store.search('', '', [award.owners[0]], []);
     expect(results.length > 0).toBeTruthy();
 
     const first = results[0];
     expect(first.owners.includes(result.owners[0])).toBeTruthy();
   });
-
 });

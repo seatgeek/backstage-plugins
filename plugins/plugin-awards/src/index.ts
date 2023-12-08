@@ -1,4 +1,4 @@
-export { 
+export {
   awardsPlugin,
   AwardsListPage,
   AwardsEditPage,

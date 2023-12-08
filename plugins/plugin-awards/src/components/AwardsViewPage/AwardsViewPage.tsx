@@ -1,10 +1,6 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
-import {
-  Header,
-  Page,
-  Content,
-} from '@backstage/core-components';
+import { Header, Page, Content } from '@backstage/core-components';
 
 import { AwardViewComponent } from '../AwardViewComponent';
 import { editRouteRef } from '../../routes';

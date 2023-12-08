@@ -31,7 +31,7 @@ export default async function createPlugin(
   return await createRouter({
     logger: env.logger,
     database: env.database,
-    identity: env.identity
+    identity: env.identity,
   });
 }
 ```
@@ -58,7 +58,7 @@ function makeCreateEnv(config: Config) {
 
 ## Developing this plugin
 
-The plugin can be executed in isolation during development by running 
+The plugin can be executed in isolation during development by running
 `yarn start` in the plugin root directory. This method of serving the plugin
 provides quicker iteration speed and a faster startup and hot reloads.
 

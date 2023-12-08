@@ -7,6 +7,6 @@ createDevApp()
   .addPage({
     element: <AwardsListPage />,
     title: 'Root Page',
-    path: '/awards'
+    path: '/awards',
   })
   .render();
