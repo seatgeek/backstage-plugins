@@ -33,7 +33,13 @@ auth:
 
 catalog:
   rules:
-    - allow: [Component, System, API, Resource, Location, User, Group]
+    - allow: [Component, System, API, Resource, Location, User, Group, Template]
   locations:
     - type: file
       target: ../../mock-catalog/organization.yaml
+    - type: file
+      target: ../../mock-catalog/entities.yaml
+    - type: file
+      target: ../../mock-catalog/templates/create-postgres-database.yaml
+    - type: file
+      target: ../../mock-catalog/templates/create-python-module.yaml

@@ -6,6 +6,8 @@ This SeatGeek Backstage Plugins Collection offers the following plugins:
   - [plugins/plugin-awards](plugins/plugin-awards)
   - [plugins/plugin-awards-common](plugins/plugin-awards-common)
   - [plugins/plugin-awards-backend](plugins/plugin-awards-backend)
+- **EntityScaffolderContent**: the EntityScaffolderContent plugin allows the Backstage Scaffolder to be run within the `EntityPage` and have Scaffolder fields autopopulate from Entity data.
+  - [plugins/entity-scaffolder-content](plugins/entity-scaffolder-content/)
 
 Each of the plugins contain instructions for installation and development within
 their respective locations.

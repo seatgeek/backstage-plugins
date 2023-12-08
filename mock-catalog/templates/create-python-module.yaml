@@ -1,0 +1,45 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: create-python-module
+  title: Create Python Module
+  description: Creates a new Python module within an existing Python repository
+  labels:
+    language: python
+    forEntity: system
+spec:
+  owner: python-language-guild
+  type: Component
+  parameters:
+    - title: Inputs
+      required:
+        - system
+        - name
+      properties:
+        system:
+          title: System
+          type: string
+          description: The system / repository to which the db will be added.
+          ui:field: EntityPicker
+          ui:options:
+            allowArbitraryValues: false
+            catalogFilter:
+              - kind: System
+                metadata.labels.language: python
+        name:
+          title: Name
+          type: string
+          description: Name for the new module
+  steps:
+    - id: fetch-system
+      name: Fetch System
+      action: catalog:fetch
+      input:
+        entityRef: ${{ parameters.system }}
+  output:
+    text:
+      - title: Next Steps
+        content: |
+          Had this tempate run, it would have created a merge request on the
+          repository connected to ${{ steps['fetch-system'].output.entity.metadata.name }}
+          adding a new Python module.

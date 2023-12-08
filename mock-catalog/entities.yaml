@@ -1,0 +1,21 @@
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: backstage
+  description: Backstage
+spec:
+  type: website
+  owner: platform
+  lifecycle: production
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: tickets
+  description: System that handles tickets
+  labels:
+    language: python
+spec:
+  type: service
+  owner: product
+  lifecycle: production
