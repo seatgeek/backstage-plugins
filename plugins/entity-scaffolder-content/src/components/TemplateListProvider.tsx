@@ -22,7 +22,7 @@ const TemplateListProviderInner = (props: PropsWithChildren<{}>) => {
 export const TemplateListProvider = (props: PropsWithChildren<{}>) => {
   return (
     <EntityListProvider>
-      <TemplateListProviderInner {...props} />{' '}
+      <TemplateListProviderInner {...props} />
     </EntityListProvider>
   );
 };

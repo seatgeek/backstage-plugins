@@ -24,7 +24,10 @@ type TemplateGroupFilterWithEntityCapture = {
  * */
 export type EntityScaffolderContentProps = {
   templateGroupFilters: TemplateGroupFilterWithEntityCapture[];
-  buildInitialState: (entity: Entity, template: TemplateEntityV1beta3) => Record<string, JsonValue>;
+  buildInitialState: (
+    entity: Entity,
+    template: TemplateEntityV1beta3,
+  ) => Record<string, JsonValue>;
 };
 
 /**
