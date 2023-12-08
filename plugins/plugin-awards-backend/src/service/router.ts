@@ -8,7 +8,7 @@ import { DatabaseAwardsStore } from '../database/awards';
 import { Award } from '@internal/plugin-awards-common';
 
 export interface RouterOptions {
-  identity: IdentityApi,
+  identity: IdentityApi;
   database: PluginDatabaseManager;
   logger: Logger;
 }
@@ -18,7 +18,7 @@ export async function createRouter(
 ): Promise<express.Router> {
   const { database, identity, logger } = options;
 
-  const dbStore = await DatabaseAwardsStore.create({database: database});
+  const dbStore = await DatabaseAwardsStore.create({ database: database });
 
   const router = Router();
   router.use(express.json());
@@ -31,10 +31,10 @@ export async function createRouter(
   router.get('/', async (request, response) => {
     // Protecting the request
     await getUserRef(identity, request);
-    
+
     console.log(request.query);
     const { uid, name, owners, recipients } = request.query;
-    
+
     let uidQuery: string = '';
     let nameQuery: string = '';
     let ownersQuery: string[] = [];
@@ -56,10 +56,15 @@ export async function createRouter(
       recipientsQuery = recipients.toString().split(',');
     }
 
-    let resp = await dbStore.search(uidQuery, nameQuery, ownersQuery, recipientsQuery);
+    let resp = await dbStore.search(
+      uidQuery,
+      nameQuery,
+      ownersQuery,
+      recipientsQuery,
+    );
 
     response.json(resp);
-  })
+  });
 
   router.get('/:uid', async (request, response) => {
     // Protecting the request
@@ -97,7 +102,14 @@ export async function createRouter(
     console.log(request.body);
     let { name, description, image, owners, recipients } = request.body;
 
-    const upd = await dbStore.update(uid, name, description, image, owners, recipients);
+    const upd = await dbStore.update(
+      uid,
+      name,
+      description,
+      image,
+      owners,
+      recipients,
+    );
 
     response.json(upd);
   });
@@ -123,29 +135,25 @@ export async function createRouter(
     response.json(dbStore.delete(uid));
   });
 
-
   router.post('/', async (request, response) => {
     // Just to protect the request
     await getUserRef(identity, request);
 
     const { name, description, image, owners, recipients } = request.body;
 
-    let resp = await dbStore.add(
-      name,
-      description,
-      image,
-      owners,
-      recipients,
-    );
+    let resp = await dbStore.add(name, description, image, owners, recipients);
 
-    response.json(resp)
+    response.json(resp);
   });
 
   router.use(errorHandler());
   return router;
 }
 
-async function getUserRef(identity: IdentityApi, request: any): Promise<string> {
+async function getUserRef(
+  identity: IdentityApi,
+  request: any,
+): Promise<string> {
   const user = await identity.getIdentity({ request: request });
   if (!user) {
     throw new AuthenticationError('Unauthorized');
@@ -157,4 +165,3 @@ async function getUserRef(identity: IdentityApi, request: any): Promise<string> 
   }
   return userIdRef;
 }
-

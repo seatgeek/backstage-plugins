@@ -9,7 +9,7 @@ import { Knex } from 'knex';
 import { ConfigReader } from '@backstage/config';
 import { createRouter } from './router';
 
-// Good references for this: 
+// Good references for this:
 // https://github.com/backstage/backstage/blob/0c930f8df1f2acb4a0af400e8e31cae354973af4/plugins/tech-insights-backend/src/service/router.test.ts
 // https://github.com/backstage/backstage/blob/0c930f8df1f2acb4a0af400e8e31cae354973af4/plugins/playlist-backend/src/service/router.test.ts#L112
 describe('backend router', () => {
@@ -38,7 +38,8 @@ describe('backend router', () => {
     // Need to do this to avoid using @backstage/backend-test-utils and run into
     // a conflict with the knex import from the plugin.
     // This means that the tests will run only on SQLite.
-    const createDatabaseManager = async () => DatabaseManager.fromConfig(
+    const createDatabaseManager = async () =>
+      DatabaseManager.fromConfig(
         new ConfigReader({
           backend: {
             database: {
@@ -47,7 +48,7 @@ describe('backend router', () => {
             },
           },
         }),
-    ).forPlugin('awards');
+      ).forPlugin('awards');
     const dbm = await createDatabaseManager();
     db = await dbm.getClient();
 
@@ -73,5 +74,4 @@ describe('backend router', () => {
       expect(response.body).toEqual({ status: 'ok' });
     });
   });
-
 });

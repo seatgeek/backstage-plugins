@@ -6,7 +6,7 @@ import {
   setupRequestMockHandlers,
   renderInTestApp,
   TestApiProvider,
-} from "@backstage/test-utils";
+} from '@backstage/test-utils';
 import { CatalogApi, catalogApiRef } from '@backstage/plugin-catalog-react';
 import { AwardsApi, awardsApiRef } from '../../api';
 import { AwardsEditPage } from './AwardsEditPage';
@@ -26,7 +26,7 @@ describe('AwardsEditPage', () => {
 
   const catalogApiRefMock = {
     getEntities: jest.fn(),
-  }
+  };
   const catalogApi = catalogApiRefMock as Partial<CatalogApi> as CatalogApi;
 
   // setup mock response
@@ -38,13 +38,17 @@ describe('AwardsEditPage', () => {
 
   it('should render', async () => {
     await renderInTestApp(
-      <TestApiProvider apis={[
+      <TestApiProvider
+        apis={[
           [awardsApiRef, awardsApi],
           [catalogApiRef, catalogApi],
-          ]}>
+        ]}
+      >
         <AwardsEditPage />
-      </TestApiProvider>
+      </TestApiProvider>,
     );
-    expect(screen.getByText('A simple and fun way to manage awards')).toBeInTheDocument();
+    expect(
+      screen.getByText('A simple and fun way to manage awards'),
+    ).toBeInTheDocument();
   });
 });

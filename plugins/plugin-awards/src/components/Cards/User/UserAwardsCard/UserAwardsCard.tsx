@@ -2,12 +2,16 @@ import {
   InfoCard,
   Link,
   Progress,
-  ResponseErrorPanel
+  ResponseErrorPanel,
 } from '@backstage/core-components';
 import { Grid, Box, Tooltip } from '@material-ui/core';
 import React from 'react';
 import { awardsApiRef } from '../../../../api';
-import { createRouteRef, useApi, useRouteRefParams } from '@backstage/core-plugin-api';
+import {
+  createRouteRef,
+  useApi,
+  useRouteRefParams,
+} from '@backstage/core-plugin-api';
 import useAsync from 'react-use/lib/useAsync';
 
 import { getOrCreateGlobalSingleton } from '@backstage/version-bridge';
@@ -29,10 +33,19 @@ export const entityRouteRef = getOrCreateGlobalSingleton(
 /** @public */
 export const UserAwardsCard = () => {
   const { kind, namespace, name } = useRouteRefParams(entityRouteRef);
-  const awardsApiClient = useApi(awardsApiRef)
+  const awardsApiClient = useApi(awardsApiRef);
 
-  const { value: awards, loading, error } = useAsync(async (): Promise<Award[]> => {
-    return awardsApiClient.getAwards('', '', [], [`${kind}:${namespace}/${name}`])
+  const {
+    value: awards,
+    loading,
+    error,
+  } = useAsync(async (): Promise<Award[]> => {
+    return awardsApiClient.getAwards(
+      '',
+      '',
+      [],
+      [`${kind}:${namespace}/${name}`],
+    );
   }, []);
 
   if (loading) {
@@ -42,27 +55,32 @@ export const UserAwardsCard = () => {
   }
 
   return (
-    <InfoCard title='Awards'>
-      <Grid container spacing={1} alignItems='center'>
-          {(awards || []).map(award => {
-            return (
-              <Grid item>
-                <Link to={`/awards/view/${award.uid}`}>
-                  <Box alignItems="center" display="flex" flexDirection="column">
-                      <Box>
-                        <Tooltip title={award.name}>
-                          <img src={award.image} height="50" width="100" alt={award.name} />
-                        </Tooltip>
-                      </Box>
-                      {/* <Box sx={{ width: '100%', textAlign: 'center' }}>
+    <InfoCard title="Awards">
+      <Grid container spacing={1} alignItems="center">
+        {(awards || []).map(award => {
+          return (
+            <Grid item>
+              <Link to={`/awards/view/${award.uid}`}>
+                <Box alignItems="center" display="flex" flexDirection="column">
+                  <Box>
+                    <Tooltip title={award.name}>
+                      <img
+                        src={award.image}
+                        height="50"
+                        width="100"
+                        alt={award.name}
+                      />
+                    </Tooltip>
+                  </Box>
+                  {/* <Box sx={{ width: '100%', textAlign: 'center' }}>
                         {award.name}  
                       </Box> */}
-                  </Box>
-                </Link>
-              </Grid>
-            )
-            })}
+                </Box>
+              </Link>
+            </Grid>
+          );
+        })}
       </Grid>
     </InfoCard>
-  )
-}
+  );
+};

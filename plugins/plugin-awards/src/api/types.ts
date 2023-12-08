@@ -1,5 +1,5 @@
-import { createApiRef } from '@backstage/core-plugin-api'
-import { Award } from '@internal/plugin-awards-common'
+import { createApiRef } from '@backstage/core-plugin-api';
+import { Award } from '@internal/plugin-awards-common';
 
 export const awardsApiRef = createApiRef<AwardsApi>({
   id: 'plugin.awards.service',
@@ -12,11 +12,6 @@ export type AwardsApi = {
     owners: string[],
     recipients: string[],
   ) => Promise<Award[]>;
-  save: (
-    award: Award
-  ) => Promise<Award>;
-  delete: (
-    uid: string
-  ) => Promise<boolean>;
+  save: (award: Award) => Promise<Award>;
+  delete: (uid: string) => Promise<boolean>;
 };
-

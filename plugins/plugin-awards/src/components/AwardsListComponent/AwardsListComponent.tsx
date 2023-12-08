@@ -1,10 +1,10 @@
 import React from 'react';
-import { 
-  Table, 
-  TableColumn, 
-  Progress, 
+import {
+  Table,
+  TableColumn,
+  Progress,
   ResponseErrorPanel,
-  Link, 
+  Link,
 } from '@backstage/core-components';
 import useAsync from 'react-use/lib/useAsync';
 import { Award } from '@internal/plugin-awards-common';
@@ -20,7 +20,6 @@ type DenseTableProps = {
 };
 
 export const DenseTable = ({ awards, title, edit }: DenseTableProps) => {
-
   const columns: TableColumn[] = [
     { title: 'Award', field: 'award' },
     { title: 'Description', field: 'description' },
@@ -35,16 +34,18 @@ export const DenseTable = ({ awards, title, edit }: DenseTableProps) => {
     let recipientsText = 'No recipients';
 
     // TODO: Need to filter this at the API level then remove this filter.
-    award.owners = award.owners.filter((owner) => !isEmpty(owner));
-    award.recipients = award.recipients.filter((recipient) => !isEmpty(recipient));
+    award.owners = award.owners.filter(owner => !isEmpty(owner));
+    award.recipients = award.recipients.filter(
+      recipient => !isEmpty(recipient),
+    );
 
     switch (award.owners.length) {
       case 0:
         break;
-      case 1: 
+      case 1:
         ownersText = '1 owner';
         break;
-      default: 
+      default:
         ownersText = `${award.owners.length} owners`;
         break;
     }
@@ -52,10 +53,10 @@ export const DenseTable = ({ awards, title, edit }: DenseTableProps) => {
     switch (award.recipients.length) {
       case 0:
         break;
-      case 1: 
+      case 1:
         recipientsText = '1 recipient';
         break;
-      default: 
+      default:
         recipientsText = `${award.recipients.length} recipients`;
         break;
     }
@@ -65,24 +66,16 @@ export const DenseTable = ({ awards, title, edit }: DenseTableProps) => {
         <Link to={`/awards/${action}/${award.uid}`}>
           <Box alignItems="center" display="flex" flexDirection="column">
             <Box>
-              <img src={award.image} height="50" width="100"/>
+              <img src={award.image} height="50" width="100" />
             </Box>
-            <Box sx={{ width: '100%', textAlign: 'center' }}>
-              {award.name}
-              </Box>
+            <Box sx={{ width: '100%', textAlign: 'center' }}>{award.name}</Box>
           </Box>
         </Link>
       ),
       description: award.description,
-      owners: (
-        <Link to={`/awards/${action}/${award.uid}`}>
-        {ownersText}
-        </Link>
-      ),
+      owners: <Link to={`/awards/${action}/${award.uid}`}>{ownersText}</Link>,
       recipients: (
-        <Link to={`/awards/${action}/${award.uid}`}>
-         {recipientsText} 
-        </Link>
+        <Link to={`/awards/${action}/${award.uid}`}>{recipientsText}</Link>
       ),
     };
   });
@@ -97,15 +90,14 @@ export const DenseTable = ({ awards, title, edit }: DenseTableProps) => {
   );
 };
 
-export const AwardsListComponent = ({owned = false}) => {
-
-  const title = owned ? "Managed by me" : "All Awards";
+export const AwardsListComponent = ({ owned = false }) => {
+  const title = owned ? 'Managed by me' : 'All Awards';
   const awardsApi = useApi(awardsApiRef);
   const identityApi = useApi(identityApiRef);
 
   const { value, loading, error } = useAsync(async (): Promise<Award[]> => {
     const identityRef = await identityApi.getBackstageIdentity();
-    const userRef = owned ? identityRef.userEntityRef : "";
+    const userRef = owned ? identityRef.userEntityRef : '';
     return await awardsApi.getAwards('', '', [userRef], []);
   }, []);
 
@@ -115,8 +107,5 @@ export const AwardsListComponent = ({owned = false}) => {
     return <ResponseErrorPanel error={error} />;
   }
 
-  return <DenseTable edit={owned} 
-      title={title} 
-      awards={value || []} 
-      />;
+  return <DenseTable edit={owned} title={title} awards={value || []} />;
 };

@@ -6,8 +6,8 @@ import {
   setupRequestMockHandlers,
   renderInTestApp,
   TestApiProvider,
-} from "@backstage/test-utils";
-import { v4 as uuid } from "uuid";
+} from '@backstage/test-utils';
+import { v4 as uuid } from 'uuid';
 import { CatalogApi, catalogApiRef } from '@backstage/plugin-catalog-react';
 import { AwardsApi, awardsApiRef } from '../../api';
 import { AwardsEditComponent } from './AwardEditComponent';
@@ -27,7 +27,7 @@ describe('AwardsEditComponent', () => {
 
   const catalogApiRefMock = {
     getEntities: jest.fn(),
-  }
+  };
   const catalogApi = catalogApiRefMock as Partial<CatalogApi> as CatalogApi;
 
   // setup mock response
@@ -38,26 +38,27 @@ describe('AwardsEditComponent', () => {
   });
 
   it('should render', async () => {
-
     awardsApiRefMock.getAwards.mockResolvedValue([
       {
         uid: uuid().toString(),
-        name: "Mock Award",
-        description: "Mock Award Description",
-        image: "base64 blob",
-        owners: ["default:user/user1"],
-        recipients: ["default:user/user1"],
-      }
-    ])
+        name: 'Mock Award',
+        description: 'Mock Award Description',
+        image: 'base64 blob',
+        owners: ['default:user/user1'],
+        recipients: ['default:user/user1'],
+      },
+    ]);
 
     await renderInTestApp(
-      <TestApiProvider apis={[
+      <TestApiProvider
+        apis={[
           [awardsApiRef, awardsApi],
           [catalogApiRef, catalogApi],
-          ]}>
+        ]}
+      >
         <AwardsEditComponent />
-      </TestApiProvider>
+      </TestApiProvider>,
     );
-    expect(screen.getByText("Mock Award Description")).toBeInTheDocument();
+    expect(screen.getByText('Mock Award Description')).toBeInTheDocument();
   });
 });
