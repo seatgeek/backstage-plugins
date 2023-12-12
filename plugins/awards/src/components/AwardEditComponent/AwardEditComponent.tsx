@@ -163,11 +163,7 @@ export const AwardEditCard = ({ award = emptyAward }: AwardEditCardProps) => {
           display: 'transient',
         });
 
-        // TODO: I am forcing the list to reload after data changed as per:
-        // https://stackoverflow.com/questions/53420677/react-link-doesnt-refresh-the-page
-        // This makes the informational pop-up disappear, so I need to find a
-        // better way to accomplish this.
-        window.location.reload();
+        navigate('/awards')
       } else {
         throw new Error('Error removing award');
       }
@@ -283,24 +279,22 @@ export const AwardEditCard = ({ award = emptyAward }: AwardEditCardProps) => {
             )}
           />
           <br />
-          <LinkButton
+          <Button
             color="primary"
             variant="contained"
             startIcon={<CreateComponentIcon />}
             onClick={saveAward}
-            to={`/awards/view/${awardUid}`}
           >
             Save
-          </LinkButton>
-          <LinkButton
+          </Button>
+          <Button
             color="secondary"
             variant="contained"
             startIcon={<DeleteIcon />}
             onClick={deleteAward}
-            to="/awards/"
           >
             Delete
-          </LinkButton>
+          </Button>
         </Stack>
       </Typography>
     </InfoCard>
