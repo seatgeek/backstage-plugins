@@ -181,8 +181,10 @@ describe('awards database CRUD', () => {
         [],
         award.recipients,
       );
-    }
-    await expect(createWithNoOwner).rejects.toThrow('New award must have at least one owner')
+    };
+    await expect(createWithNoOwner).rejects.toThrow(
+      'New award must have at least one owner',
+    );
   });
 
   it('should create an award with no recipients', async () => {

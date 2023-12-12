@@ -8,7 +8,7 @@ export const editRouteRef = createSubRouteRef({
   id: 'awards-edit',
   parent: rootRouteRef,
   path: '/edit/:uid',
-})
+});
 
 export const newRouteRef = createSubRouteRef({
   id: 'awards-new',

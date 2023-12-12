@@ -24,10 +24,10 @@ export class AwardsBackendApi implements AwardsApi {
     query.append('name', name);
     owners.forEach(owner => {
       query.append('owners', owner);
-    })
+    });
     recipients.forEach(recipient => {
       query.append('recipients', recipient);
-    })
+    });
     return await this.fetchApi
       .fetch(`${url}?${query}`, {
         method: 'GET',

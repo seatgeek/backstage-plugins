@@ -44,7 +44,6 @@ export const AwardViewComponent = ({ uid }: AwardViewComponentProps) => {
       return res[0];
     }
     throw new Error(`Award with uid ${uid} does not exist`);
-
   }, [awardsApi]);
 
   if (loading) {
@@ -55,5 +54,4 @@ export const AwardViewComponent = ({ uid }: AwardViewComponentProps) => {
     return <AwardViewCard award={value} />;
   }
   return <ResponseErrorPanel error={new Error('Unknown problem')} />;
-
 };
