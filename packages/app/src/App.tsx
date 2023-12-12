@@ -37,10 +37,7 @@ import { CatalogGraphPage } from '@backstage/plugin-catalog-graph';
 import { RequirePermission } from '@backstage/plugin-permission-react';
 import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/alpha';
 import {
-  AwardsEditPage,
-  AwardsListPage,
-  AwardsNewPage,
-  AwardsViewPage,
+  AwardsPage
 } from '@internal/plugin-awards';
 
 const app = createApp({
@@ -104,10 +101,7 @@ const routes = (
     </Route>
     <Route path="/settings" element={<UserSettingsPage />} />
     <Route path="/catalog-graph" element={<CatalogGraphPage />} />
-    <Route path="/awards/" element={<AwardsListPage />} />
-    <Route path="/awards/new" element={<AwardsNewPage />} />
-    <Route path="/awards/edit/:uid" element={<AwardsEditPage />} />
-    <Route path="/awards/view/:uid" element={<AwardsViewPage />} />
+    <Route path="/awards" element={<AwardsPage />} />
   </FlatRoutes>
 );
 

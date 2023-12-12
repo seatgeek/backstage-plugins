@@ -1,9 +1,6 @@
 export {
   awardsPlugin,
-  AwardsListPage,
-  AwardsEditPage,
-  AwardsNewPage,
-  AwardsViewPage,
+  AwardsPage
 } from './plugin';
 export { UserAwardsCard } from './components';
 export * from './api';

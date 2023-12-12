@@ -31,6 +31,7 @@ import { catalogApiRef } from '@backstage/plugin-catalog-react';
 import { parseEntityRef } from '@backstage/catalog-model';
 import { isEmpty, random } from 'lodash';
 import Autocomplete from '@mui/material/Autocomplete';
+import { useNavigate } from 'react-router-dom';
 
 const emptyAward: Award = {
   uid: '',
@@ -54,6 +55,7 @@ export const AwardEditCard = ({ award = emptyAward }: AwardEditCardProps) => {
   const alertApi = useApi(alertApiRef);
   const awardsApi = useApi(awardsApiRef);
   const catalogApi = useApi(catalogApiRef);
+  const navigate = useNavigate();
 
   const [awardUid, _] = useState(award.uid);
   const [awardName, setAwardName] = useState(award.name);
@@ -137,12 +139,7 @@ export const AwardEditCard = ({ award = emptyAward }: AwardEditCardProps) => {
           severity: 'success',
           display: 'transient',
         });
-
-        // TODO: I am forcing the list to reload after data changed as per:
-        // https://stackoverflow.com/questions/53420677/react-link-doesnt-refresh-the-page
-        // This makes the informational pop-up disappear, so I need to find a
-        // better way to accomplish this.
-        window.location.reload();
+        navigate(`/awards/view/${res.uid}`,)
       } else {
         throw new Error('Error saving award');
       }
