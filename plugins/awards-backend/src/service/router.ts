@@ -32,7 +32,7 @@ export async function createRouter(
     // Protecting the request
     await getUserRef(identity, request);
 
-    console.log(request.query);
+    logger.debug(request.query);
     const { uid, name, owners, recipients } = request.query;
 
     let uidQuery: string = '';
@@ -99,7 +99,7 @@ export async function createRouter(
       throw new Error('Unauthorized to update award');
     }
 
-    console.log(request.body);
+    logger.debug(request.body);
     const { name, description, image, owners, recipients } = request.body;
 
     const upd = await dbStore.update(
