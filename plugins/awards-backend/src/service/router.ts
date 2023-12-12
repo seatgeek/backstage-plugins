@@ -56,7 +56,7 @@ export async function createRouter(
       recipientsQuery = recipients.toString().split(',');
     }
 
-    let resp = await dbStore.search(
+    const resp = await dbStore.search(
       uidQuery,
       nameQuery,
       ownersQuery,
@@ -72,7 +72,7 @@ export async function createRouter(
 
     const uid = request.params.uid;
     // TODO: validate uuid parameter
-    let resp = await dbStore.search(uid, '', [], []);
+    const resp = await dbStore.search(uid, '', [], []);
 
     if (!resp) {
       throw new NotFoundError(uid);
@@ -89,7 +89,7 @@ export async function createRouter(
 
     const res = await dbStore.search(uid, '', [], []);
 
-    if (!res || res.length == 0) {
+    if (!res || res.length === 0) {
       throw new NotFoundError(uid);
     }
 
@@ -100,7 +100,7 @@ export async function createRouter(
     }
 
     console.log(request.body);
-    let { name, description, image, owners, recipients } = request.body;
+    const { name, description, image, owners, recipients } = request.body;
 
     const upd = await dbStore.update(
       uid,
@@ -122,7 +122,7 @@ export async function createRouter(
 
     const res = await dbStore.search(uid, '', [], []);
 
-    if (!res || res.length == 0) {
+    if (!res || res.length === 0) {
       throw new NotFoundError(uid);
     }
 
@@ -141,7 +141,7 @@ export async function createRouter(
 
     const { name, description, image, owners, recipients } = request.body;
 
-    let resp = await dbStore.add(name, description, image, owners, recipients);
+    const resp = await dbStore.add(name, description, image, owners, recipients);
 
     response.json(resp);
   });
@@ -160,7 +160,7 @@ async function getUserRef(
   }
   const userIdentity = await identity.getIdentity({ request: request });
   const userIdRef = userIdentity?.identity.userEntityRef;
-  if (userIdRef == undefined) {
+  if (userIdRef === undefined) {
     throw new AuthenticationError('No user entity ref');
   }
   return userIdRef;

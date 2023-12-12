@@ -32,7 +32,7 @@ import { parseEntityRef } from '@backstage/catalog-model';
 import { isEmpty, random } from 'lodash';
 import Autocomplete from '@mui/material/Autocomplete';
 
-let emptyAward: Award = {
+const emptyAward: Award = {
   uid: '',
   name: 'Award Name',
   description: 'Award description',
@@ -93,9 +93,8 @@ export const AwardEditCard = ({ award = emptyAward }: AwardEditCardProps) => {
     const users: User[] = entities.items.map(entity => {
       return {
         name: entity.metadata.name,
-        ref: `${entity.kind.toLowerCase()}:${entity.metadata.namespace}/${
-          entity.metadata.name
-        }`,
+        ref: `${entity.kind.toLowerCase()}:${entity.metadata.namespace}/${entity.metadata.name
+          }`,
       };
     });
     setAllUsers(users);
@@ -119,7 +118,7 @@ export const AwardEditCard = ({ award = emptyAward }: AwardEditCardProps) => {
 
   async function saveAward() {
     try {
-      const award = {
+      const newAward = {
         uid: awardUid,
         name: awardName,
         description: awardDescription,
@@ -128,11 +127,11 @@ export const AwardEditCard = ({ award = emptyAward }: AwardEditCardProps) => {
         recipients: awardRecipients.map(e => e.ref),
       };
 
-      const operation = award.uid == '' ? 'Added new' : 'Updated';
+      const operation = newAward.uid === '' ? 'Added new' : 'Updated';
 
-      const res = await awardsApi.save(award);
+      const res = await awardsApi.save(newAward);
 
-      if (res != undefined) {
+      if (res !== undefined) {
         alertApi.post({
           message: `${operation} award - ${res?.name} (${res?.uid})`,
           severity: 'success',
@@ -145,7 +144,7 @@ export const AwardEditCard = ({ award = emptyAward }: AwardEditCardProps) => {
         // better way to accomplish this.
         window.location.reload();
       } else {
-        throw 'Error saving award';
+        throw new Error('Error saving award');
       }
     } catch (e) {
       alertApi.post({
@@ -173,7 +172,7 @@ export const AwardEditCard = ({ award = emptyAward }: AwardEditCardProps) => {
         // better way to accomplish this.
         window.location.reload();
       } else {
-        throw 'Error removing award';
+        throw new Error('Error removing award');
       }
     } catch (e) {
       alertApi.post({
@@ -214,7 +213,7 @@ export const AwardEditCard = ({ award = emptyAward }: AwardEditCardProps) => {
 
   return (
     <InfoCard
-      title={award.uid == '' ? 'Create new award' : `Update award ${awardUid}`}
+      title={award.uid === '' ? 'Create new award' : `Update award ${awardUid}`}
     >
       <Typography variant="body1">
         <Stack spacing={2}>
@@ -239,7 +238,7 @@ export const AwardEditCard = ({ award = emptyAward }: AwardEditCardProps) => {
               <InputLabel>Award logo (150x50 px)</InputLabel>
             </Grid>
             <Grid item>
-              <img src={awardImage} height="50" width="100" />
+              <img alt="" src={awardImage} height="50" width="100" />
             </Grid>
             <Grid item>
               <Button
@@ -260,7 +259,7 @@ export const AwardEditCard = ({ award = emptyAward }: AwardEditCardProps) => {
             multiple
             options={allUsers}
             getOptionLabel={option => option.name}
-            onChange={(_, v) => setAwardOwners(v)}
+            onChange={(__, v) => setAwardOwners(v)}
             value={awardOwners}
             renderInput={params => (
               <TextField
@@ -275,7 +274,7 @@ export const AwardEditCard = ({ award = emptyAward }: AwardEditCardProps) => {
             multiple
             options={allUsers}
             getOptionLabel={option => option.name}
-            onChange={(_, v) => setAwardRecipients(v)}
+            onChange={(__, v) => setAwardRecipients(v)}
             value={awardRecipients}
             renderInput={params => (
               <TextField
@@ -327,9 +326,8 @@ export const AwardsEditComponent = ({ create = false }) => {
     const res = await awardsApi.getAwards(uid, '', [], []);
     if (res.length > 0) {
       return res[0];
-    } else {
-      return emptyAward;
     }
+    return emptyAward;
   }, [awardsApi]);
 
   if (loading) {

@@ -1,7 +1,6 @@
 import { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
 import { Award } from '@internal/plugin-awards-common';
 import { AwardsApi } from './types';
-import * as querystring from 'querystring';
 
 export class AwardsBackendApi implements AwardsApi {
   private readonly discoveryApi: DiscoveryApi;
@@ -20,14 +19,15 @@ export class AwardsBackendApi implements AwardsApi {
   ): Promise<Award[]> {
     const url = `${await this.discoveryApi.getBaseUrl('awards')}/`;
     // https://stackoverflow.com/questions/35038857/setting-query-string-using-fetch-get-request
-    const params = {
-      uid: uid,
-      name: name,
-      owners: owners,
-      recipients: recipients,
-    };
-    const query = querystring.stringify(params);
-    console.log(query);
+    const query = new URLSearchParams();
+    query.append('uid', uid);
+    query.append('name', name);
+    owners.forEach(owner => {
+      query.append('owners', owner);
+    })
+    recipients.forEach(recipient => {
+      query.append('recipients', recipient);
+    })
     return await this.fetchApi
       .fetch(`${url}?${query}`, {
         method: 'GET',
@@ -42,11 +42,8 @@ export class AwardsBackendApi implements AwardsApi {
   async save(award: Award): Promise<Award> {
     const url = `${await this.discoveryApi.getBaseUrl('awards')}/`;
 
-    console.log(award);
-    console.log(JSON.stringify(award));
-
-    let method = award.uid == '' ? 'POST' : 'PUT';
-    let suffix = award.uid == '' ? '' : `/${award.uid}`;
+    const method = award.uid === '' ? 'POST' : 'PUT';
+    const suffix = award.uid === '' ? '' : `/${award.uid}`;
 
     return await this.fetchApi
       .fetch(`${url}${suffix}`, {

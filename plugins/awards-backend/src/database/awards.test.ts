@@ -158,7 +158,7 @@ describe('awards database CRUD', () => {
     );
 
     const retrieved = await store.search(updated.uid, '', [], []);
-    expect(retrieved.length > 0);
+    expect(retrieved.length).toBeGreaterThan(0);
 
     const upd = retrieved[0];
 
@@ -167,13 +167,13 @@ describe('awards database CRUD', () => {
     expect(upd.name).toEqual(updated.name);
     expect(upd.description).toEqual(updated.description);
     expect(upd.image).toEqual(updated.image);
-    expect(upd.owners.length == 0).toBeTruthy();
-    expect(upd.recipients.length == 0).toBeTruthy();
+    expect(upd.owners.length === 0).toBeTruthy();
+    expect(upd.recipients.length === 0).toBeTruthy();
   });
 
   it('should not create an award with no owners', async () => {
     const award = generateTestAwards(1)[0];
-    try {
+    const createWithNoOwner = async () => {
       await store.add(
         award.name,
         award.description,
@@ -181,11 +181,8 @@ describe('awards database CRUD', () => {
         [],
         award.recipients,
       );
-      // Should not get here
-      expect(true).toBeFalsy();
-    } catch (err) {
-      expect(err).toBeDefined();
     }
+    await expect(createWithNoOwner).rejects.toThrow('New award must have at least one owner')
   });
 
   it('should create an award with no recipients', async () => {

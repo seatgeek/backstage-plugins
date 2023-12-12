@@ -77,13 +77,12 @@ export const AwardRecipientsComponent = ({
         recipient => !isEmpty(recipient),
       );
 
-      let ents = await catalogApi.getEntitiesByRefs({
+      const ents = await catalogApi.getEntitiesByRefs({
         entityRefs: award.recipients,
       });
       return ents.items;
-    } else {
-      throw new Error(`Award with uid ${uid} does not exist`);
     }
+    throw new Error(`Award with uid ${uid} does not exist`);
   }, [awardsApi]);
 
   if (loading) {
@@ -92,7 +91,6 @@ export const AwardRecipientsComponent = ({
     return <ResponseErrorPanel error={error} />;
   } else if (value) {
     return <AwardRecipientsCard recipients={value} />;
-  } else {
-    return <ResponseErrorPanel error={new Error('Unknown problem')} />;
   }
+  return <ResponseErrorPanel error={new Error('Unknown problem')} />;
 };

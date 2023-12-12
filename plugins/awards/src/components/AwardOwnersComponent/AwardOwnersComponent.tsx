@@ -33,7 +33,6 @@ export const AwardOwnersCard = ({
               : '';
             const { namespace, name } = owner.metadata;
             const kind = owner.kind.toLowerCase();
-            console.log(owner);
             return (
               <Grid item>
                 <Box alignItems="center" display="flex" flexDirection="column">
@@ -72,13 +71,13 @@ export const AwardOwnersComponent = ({ uid }: AwardOwnersComponentProps) => {
       // TODO: Remove this when the underlying API component is guaranteed not
       // to return lists with a blank element.
       award.owners = award.owners.filter(owner => !isEmpty(owner));
-      let ents = await catalogApi.getEntitiesByRefs({
+      const ents = await catalogApi.getEntitiesByRefs({
         entityRefs: award.owners,
       });
       return ents.items;
-    } else {
-      throw new Error(`Award with uid ${uid} does not exist`);
     }
+
+    throw new Error(`Award with uid ${uid} does not exist`);
   }, [awardsApi]);
 
   if (loading) {
@@ -87,7 +86,6 @@ export const AwardOwnersComponent = ({ uid }: AwardOwnersComponentProps) => {
     return <ResponseErrorPanel error={error} />;
   } else if (value) {
     return <AwardOwnersCard recipients={value} />;
-  } else {
-    return <ResponseErrorPanel error={new Error('Unknown problem')} />;
   }
+  return <ResponseErrorPanel error={new Error('Unknown problem')} />;
 };

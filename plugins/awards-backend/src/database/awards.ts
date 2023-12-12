@@ -47,7 +47,7 @@ type DatabaseAwardsStoreOptions = {
 };
 
 export class DatabaseAwardsStore implements AwardsStore {
-  private constructor(private readonly db: Knex) {}
+  private constructor(private readonly db: Knex) { }
 
   static async create({
     database,
@@ -146,8 +146,8 @@ export class DatabaseAwardsStore implements AwardsStore {
     const ownersToAdd = owners.filter(owner => !isEmpty(owner));
     const recipientsToAdd = recipients.filter(member => !isEmpty(member));
 
-    if (ownersToAdd.length == 0) {
-      throw 'New award must have at least one owner';
+    if (ownersToAdd.length === 0) {
+      throw new Error('New award must have at least one owner');
     }
 
     try {
@@ -174,7 +174,7 @@ export class DatabaseAwardsStore implements AwardsStore {
       });
     } catch (error) {
       console.error('Transaction failed', error);
-      throw `Transaction failed: ${error}`;
+      throw new Error(`Transaction failed: ${error}`);
     }
 
     return new Promise<Award>(resolve =>
@@ -290,6 +290,6 @@ export class DatabaseAwardsStore implements AwardsStore {
 
   async delete(uid: string): Promise<boolean> {
     const res = await this.db<Award>('awards').where({ uid: uid }).delete();
-    return Promise.resolve(!(res == undefined));
+    return Promise.resolve(!(res === undefined));
   }
 }

@@ -12,7 +12,7 @@ export const AwardsNewPage = () => {
       <Content>
         <Grid container spacing={3} direction="column">
           <Grid item>
-            <AwardsEditComponent create={true} />
+            <AwardsEditComponent create />
           </Grid>
         </Grid>
       </Content>

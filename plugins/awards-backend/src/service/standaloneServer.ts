@@ -37,7 +37,6 @@ export async function startStandaloneServer(
     issuer: await discovery.getExternalBaseUrl('auth'),
   });
 
-  logger.debug('Starting application server...');
   const router = await createRouter({
     database,
     identity,

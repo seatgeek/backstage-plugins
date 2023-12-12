@@ -20,7 +20,7 @@ export const AwardViewCard = ({ award }: AwardViewCardProps) => {
       <Typography variant="body1">
         <Grid container spacing={2}>
           <Grid item xs={6} md={2}>
-            <img src={award.image} height="50" width="100" />
+            <img alt="" src={award.image} height="50" width="100" />
           </Grid>
           <Grid item xs={12} md={6}>
             <Typography>{award.description}</Typography>
@@ -42,9 +42,9 @@ export const AwardViewComponent = ({ uid }: AwardViewComponentProps) => {
     const res = await awardsApi.getAwards(uid, '', [], []);
     if (res.length > 0) {
       return res[0];
-    } else {
-      throw new Error(`Award with uid ${uid} does not exist`);
     }
+    throw new Error(`Award with uid ${uid} does not exist`);
+
   }, [awardsApi]);
 
   if (loading) {
@@ -53,7 +53,7 @@ export const AwardViewComponent = ({ uid }: AwardViewComponentProps) => {
     return <ResponseErrorPanel error={error} />;
   } else if (value) {
     return <AwardViewCard award={value} />;
-  } else {
-    return <ResponseErrorPanel error={new Error('Unknown problem')} />;
   }
+  return <ResponseErrorPanel error={new Error('Unknown problem')} />;
+
 };

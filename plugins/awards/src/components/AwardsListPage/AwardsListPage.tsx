@@ -22,7 +22,7 @@ export const AwardsListPage = () => {
             </LinkButton>
           </Grid>
           <Grid item>
-            <AwardsListComponent owned={true} />
+            <AwardsListComponent owned />
           </Grid>
           <Grid item>
             <AwardsListComponent />

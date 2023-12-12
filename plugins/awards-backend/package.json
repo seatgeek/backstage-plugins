@@ -24,12 +24,18 @@
   },
   "dependencies": {
     "@backstage/backend-common": "^0.19.9",
+    "@backstage/backend-plugin-api": "^0.6.7",
     "@backstage/config": "^1.1.1",
+    "@backstage/errors": "^1.2.3",
+    "@backstage/plugin-auth-node": "^0.4.1",
+    "@internal/plugin-awards-common": "0.1.0",
     "@types/express": "*",
     "express": "^4.17.1",
     "express-promise-router": "^4.1.0",
+    "knex": "^3.1.0",
     "lodash": "^4.17.21",
     "node-fetch": "^2.6.7",
+    "uuid": "^9.0.1",
     "winston": "^3.2.1",
     "yn": "^4.0.0"
   },
