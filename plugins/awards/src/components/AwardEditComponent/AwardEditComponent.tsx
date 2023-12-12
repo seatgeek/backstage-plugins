@@ -1,6 +1,5 @@
 import {
   InfoCard,
-  LinkButton,
   Progress,
   ResponseErrorPanel,
 } from '@backstage/core-components';
