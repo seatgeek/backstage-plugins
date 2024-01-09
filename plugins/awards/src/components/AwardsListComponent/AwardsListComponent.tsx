@@ -66,7 +66,7 @@ export const DenseTable = ({ awards, title, edit }: DenseTableProps) => {
         <Link to={`/awards/${action}/${award.uid}`}>
           <Box alignItems="center" display="flex" flexDirection="column">
             <Box>
-              <img alt="" src={award.image} height="50" width="100" />
+              <img alt="" src={award.image} height="50" width="150" />
             </Box>
             <Box sx={{ width: '100%', textAlign: 'center' }}>{award.name}</Box>
           </Box>
