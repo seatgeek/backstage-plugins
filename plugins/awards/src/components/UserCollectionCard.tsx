@@ -1,3 +1,7 @@
+/*
+ * Copyright SeatGeek
+ * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
+ */
 import { UserEntity } from '@backstage/catalog-model';
 import { Avatar, InfoCard } from '@backstage/core-components';
 import { EntityRefLink } from '@backstage/plugin-catalog-react';
