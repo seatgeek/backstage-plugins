@@ -16,7 +16,7 @@ jobs:
       - run: yarn install
       - run: yarn tsc
       - run: yarn prettier:check
-      - run: yarn lint
+      - run: yarn lint:all
   test:
     runs-on: ubuntu-latest
     strategy:
