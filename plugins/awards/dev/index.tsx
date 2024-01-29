@@ -1,11 +1,11 @@
 import React from 'react';
 import { createDevApp } from '@backstage/dev-utils';
-import { awardsPlugin, AwardsListPage } from '../src/plugin';
+import { awardsPlugin, AwardsPage } from '../src/plugin';
 
 createDevApp()
   .registerPlugin(awardsPlugin)
   .addPage({
-    element: <AwardsListPage />,
+    element: <AwardsPage />,
     title: 'Root Page',
     path: '/awards',
   })

@@ -1,6 +1,5 @@
 import {
   InfoCard,
-  LinkButton,
   Progress,
   ResponseErrorPanel,
 } from '@backstage/core-components';
@@ -95,8 +94,9 @@ export const AwardEditCard = ({ award = emptyAward }: AwardEditCardProps) => {
     const users: User[] = entities.items.map(entity => {
       return {
         name: entity.metadata.name,
-        ref: `${entity.kind.toLowerCase()}:${entity.metadata.namespace}/${entity.metadata.name
-          }`,
+        ref: `${entity.kind.toLowerCase()}:${entity.metadata.namespace}/${
+          entity.metadata.name
+        }`,
       };
     });
     setAllUsers(users);
@@ -139,7 +139,7 @@ export const AwardEditCard = ({ award = emptyAward }: AwardEditCardProps) => {
           severity: 'success',
           display: 'transient',
         });
-        navigate(`/awards/view/${res.uid}`,)
+        navigate(`/awards/view/${res.uid}`);
       } else {
         throw new Error('Error saving award');
       }
@@ -163,7 +163,7 @@ export const AwardEditCard = ({ award = emptyAward }: AwardEditCardProps) => {
           display: 'transient',
         });
 
-        navigate('/awards')
+        navigate('/awards');
       } else {
         throw new Error('Error removing award');
       }

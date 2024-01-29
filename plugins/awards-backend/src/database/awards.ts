@@ -47,7 +47,7 @@ type DatabaseAwardsStoreOptions = {
 };
 
 export class DatabaseAwardsStore implements AwardsStore {
-  private constructor(private readonly db: Knex) { }
+  private constructor(private readonly db: Knex) {}
 
   static async create({
     database,

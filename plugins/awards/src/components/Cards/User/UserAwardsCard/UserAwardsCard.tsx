@@ -72,6 +72,9 @@ export const UserAwardsCard = () => {
                       />
                     </Tooltip>
                   </Box>
+                  {/* <Box sx={{ width: '100%', textAlign: 'center' }}>
+                        {award.name}
+                      </Box> */}
                 </Box>
               </Link>
             </Grid>
