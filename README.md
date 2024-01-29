@@ -10,6 +10,8 @@ This SeatGeek Backstage Plugins Collection offers the following plugins:
   - [plugins/entity-scaffolder-content](plugins/entity-scaffolder-content/)
 - **Catalog Backend Module Okta**: the Catalog Backend Module Okta Plugin allows users and groups to be ingested from the Okta API.
   - [plugins/catalog-backend-module-okta](plugins/catalog-backend-module-okta)
+- **Slack Catalog**: the Slack Catalog Plugin offers catalog integrations with the Slack API.
+  - [plugins/slack-catalog-backend](plugins/slack-catalog-backend/)
 
 Each of the plugins contain instructions for installation and development within
 their respective locations.
