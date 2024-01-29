@@ -73,7 +73,6 @@ export type HookBeforeMutation = (
 
 const defaultUserFilter: OktaUserFilter = (_: OktaUser) => true;
 const defaultGroupFilter: OktaGroupFilter = (_: OktaGroup) => true;
-
 /**
  * Discovers users and groups from an Okta instance.
  * @public
@@ -144,9 +143,7 @@ export class OktaOrgDiscoveryEntityProvider implements EntityProvider {
     logger: Logger;
     taskRunner: TaskRunner;
     client: Client;
-    // Optional configuration for the Okta Users API request
     listUsersRequest?: UserApiListUsersRequest;
-    // Optional configuration for the Okta Groups API request
     listGroupsRequest?: GroupApiListGroupsRequest;
     userFilter?: OktaUserFilter;
     groupFilter?: OktaGroupFilter;

@@ -141,7 +141,13 @@ export async function createRouter(
 
     const { name, description, image, owners, recipients } = request.body;
 
-    const resp = await dbStore.add(name, description, image, owners, recipients);
+    const resp = await dbStore.add(
+      name,
+      description,
+      image,
+      owners,
+      recipients,
+    );
 
     response.json(resp);
   });
