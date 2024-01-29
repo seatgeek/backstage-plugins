@@ -1,3 +1,7 @@
+/*
+ * Copyright SeatGeek
+ * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
+ */
 import React from 'react';
 import { Grid } from '@material-ui/core';
 import { Header, Page, Content, LinkButton } from '@backstage/core-components';
