@@ -23,7 +23,7 @@ jobs:
       - run: yarn tsc
       - run: yarn prettier:check
       - run: yarn lint:all
-  test:unit:
+  test-unit:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -37,7 +37,7 @@ jobs:
           cache: 'yarn'
       - run: yarn install
       - run: yarn test
-  test:e2e:
+  test-e2e:
     runs-on: ubuntu-latest
     strategy:
       matrix:
