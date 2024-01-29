@@ -1,0 +1,5 @@
+dist
+dist-types
+coverage
+.vscode
+e2e-test-report/

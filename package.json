@@ -43,7 +43,8 @@
   },
   "resolutions": {
     "@types/react": "^17",
-    "@types/react-dom": "^17"
+    "@types/react-dom": "^17",
+    "knex": "^3.1.0"
   },
   "prettier": "@spotify/prettier-config",
   "lint-staged": {
