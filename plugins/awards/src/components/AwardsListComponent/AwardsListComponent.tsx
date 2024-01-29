@@ -7,7 +7,7 @@ import {
   Link,
 } from '@backstage/core-components';
 import useAsync from 'react-use/lib/useAsync';
-import { Award } from '@internal/plugin-awards-common';
+import { Award } from '@seatgeek/plugin-awards-common';
 import { identityApiRef, useApi } from '@backstage/core-plugin-api';
 import { Box } from '@material-ui/core';
 import { awardsApiRef } from '../../api';

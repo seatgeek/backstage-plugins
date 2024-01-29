@@ -25,7 +25,7 @@ import React, { useState } from 'react';
 import { awardsApiRef } from '../../api';
 import useAsync from 'react-use/lib/useAsync';
 import { editRouteRef } from '../../routes';
-import { Award } from '@internal/plugin-awards-common';
+import { Award } from '@seatgeek/plugin-awards-common';
 import { catalogApiRef } from '@backstage/plugin-catalog-react';
 import { parseEntityRef } from '@backstage/catalog-model';
 import { isEmpty, random } from 'lodash';

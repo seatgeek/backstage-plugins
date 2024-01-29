@@ -5,7 +5,7 @@ import { Logger } from 'winston';
 import { IdentityApi } from '@backstage/plugin-auth-node';
 import { AuthenticationError, NotFoundError } from '@backstage/errors';
 import { DatabaseAwardsStore } from '../database/awards';
-import { Award } from '@internal/plugin-awards-common';
+import { Award } from '@seatgeek/plugin-awards-common';
 
 export interface RouterOptions {
   identity: IdentityApi;

@@ -22,7 +22,7 @@ yarn add --cwd packages/app @seatgeek/plugin-entity-scaffolder-content
 ### Add the plugin to your `EntityPage`
 
 ```tsx
-import { EntityScaffolderContent } from '@internal/plugin-entity-scaffolder-content';
+import { EntityScaffolderContent } from '@seatgeek/plugin-entity-scaffolder-content';
 
 const systemPage = (
   <EntityLayout>

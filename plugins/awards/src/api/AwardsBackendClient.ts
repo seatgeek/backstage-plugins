@@ -1,5 +1,5 @@
 import { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
-import { Award } from '@internal/plugin-awards-common';
+import { Award } from '@seatgeek/plugin-awards-common';
 import { AwardsApi } from './types';
 
 export class AwardsBackendApi implements AwardsApi {

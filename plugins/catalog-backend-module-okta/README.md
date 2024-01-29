@@ -25,7 +25,7 @@ catalog:
 Then import `OktaOrgDiscoveryEntityProvider` into your Backstage application's `packages/backend/src/plugins/catalog.ts` and add it to the `CatalogBuilder`.
 
 ```tsx
-import { OktaOrgDiscoveryEntityProvider } from '@internal/plugin-catalog-backend-module-okta';
+import { OktaOrgDiscoveryEntityProvider } from '@seatgeek/plugin-catalog-backend-module-okta';
 
 // ...
 

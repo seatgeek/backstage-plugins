@@ -15,7 +15,7 @@ import {
 import useAsync from 'react-use/lib/useAsync';
 
 import { getOrCreateGlobalSingleton } from '@backstage/version-bridge';
-import { Award } from '@internal/plugin-awards-common';
+import { Award } from '@seatgeek/plugin-awards-common';
 
 // https://github.com/backstage/backstage/blob/77a7ef3fa500fcfb80bee21f971eee682a955655/plugins/catalog-react/src/routes.ts#L28
 // https://github.com/backstage/backstage/blob/77a7ef3fa500fcfb80bee21f971eee682a955655/plugins/catalog/src/components/CatalogEntityPage/useEntityFromUrl.ts#L31
