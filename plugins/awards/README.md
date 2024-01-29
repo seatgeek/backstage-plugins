@@ -31,20 +31,12 @@ the following lines:
 
 ```tsx
 // other imports
-import {
-  AwardsListPage,
-  AwardsEditPage,
-  AwardsNewPage,
-  AwardsViewPage,
-} from '@seatgeek/plugin-awards';
+import { AwardsPage } from '@seatgeek/plugin-awards';
 
 // Add the routes for the plugin pages before the <FlatRoutes> block is closed.
 <FlatRoutes>
   // Many routes
-  <Route path="/awards/" element={<AwardsListPage />} />
-  <Route path="/awards/new" element={<AwardsNewPage />} />
-  <Route path="/awards/edit/:uid" element={<AwardsEditPage />} />
-  <Route path="/awards/view/:uid" element={<AwardsViewPage />} />
+  <Route path="/awards" element={<AwardsPage />} />
 </FlatRoutes>;
 
 // Rest of the file

@@ -20,7 +20,7 @@ export const AwardViewCard = ({ award }: AwardViewCardProps) => {
       <Typography variant="body1">
         <Grid container spacing={2}>
           <Grid item xs={6} md={2}>
-            <img alt="" src={award.image} height="50" width="100" />
+            <img alt="" src={award.image} height="50" width="150" />
           </Grid>
           <Grid item xs={12} md={6}>
             <Typography>{award.description}</Typography>

@@ -67,7 +67,7 @@ export const UserAwardsCard = () => {
                       <img
                         src={award.image}
                         height="50"
-                        width="100"
+                        width="150"
                         alt={award.name}
                       />
                     </Tooltip>

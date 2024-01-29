@@ -11,6 +11,17 @@ Install the @seatgeek/catalog-backend-module-okta package in your backend packag
 yarn add --cwd packages/backend @seatgeek/catalog-backend-module-okta
 ```
 
+Then add the following config to your `app-config.yml`:
+
+```yml
+catalog:
+  providers:
+    okta:
+      myOrganizationOkta:
+        apiToken: ${OKTA_TOKEN}
+        url: https://my-organization.okta.com
+```
+
 Then import `OktaOrgDiscoveryEntityProvider` into your Backstage application's `packages/backend/src/plugins/catalog.ts` and add it to the `CatalogBuilder`.
 
 ```tsx

@@ -231,7 +231,7 @@ export const AwardEditCard = ({ award = emptyAward }: AwardEditCardProps) => {
               <InputLabel>Award logo (150x50 px)</InputLabel>
             </Grid>
             <Grid item>
-              <img alt="" src={awardImage} height="50" width="100" />
+              <img alt="" src={awardImage} height="50" width="150" />
             </Grid>
             <Grid item>
               <Button
