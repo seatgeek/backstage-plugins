@@ -1,0 +1,8 @@
+dist
+dist-types
+coverage
+.vscode
+*.md
+*.yml
+*.yaml
+e2e-test-report/
