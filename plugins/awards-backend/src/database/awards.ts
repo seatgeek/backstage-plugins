@@ -5,7 +5,7 @@ import {
 import { Knex } from 'knex';
 import { v4 as uuid } from 'uuid';
 import { isEmpty } from 'lodash';
-import { Award } from '@internal/plugin-awards-common';
+import { Award } from '@seatgeek/plugin-awards-common';
 
 export interface AwardsStore {
   search(
@@ -37,7 +37,7 @@ export interface AwardsStore {
 
 const migrationsDir = resolvePackagePath(
   // TODO: this was @backstage in the beginning, but it breaks service startup.
-  '@internal/plugin-awards-backend', // Package name
+  '@seatgeek/plugin-awards-backend', // Package name
   'migrations', // Migrations directory
 );
 

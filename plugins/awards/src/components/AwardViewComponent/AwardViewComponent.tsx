@@ -8,7 +8,7 @@ import { Grid, Typography } from '@material-ui/core';
 import React from 'react';
 import { awardsApiRef } from '../../api';
 import useAsync from 'react-use/lib/useAsync';
-import { Award } from '@internal/plugin-awards-common';
+import { Award } from '@seatgeek/plugin-awards-common';
 
 interface AwardViewCardProps {
   award: Award;

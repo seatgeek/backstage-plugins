@@ -42,8 +42,8 @@ import { EntityTechdocsContent } from '@backstage/plugin-techdocs';
 import { EmptyState } from '@backstage/core-components';
 import { EntityCatalogGraphCard } from '@backstage/plugin-catalog-graph';
 import { stringifyEntityRef } from '@backstage/catalog-model';
-import { UserAwardsCard } from '@internal/plugin-awards';
-import { EntityScaffolderContent } from '@internal/plugin-entity-scaffolder-content';
+import { UserAwardsCard } from '@seatgeek/plugin-awards';
+import { EntityScaffolderContent } from '@seatgeek/plugin-entity-scaffolder-content';
 
 import { TechDocsAddons } from '@backstage/plugin-techdocs-react';
 import { ReportIssue } from '@backstage/plugin-techdocs-module-addons-contrib';

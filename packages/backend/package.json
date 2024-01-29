@@ -36,7 +36,7 @@
     "@backstage/plugin-search-backend-module-techdocs": "^0.1.11",
     "@backstage/plugin-search-backend-node": "^1.2.11",
     "@backstage/plugin-techdocs-backend": "^1.9.0",
-    "@internal/plugin-awards-backend": "^0.1.0",
+    "@seatgeek/plugin-awards-backend": "^0.1.0",
     "app": "link:../app",
     "better-sqlite3": "^9.0.0",
     "dockerode": "^3.3.1",

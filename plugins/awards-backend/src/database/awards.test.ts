@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 import { Knex } from 'knex';
-import { Award } from '@internal/plugin-awards-common';
+import { Award } from '@seatgeek/plugin-awards-common';
 import { DatabaseManager } from '@backstage/backend-common';
 import { ConfigReader } from '@backstage/config';
 import { DatabaseAwardsStore } from './awards';

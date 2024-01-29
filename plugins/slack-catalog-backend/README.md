@@ -29,7 +29,7 @@ Enriches existing `User` entities with information from Slack, notably the user'
 Add the following to your `packages/backend/catalog.ts`:
 
 ```ts
-import { SlackUserProcessor } from '@internal/plugin-slack-catalog-backend';
+import { SlackUserProcessor } from '@seatgeek/plugin-slack-catalog-backend';
 
 export default async function createPlugin(
   env: PluginEnvironment,
