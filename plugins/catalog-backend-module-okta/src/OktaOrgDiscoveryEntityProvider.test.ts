@@ -4,7 +4,12 @@
  */
 import { getVoidLogger } from '@backstage/backend-common';
 import { TaskInvocationDefinition, TaskRunner } from '@backstage/backend-tasks';
+import { setupRequestMockHandlers } from '@backstage/backend-test-utils';
+import { GroupEntity, UserEntity } from '@backstage/catalog-model';
 import { ConfigReader } from '@backstage/config';
+import { EntityProviderConnection } from '@backstage/plugin-catalog-node';
+import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 import {
   HookBeforeMutation,
   OktaGroup,
@@ -13,11 +18,6 @@ import {
   OktaUser,
   OktaUserTransformer,
 } from './OktaOrgDiscoveryEntityProvider';
-import { GroupEntity, UserEntity } from '@backstage/catalog-model';
-import { setupRequestMockHandlers } from '@backstage/backend-test-utils';
-import { rest } from 'msw';
-import { setupServer } from 'msw/node';
-import { EntityProviderConnection } from '@backstage/plugin-catalog-node';
 
 class PersistingTaskRunner implements TaskRunner {
   private tasks: TaskInvocationDefinition[] = [];

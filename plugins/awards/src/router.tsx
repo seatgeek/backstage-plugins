@@ -4,8 +4,8 @@
  */
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { AwardsListPage } from './components/AwardsListPage';
 import { AwardsEditPage, AwardsNewPage, AwardsViewPage } from './components';
+import { AwardsListPage } from './components/AwardsListPage';
 
 export const AwardsRouter = () => (
   <Routes>

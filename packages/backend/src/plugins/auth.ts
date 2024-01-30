@@ -1,16 +1,16 @@
-import {
-  createRouter,
-  createAuthProviderIntegration,
-} from '@backstage/plugin-auth-backend';
-import { Router } from 'express';
-import { PluginEnvironment } from '../types';
 import { stringifyEntityRef } from '@backstage/catalog-model';
+import {
+  createAuthProviderIntegration,
+  createRouter,
+} from '@backstage/plugin-auth-backend';
 import {
   AuthProviderRouteHandlers,
   AuthResolverContext,
   SignInResolver,
   prepareBackstageIdentityResponse,
 } from '@backstage/plugin-auth-node';
+import { Router } from 'express';
+import { PluginEnvironment } from '../types';
 
 // a "dummy" auth provider for the local demo site used with
 // proxy sign in so that the user is always logged in as guest.

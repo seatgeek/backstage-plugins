@@ -2,6 +2,7 @@
  * Copyright SeatGeek
  * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
  */
+import { parseEntityRef } from '@backstage/catalog-model';
 import {
   InfoCard,
   Progress,
@@ -13,7 +14,7 @@ import {
   useApi,
   useRouteRefParams,
 } from '@backstage/core-plugin-api';
-import Stack from '@mui/material/Stack';
+import { catalogApiRef } from '@backstage/plugin-catalog-react';
 import {
   Button,
   Grid,
@@ -23,18 +24,17 @@ import {
   styled,
 } from '@material-ui/core';
 import CreateComponentIcon from '@material-ui/icons/AddCircleOutline';
-import DeleteIcon from '@material-ui/icons/Delete';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import React, { useState } from 'react';
-import { awardsApiRef } from '../../api';
-import useAsync from 'react-use/lib/useAsync';
-import { editRouteRef } from '../../routes';
-import { Award } from '@seatgeek/plugin-awards-common';
-import { catalogApiRef } from '@backstage/plugin-catalog-react';
-import { parseEntityRef } from '@backstage/catalog-model';
-import { isEmpty, random } from 'lodash';
+import DeleteIcon from '@material-ui/icons/Delete';
 import Autocomplete from '@mui/material/Autocomplete';
+import Stack from '@mui/material/Stack';
+import { Award } from '@seatgeek/plugin-awards-common';
+import { isEmpty, random } from 'lodash';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useAsync from 'react-use/lib/useAsync';
+import { awardsApiRef } from '../../api';
+import { editRouteRef } from '../../routes';
 
 const emptyAward: Award = {
   uid: '',

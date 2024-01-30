@@ -6,10 +6,10 @@ import {
   PluginDatabaseManager,
   resolvePackagePath,
 } from '@backstage/backend-common';
-import { Knex } from 'knex';
-import { v4 as uuid } from 'uuid';
-import { isEmpty } from 'lodash';
 import { Award } from '@seatgeek/plugin-awards-common';
+import { Knex } from 'knex';
+import { isEmpty } from 'lodash';
+import { v4 as uuid } from 'uuid';
 
 export interface AwardsStore {
   search(

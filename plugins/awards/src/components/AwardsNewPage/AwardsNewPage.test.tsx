@@ -2,16 +2,16 @@
  * Copyright SeatGeek
  * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
  */
-import React from 'react';
+import { CatalogApi, catalogApiRef } from '@backstage/plugin-catalog-react';
+import {
+  TestApiProvider,
+  renderInTestApp,
+  setupRequestMockHandlers,
+} from '@backstage/test-utils';
+import { screen } from '@testing-library/react';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
-import { screen } from '@testing-library/react';
-import {
-  setupRequestMockHandlers,
-  renderInTestApp,
-  TestApiProvider,
-} from '@backstage/test-utils';
-import { CatalogApi, catalogApiRef } from '@backstage/plugin-catalog-react';
+import React from 'react';
 import { AwardsApi, awardsApiRef } from '../../api';
 import { AwardsNewPage } from './AwardsNewPage';
 

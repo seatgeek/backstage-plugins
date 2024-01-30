@@ -2,11 +2,11 @@
  * Copyright SeatGeek
  * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
  */
-import { v4 as uuid } from 'uuid';
-import { Knex } from 'knex';
-import { Award } from '@seatgeek/plugin-awards-common';
 import { DatabaseManager } from '@backstage/backend-common';
 import { ConfigReader } from '@backstage/config';
+import { Award } from '@seatgeek/plugin-awards-common';
+import { Knex } from 'knex';
+import { v4 as uuid } from 'uuid';
 import { DatabaseAwardsStore } from './awards';
 
 function generateTestAwards(length: number): Award[] {

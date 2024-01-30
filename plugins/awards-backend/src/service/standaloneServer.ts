@@ -3,10 +3,10 @@
  * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
  */
 import {
-  createServiceBuilder,
   DatabaseManager,
-  loadBackendConfig,
   HostDiscovery,
+  createServiceBuilder,
+  loadBackendConfig,
 } from '@backstage/backend-common';
 import { ConfigReader } from '@backstage/config';
 import { DefaultIdentityClient } from '@backstage/plugin-auth-node';
