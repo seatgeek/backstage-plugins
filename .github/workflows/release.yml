@@ -29,4 +29,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: yarn multi-semantic-release
+        run: yarn multi-semantic-release --ignore-packages packages/app,packages/backend
