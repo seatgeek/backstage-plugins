@@ -4,7 +4,7 @@
 
 ### Tooling
 
-We use [multi-semantic-release](https://github.com/qiwi/multi-semantic-release) to automate release of the many (sometimes interdependent) plugins in this repo. It is a wrapper on top of [semantic-release](https://semantic-release.gitbook.io/semantic-release/) that extends `semantic-release` to work for monorepos.
+We use [multi-semantic-release](https://github.com/dhoulb/multi-semantic-release) to automate release of the many (sometimes interdependent) plugins in this repo. It is a wrapper on top of [semantic-release](https://semantic-release.gitbook.io/semantic-release/) that extends `semantic-release` to work for monorepos.
 
 ### `package.json` versions
 
@@ -31,4 +31,4 @@ See [this note](https://github.com/semantic-release/semantic-release/discussions
 
 ### Future
 
-_`multi-semantic-release` is, by the maintainers' own admission, a hack on top of [semantic-release](https://github.com/semantic-release/semantic-release), but seems to serve its purpose well now, and is used by [other Backstage plugin providers](https://github.com/janus-idp/backstage-plugins/blob/e6ba8e3c5f38381e5e1e74ebd3dac8f20567cc76/package.json#L54) (though we opt for a more up to date fork.) It does a better job than any current alternate option, and explains its advantage well [here](https://github.com/dhoulb/multi-semantic-release?tab=readme-ov-file#iteration-vs-coordination). The maintainers are migrating to their own [tool](https://github.com/semrel-extra/zx-bulk-release) which is in early dev now but is worth exploring in the future._
+_`multi-semantic-release` is, by the maintainers' own admission, a hack on top of [semantic-release](https://github.com/semantic-release/semantic-release), but seems to serve its purpose well now, and is used by [other Backstage plugin providers](https://github.com/janus-idp/backstage-plugins/blob/e6ba8e3c5f38381e5e1e74ebd3dac8f20567cc76/package.json#L54). It does a better job than any current alternate option, and explains its advantage well [here](https://github.com/dhoulb/multi-semantic-release?tab=readme-ov-file#iteration-vs-coordination). The maintainers are migrating to their own [tool](https://github.com/semrel-extra/zx-bulk-release) which is in early dev now but is worth exploring in the future._
