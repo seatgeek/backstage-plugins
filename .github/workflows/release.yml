@@ -3,9 +3,6 @@ name: Release
 on:
   workflow_dispatch:
 
-permissions:
-  contents: read # for checkout
-
 jobs:
   release:
     runs-on: ubuntu-latest
