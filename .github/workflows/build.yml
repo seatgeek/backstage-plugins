@@ -37,3 +37,19 @@ jobs:
           cache: 'yarn'
       - run: yarn install
       - run: yarn test
+  # on main, dry run the release
+  release-dry-run:
+    runs-on: ubuntu-latest
+    needs: [lint, test]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.x
+          cache: 'yarn'
+      - run: yarn install
+      - run: yarn multi-semantic-release --dry-run
