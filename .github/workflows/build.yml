@@ -53,3 +53,6 @@ jobs:
           cache: 'yarn'
       - run: yarn install
       - run: yarn multi-semantic-release --ignore-packages packages/app,packages/backend --dry-run
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
