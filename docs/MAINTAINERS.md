@@ -6,6 +6,10 @@
 
 We use [multi-semantic-release](https://github.com/qiwi/multi-semantic-release) to automate release of the many (sometimes interdependent) plugins in this repo. It is a wrapper on top of [semantic-release](https://semantic-release.gitbook.io/semantic-release/) that extends `semantic-release` to work for monorepos.
 
+### `package.json` versions
+
+`multi-semantic-release` handles all package versioning without committing those versions back to the source branch. In the repository, versions are pinned to `0.0.0-semantically-released`.
+
 ### Configuration
 
 Configuration is kept in [package.json](/package.json)'s `"release"` field and follows the [semantic-release configuration](https://semantic-release.gitbook.io/semantic-release/usage/configuration).
