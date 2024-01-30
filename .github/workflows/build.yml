@@ -52,7 +52,7 @@ jobs:
           node-version: 20.x
           cache: 'yarn'
       - run: yarn install
-      - run: yarn multi-semantic-release --ignore-packages packages/app,packages/backend --dry-run
+      - run: yarn multi-semantic-release --ignore-private-packages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
