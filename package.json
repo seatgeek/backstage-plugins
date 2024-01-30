@@ -34,10 +34,11 @@
     "@backstage/cli": "^0.25.1",
     "@backstage/e2e-test-utils": "^0.1.0",
     "@playwright/test": "^1.32.3",
-    "multi-semantic-release": "^3.0.2",
     "@spotify/prettier-config": "^12.0.0",
     "concurrently": "^8.0.0",
+    "conventional-changelog-conventionalcommits": "^7.0.2",
     "lerna": "^7.3.0",
+    "multi-semantic-release": "^3.0.2",
     "node-gyp": "^9.0.0",
     "prettier": "^2.3.2",
     "typescript": "~5.2.0"
