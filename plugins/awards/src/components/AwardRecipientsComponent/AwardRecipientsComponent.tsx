@@ -2,14 +2,14 @@
  * Copyright SeatGeek
  * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
  */
+import { isUserEntity } from '@backstage/catalog-model';
 import { Progress, ResponseErrorPanel } from '@backstage/core-components';
 import { useApi } from '@backstage/core-plugin-api';
-import React from 'react';
 import { catalogApiRef } from '@backstage/plugin-catalog-react';
-import { awardsApiRef } from '../../api';
+import React from 'react';
 import useAsync from 'react-use/lib/useAsync';
+import { awardsApiRef } from '../../api';
 import { UserCollectionCard } from '../UserCollectionCard';
-import { isUserEntity } from '@backstage/catalog-model';
 
 interface AwardRecipientsComponentProps {
   uid: string;

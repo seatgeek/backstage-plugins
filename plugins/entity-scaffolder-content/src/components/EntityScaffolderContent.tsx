@@ -2,7 +2,6 @@
  * Copyright SeatGeek
  * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
  */
-import React, { useMemo, useState } from 'react';
 import { Entity } from '@backstage/catalog-model';
 import { useEntity } from '@backstage/plugin-catalog-react';
 import { TemplateEntityV1beta3 } from '@backstage/plugin-scaffolder-common';
@@ -11,10 +10,11 @@ import {
   TemplateGroupFilter,
 } from '@backstage/plugin-scaffolder-react';
 import { TemplateGroups } from '@backstage/plugin-scaffolder-react/alpha';
+import type { JsonValue } from '@backstage/types';
 import { EmbeddedScaffolderWorkflow } from '@frontside/backstage-plugin-scaffolder-workflow';
 import { Button } from '@material-ui/core';
+import React, { useMemo, useState } from 'react';
 import { TemplateListProvider } from './TemplateListProvider';
-import type { JsonValue } from '@backstage/types';
 
 type TemplateGroupFilterWithEntityCapture = {
   title?: React.ReactNode;

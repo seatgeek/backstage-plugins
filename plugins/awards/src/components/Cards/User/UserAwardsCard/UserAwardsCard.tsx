@@ -8,15 +8,15 @@ import {
   Progress,
   ResponseErrorPanel,
 } from '@backstage/core-components';
-import { Grid, Box, Tooltip } from '@material-ui/core';
-import React from 'react';
-import { awardsApiRef } from '../../../../api';
 import {
   createRouteRef,
   useApi,
   useRouteRefParams,
 } from '@backstage/core-plugin-api';
+import { Box, Grid, Tooltip } from '@material-ui/core';
+import React from 'react';
 import useAsync from 'react-use/lib/useAsync';
+import { awardsApiRef } from '../../../../api';
 
 import { getOrCreateGlobalSingleton } from '@backstage/version-bridge';
 import { Award } from '@seatgeek/plugin-awards-common';

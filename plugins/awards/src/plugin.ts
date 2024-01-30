@@ -9,8 +9,8 @@ import {
   discoveryApiRef,
   fetchApiRef,
 } from '@backstage/core-plugin-api';
+import { AwardsBackendApi, awardsApiRef } from './api';
 import { rootRouteRef } from './routes';
-import { awardsApiRef, AwardsBackendApi } from './api';
 
 export const awardsPlugin = createPlugin({
   id: 'awards',

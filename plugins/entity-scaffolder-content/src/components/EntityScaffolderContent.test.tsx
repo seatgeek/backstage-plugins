@@ -17,22 +17,22 @@ jest.mock('@backstage/plugin-scaffolder-react/alpha', () => {
   };
 });
 
-import React from 'react';
+import { SystemEntity } from '@backstage/catalog-model';
+import { errorApiRef } from '@backstage/core-plugin-api';
 import {
-  useEntity,
-  useEntityList,
+  MockStarredEntitiesApi,
   catalogApiRef,
   starredEntitiesApiRef,
-  MockStarredEntitiesApi,
+  useEntity,
+  useEntityList,
 } from '@backstage/plugin-catalog-react';
-import { Workflow } from '@backstage/plugin-scaffolder-react/alpha';
-import { renderInTestApp, TestApiProvider } from '@backstage/test-utils';
-import { errorApiRef } from '@backstage/core-plugin-api';
-import { EntityScaffolderContent } from './EntityScaffolderContent';
-import { SystemEntity } from '@backstage/catalog-model';
 import { TemplateEntityV1beta3 } from '@backstage/plugin-scaffolder-common';
 import { scaffolderApiRef } from '@backstage/plugin-scaffolder-react';
+import { Workflow } from '@backstage/plugin-scaffolder-react/alpha';
+import { TestApiProvider, renderInTestApp } from '@backstage/test-utils';
 import { act } from '@testing-library/react';
+import React from 'react';
+import { EntityScaffolderContent } from './EntityScaffolderContent';
 
 const defaultSteps = [{ action: 'action' }];
 

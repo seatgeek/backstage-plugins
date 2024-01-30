@@ -2,10 +2,10 @@
  * Copyright SeatGeek
  * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
  */
-import React from 'react';
+import { Content, Header, LinkButton, Page } from '@backstage/core-components';
 import { Grid } from '@material-ui/core';
-import { Header, Page, Content, LinkButton } from '@backstage/core-components';
 import CreateComponentIcon from '@material-ui/icons/AddCircleOutline';
+import React from 'react';
 
 import { AwardsListComponent } from '../AwardsListComponent';
 

@@ -2,20 +2,20 @@
  * Copyright SeatGeek
  * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
  */
-import React from 'react';
 import {
-  Table,
-  TableColumn,
+  Link,
   Progress,
   ResponseErrorPanel,
-  Link,
+  Table,
+  TableColumn,
 } from '@backstage/core-components';
-import useAsync from 'react-use/lib/useAsync';
-import { Award } from '@seatgeek/plugin-awards-common';
 import { identityApiRef, useApi } from '@backstage/core-plugin-api';
 import { Box } from '@material-ui/core';
-import { awardsApiRef } from '../../api';
+import { Award } from '@seatgeek/plugin-awards-common';
 import { isEmpty } from 'lodash';
+import React from 'react';
+import useAsync from 'react-use/lib/useAsync';
+import { awardsApiRef } from '../../api';
 
 type DenseTableProps = {
   awards: Award[];

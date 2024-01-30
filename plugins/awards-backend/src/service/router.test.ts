@@ -3,14 +3,14 @@
  * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
  */
 import { DatabaseManager, getVoidLogger } from '@backstage/backend-common';
+import { ConfigReader } from '@backstage/config';
 import {
   BackstageIdentityResponse,
   IdentityApiGetIdentityRequest,
 } from '@backstage/plugin-auth-node';
 import express from 'express';
-import request from 'supertest';
 import { Knex } from 'knex';
-import { ConfigReader } from '@backstage/config';
+import request from 'supertest';
 import { createRouter } from './router';
 
 // Good references for this:

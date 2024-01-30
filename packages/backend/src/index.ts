@@ -6,32 +6,32 @@
  * Happy hacking!
  */
 
-import Router from 'express-promise-router';
 import {
-  createServiceBuilder,
-  loadBackendConfig,
-  getRootLogger,
-  useHotMemoize,
-  notFoundHandler,
   CacheManager,
   DatabaseManager,
   HostDiscovery,
-  UrlReaders,
   ServerTokenManager,
+  UrlReaders,
+  createServiceBuilder,
+  getRootLogger,
+  loadBackendConfig,
+  notFoundHandler,
+  useHotMemoize,
 } from '@backstage/backend-common';
 import { TaskScheduler } from '@backstage/backend-tasks';
 import { Config } from '@backstage/config';
+import { DefaultIdentityClient } from '@backstage/plugin-auth-node';
+import { ServerPermissionClient } from '@backstage/plugin-permission-node';
+import Router from 'express-promise-router';
 import app from './plugins/app';
 import auth from './plugins/auth';
 import awards from './plugins/awards';
 import catalog from './plugins/catalog';
-import scaffolder from './plugins/scaffolder';
 import proxy from './plugins/proxy';
-import techdocs from './plugins/techdocs';
+import scaffolder from './plugins/scaffolder';
 import search from './plugins/search';
+import techdocs from './plugins/techdocs';
 import { PluginEnvironment } from './types';
-import { ServerPermissionClient } from '@backstage/plugin-permission-node';
-import { DefaultIdentityClient } from '@backstage/plugin-auth-node';
 
 function makeCreateEnv(config: Config) {
   const root = getRootLogger();

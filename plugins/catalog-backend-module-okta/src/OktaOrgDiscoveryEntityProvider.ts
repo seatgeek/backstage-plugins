@@ -2,28 +2,28 @@
  * Copyright SeatGeek
  * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
  */
+import { TaskRunner } from '@backstage/backend-tasks';
+import {
+  ANNOTATION_LOCATION,
+  ANNOTATION_ORIGIN_LOCATION,
+  GroupEntity,
+  UserEntity,
+} from '@backstage/catalog-model';
 import { Config } from '@backstage/config';
 import {
   EntityProvider,
   EntityProviderConnection,
 } from '@backstage/plugin-catalog-node';
 import {
-  UserEntity,
-  GroupEntity,
-  ANNOTATION_LOCATION,
-  ANNOTATION_ORIGIN_LOCATION,
-} from '@backstage/catalog-model';
-import * as uuid from 'uuid';
-import { TaskRunner } from '@backstage/backend-tasks';
-import { Logger } from 'winston';
-import { merge } from 'lodash';
-import {
   Client,
-  UserApiListUsersRequest,
+  Group,
   GroupApiListGroupsRequest,
   User,
-  Group,
+  UserApiListUsersRequest,
 } from '@okta/okta-sdk-nodejs';
+import { merge } from 'lodash';
+import * as uuid from 'uuid';
+import { Logger } from 'winston';
 
 /**
  * A user object from the Okta API.
