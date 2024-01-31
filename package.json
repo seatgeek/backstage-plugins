@@ -36,7 +36,7 @@
     "@playwright/test": "^1.32.3",
     "@spotify/prettier-config": "^12.0.0",
     "concurrently": "^8.0.0",
-    "conventional-changelog-conventionalcommits": "^7.0.2",
+    "conventional-changelog-conventionalcommits": "^6.1.0",
     "lerna": "^7.3.0",
     "multi-semantic-release": "^3.0.2",
     "node-gyp": "^9.0.0",
