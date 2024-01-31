@@ -52,6 +52,18 @@ jobs:
       - run: yarn install
       - run: yarn tsc
       - run: yarn backstage-cli repo build
+  dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20.x
+          cache: 'yarn'
+      # failures with peer dependencies will fail release
+      - run: yarn install
+      - name: Check for dependency resolution issues
+        run: npm ls
   # on main, dry run the release
   release-dry-run:
     runs-on: ubuntu-latest
