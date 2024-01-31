@@ -11624,7 +11624,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jest@npm:*, @types/jest@npm:^29.0.0, @types/jest@npm:^29.5.11":
+"@types/jest@npm:*, @types/jest@npm:^29.0.0":
   version: 29.5.11
   resolution: "@types/jest@npm:29.5.11"
   dependencies:
@@ -11819,7 +11819,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>=12.0.0, @types/node@npm:>=12.12.47, @types/node@npm:>=13.7.0, @types/node@npm:^20.1.1, @types/node@npm:^20.11.13":
+"@types/node@npm:*, @types/node@npm:>=12.0.0, @types/node@npm:>=12.12.47, @types/node@npm:>=13.7.0, @types/node@npm:^20.1.1":
   version: 20.11.13
   resolution: "@types/node@npm:20.11.13"
   dependencies:
@@ -29813,11 +29813,8 @@ __metadata:
     "@backstage/e2e-test-utils": ^0.1.0
     "@playwright/test": ^1.32.3
     "@spotify/prettier-config": ^12.0.0
-    "@types/jest": ^29.5.11
-    "@types/node": ^20.11.13
     concurrently: ^8.0.0
     conventional-changelog-conventionalcommits: ^6.1.0
-    jest-environment-node: ^29.7.0
     lerna: ^7.3.0
     multi-semantic-release: ^3.0.2
     node-gyp: ^9.0.0
