@@ -28,7 +28,7 @@
     "@backstage/config": "^1.1.1",
     "@backstage/errors": "^1.2.3",
     "@backstage/plugin-auth-node": "^0.4.3",
-    "@seatgeek/backstage-plugin-awards-common": "link:*",
+    "@seatgeek/backstage-plugin-awards-common": "0.0.0-semantically-released",
     "@types/express": "*",
     "express": "^4.17.1",
     "express-promise-router": "^4.1.0",

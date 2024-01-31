@@ -6862,25 +6862,6 @@
     "@sagold/json-pointer" "^5.1.1"
     ebnf "^1.9.1"
 
-"@seatgeek/backstage-plugin-awards-backend@link:packages/backend/*":
-  version "0.0.0"
-  uid ""
-
-"@seatgeek/backstage-plugin-awards-common@link:plugins/awards-backend/*":
-  version "0.0.0"
-  uid ""
-
-"@seatgeek/backstage-plugin-awards-common@link:plugins/awards/*":
-  version "0.0.0"
-
-"@seatgeek/backstage-plugin-awards@link:packages/app/*":
-  version "0.0.0"
-  uid ""
-
-"@seatgeek/backstage-plugin-entity-scaffolder-content@link:packages/app/*":
-  version "0.0.0"
-  uid ""
-
 "@semantic-release/commit-analyzer@^9.0.2":
   version "9.0.2"
   resolved "https://registry.yarnpkg.com/@semantic-release/commit-analyzer/-/commit-analyzer-9.0.2.tgz#a78e54f9834193b55f1073fa6258eecc9a545e03"
