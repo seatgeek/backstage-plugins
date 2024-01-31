@@ -38,10 +38,6 @@
     "lodash": "^4.17.21",
     "react-use": "^17.2.4"
   },
-  "peerDependencies": {
-    "react": "^18.0.2",
-    "react-router-dom": "^6.18.0"
-  },
   "devDependencies": {
     "@backstage/cli": "^0.25.1",
     "@backstage/core-app-api": "^1.11.3",
