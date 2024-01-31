@@ -1,10 +1,8 @@
 # @seatgeek/backstage-plugin-awards
 
-[![npm latest version](https://img.shields.io/npm/v/@seatgeek/backstage-plugin-awards/latest.svg)](https://www.npmjs.com/package/@seatgeek/backstage-plugin-awards)
+This plugin offers a management system for awards that can be created and given to recipients in your Backstage deployment, and then displayed onto their Entity profile pages.
 
-This plugin offers a management system for awards that can be created and given
-to recipients in your Backstage deployment, and then displayed onto their
-Entity profile pages.
+[![npm latest version](https://img.shields.io/npm/v/@seatgeek/backstage-plugin-awards/latest.svg)](https://www.npmjs.com/package/@seatgeek/backstage-plugin-awards)
 
 The plugin offers a set of Page Components and an Information card to achieve
 this. It also requires the installation of its dependency

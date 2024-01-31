@@ -1,8 +1,8 @@
 # @seatgeek/backstage-plugin-catalog-backend-module-okta
 
-[![npm latest version](https://img.shields.io/npm/v/@seatgeek/backstage-plugin-catalog-backend-module-okta/latest.svg)](https://www.npmjs.com/package/@seatgeek/backstage-plugin-catalog-backend-module-okta)
-
 This plugin offers the ability to ingest users and groups from the [Okta API](https://developer.okta.com/docs/reference/core-okta-api/) into the Backstage catalog.
+
+[![npm latest version](https://img.shields.io/npm/v/@seatgeek/backstage-plugin-catalog-backend-module-okta/latest.svg)](https://www.npmjs.com/package/@seatgeek/backstage-plugin-catalog-backend-module-okta)
 
 ## Installation
 

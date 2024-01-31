@@ -1,8 +1,8 @@
 # @seatgeek/backstage-plugin-slack-catalog-backend
 
-[![npm latest version](https://img.shields.io/npm/v/@seatgeek/backstage-plugin-slack-catalog-backend/latest.svg)](https://www.npmjs.com/package/@seatgeek/backstage-plugin-slack-catalog-backend)
-
 This plugin offers catalog integrations for ingesting data from the Slack API into the Software Catalog.
+
+[![npm latest version](https://img.shields.io/npm/v/@seatgeek/backstage-plugin-slack-catalog-backend/latest.svg)](https://www.npmjs.com/package/@seatgeek/backstage-plugin-slack-catalog-backend)
 
 ## Installation
 

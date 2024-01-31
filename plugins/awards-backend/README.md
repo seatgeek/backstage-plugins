@@ -1,8 +1,8 @@
 # @seatgeek/backstage-plugin-awards-backend
 
-[![npm latest version](https://img.shields.io/npm/v/@seatgeek/backstage-plugin-awards-backend/latest.svg)](https://www.npmjs.com/package/@seatgeek/backstage-plugin-awards-backend)
+This plugin provides the backend API for the awards plugin.
 
-Welcome to the backend package for awards plugin!
+[![npm latest version](https://img.shields.io/npm/v/@seatgeek/backstage-plugin-awards-backend/latest.svg)](https://www.npmjs.com/package/@seatgeek/backstage-plugin-awards-backend)
 
 This plugin relies on [Backstage authentication](https://backstage.io/docs/auth/)
 in order to enforce ownership of awards. Please follow the documentation to
