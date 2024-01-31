@@ -6862,77 +6862,24 @@
     "@sagold/json-pointer" "^5.1.1"
     ebnf "^1.9.1"
 
-"@seatgeek/backstage-plugin-awards-backend@*":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@seatgeek/backstage-plugin-awards-backend/-/plugin-awards-backend-1.0.0.tgz#bf1dfad175b5686c3c59fdcecd490e109740a63a"
-  integrity sha512-1djyZ+QGRc00j7Wkk8Qfg/prY0Hy9m4g4kV6j+QsnCCrAXbtxNXioCkgo26S2mJt9V4hFgXv5pczPLIJvav18w==
-  dependencies:
-    "@backstage/backend-common" "^0.20.1"
-    "@backstage/backend-plugin-api" "^0.6.9"
-    "@backstage/config" "^1.1.1"
-    "@backstage/errors" "^1.2.3"
-    "@backstage/plugin-auth-node" "^0.4.3"
-    "@seatgeek/backstage-plugin-awards-common" "1.0.0"
-    "@types/express" "*"
-    express "^4.17.1"
-    express-promise-router "^4.1.0"
-    knex "^3.1.0"
-    lodash "^4.17.21"
-    node-fetch "^2.6.7"
-    uuid "^9.0.1"
-    winston "^3.2.1"
-    yn "^4.0.0"
+"@seatgeek/backstage-plugin-awards-backend@link:packages/backend/*":
+  version "0.0.0"
+  uid ""
 
-"@seatgeek/backstage-plugin-awards-common@*", "@seatgeek/backstage-plugin-awards-common@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@seatgeek/backstage-plugin-awards-common/-/plugin-awards-common-1.0.0.tgz#74f108c8cb5cabe86a242414fe3bde55145f5fa9"
-  integrity sha512-bD/47eFrspGvaZ3Yt0bJyBzvuUaV8n6Cgd/gyp2b0TMN6vHrQ/4CQgRBE9omBostv7ac9VHRxi6+WXEAsaqeRQ==
-  dependencies:
-    "@backstage/backend-common" "^0.20.1"
-    "@backstage/config" "^1.1.1"
-    "@types/express" "*"
-    "@types/uuid" "^9.0.6"
-    express "^4.17.1"
-    express-promise-router "^4.1.0"
-    node-fetch "^2.6.7"
-    winston "^3.2.1"
-    yn "^4.0.0"
+"@seatgeek/backstage-plugin-awards-common@link:plugins/awards-backend/*":
+  version "0.0.0"
+  uid ""
 
-"@seatgeek/backstage-plugin-awards@*":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@seatgeek/backstage-plugin-awards/-/plugin-awards-1.0.0.tgz#cd040797211f142253fcb8117daf18570d4681d1"
-  integrity sha512-qdPaNS3CJ21Lhw6msiJhUOF/fYpXMXdOJUAdGgfAdLvMZOySmRRT/7YYWRvbNY4J+KM0OyO9aUpVbSfHesCJMw==
-  dependencies:
-    "@backstage/catalog-model" "^1.4.3"
-    "@backstage/core-components" "^0.13.10"
-    "@backstage/core-plugin-api" "^1.8.2"
-    "@backstage/plugin-catalog-react" "^1.9.3"
-    "@backstage/theme" "^0.5.0"
-    "@material-ui/core" "^4.12.2"
-    "@material-ui/icons" "^4.9.1"
-    "@material-ui/lab" "4.0.0-alpha.61"
-    "@mui/material" "^5.14.20"
-    "@seatgeek/backstage-plugin-awards-common" "1.0.0"
-    lodash "^4.17.21"
-    react-use "^17.2.4"
+"@seatgeek/backstage-plugin-awards-common@link:plugins/awards/*":
+  version "0.0.0"
 
-"@seatgeek/backstage-plugin-entity-scaffolder-content@*":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@seatgeek/backstage-plugin-entity-scaffolder-content/-/plugin-entity-scaffolder-content-1.0.0.tgz#ad91cba30060b650bf71f203cbe105bac5026f03"
-  integrity sha512-1PW7Fr4Rm5MA0cBgD8GrSiAqTtQ4zkjZ6Phg5WXXPuJvpE8n2CUWM+wgGvfTgraJpu4BVEZ7Y2jRdHKfZ3SORg==
-  dependencies:
-    "@backstage/catalog-model" "^1.4.3"
-    "@backstage/core-components" "^0.13.10"
-    "@backstage/core-plugin-api" "^1.8.2"
-    "@backstage/plugin-catalog-react" "^1.9.3"
-    "@backstage/plugin-scaffolder-common" "^1.4.5"
-    "@backstage/plugin-scaffolder-react" "^1.7.1"
-    "@backstage/theme" "^0.5.0"
-    "@frontside/backstage-plugin-scaffolder-workflow" "^0.10.0"
-    "@material-ui/core" "^4.12.2"
-    "@material-ui/icons" "^4.9.1"
-    "@material-ui/lab" "4.0.0-alpha.61"
-    react-use "^17.2.4"
+"@seatgeek/backstage-plugin-awards@link:packages/app/*":
+  version "0.0.0"
+  uid ""
+
+"@seatgeek/backstage-plugin-entity-scaffolder-content@link:packages/app/*":
+  version "0.0.0"
+  uid ""
 
 "@semantic-release/commit-analyzer@^9.0.2":
   version "9.0.2"
