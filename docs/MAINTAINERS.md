@@ -4,7 +4,7 @@
 
 ### Tooling
 
-We use [multi-semantic-release](https://github.com/dhoulb/multi-semantic-release) to automate release of the many (sometimes interdependent) plugins in this repo. It is a wrapper on top of [semantic-release](https://semantic-release.gitbook.io/semantic-release/) that extends `semantic-release` to work for monorepos.
+We use [multi-semantic-release](https://github.com/qiwi/multi-semantic-release) to automate release of the many (sometimes interdependent) plugins in this repo. It is a wrapper on top of [semantic-release](https://semantic-release.gitbook.io/semantic-release/) that extends `semantic-release` to work for monorepos.
 
 ### `package.json` versions
 
