@@ -33,7 +33,7 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "4.0.0-alpha.61",
     "@mui/material": "^5.14.20",
-    "@seatgeek/backstage-plugin-awards-common": "0.0.0-semantically-released",
+    "@seatgeek/backstage-plugin-awards-common": "link:*",
     "lodash": "^4.17.21",
     "react-use": "^17.2.4"
   },
