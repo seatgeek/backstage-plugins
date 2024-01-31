@@ -1,6 +1,6 @@
-# @seatgeek/plugin-awards-backend
+# @seatgeek/backstage-plugin-awards-backend
 
-[![npm latest version](https://img.shields.io/npm/v/@seatgeek/plugin-awards-backend/latest.svg)](https://www.npmjs.com/package/@seatgeek/plugin-awards-backend)
+[![npm latest version](https://img.shields.io/npm/v/@seatgeek/backstage-plugin-awards-backend/latest.svg)](https://www.npmjs.com/package/@seatgeek/backstage-plugin-awards-backend)
 
 Welcome to the backend package for awards plugin!
 
@@ -12,18 +12,18 @@ Currently we support only `SQLite` and `PostgreSQL` databases.
 
 ## Installation
 
-Install the @seatgeek/plugin-awards-backend package in your backend package:
+Install the @seatgeek/backstage-plugin-awards-backend package in your backend package:
 
 ```shell
 # From your Backstage root directory
-yarn add --cwd packages/backend @seatgeek/plugin-awards-backend
+yarn add --cwd packages/backend @seatgeek/backstage-plugin-awards-backend
 ```
 
 Then create a plugin entry inside `packages/src/plugins/awards.ts` in your
 Backstage root with the following content:
 
 ```typescript
-import { createRouter } from '@seatgeek/plugin-awards-backend';
+import { createRouter } from '@seatgeek/backstage-plugin-awards-backend';
 import { Router } from 'express';
 import { PluginEnvironment } from '../types';
 

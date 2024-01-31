@@ -4,7 +4,7 @@
  */
 import { DatabaseManager } from '@backstage/backend-common';
 import { ConfigReader } from '@backstage/config';
-import { Award } from '@seatgeek/plugin-awards-common';
+import { Award } from '@seatgeek/backstage-plugin-awards-common';
 import { Knex } from 'knex';
 import { v4 as uuid } from 'uuid';
 import { DatabaseAwardsStore } from './awards';

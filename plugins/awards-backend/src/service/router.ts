@@ -5,7 +5,7 @@
 import { PluginDatabaseManager, errorHandler } from '@backstage/backend-common';
 import { AuthenticationError, NotFoundError } from '@backstage/errors';
 import { IdentityApi } from '@backstage/plugin-auth-node';
-import { Award } from '@seatgeek/plugin-awards-common';
+import { Award } from '@seatgeek/backstage-plugin-awards-common';
 import express from 'express';
 import Router from 'express-promise-router';
 import { Logger } from 'winston';

@@ -1,4 +1,4 @@
-import { createRouter } from '@seatgeek/plugin-awards-backend';
+import { createRouter } from '@seatgeek/backstage-plugin-awards-backend';
 import { Router } from 'express';
 import { PluginEnvironment } from '../types';
 

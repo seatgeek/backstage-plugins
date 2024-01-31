@@ -36,7 +36,7 @@ import {
 import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/alpha';
 import { CatalogGraphPage } from '@backstage/plugin-catalog-graph';
 import { RequirePermission } from '@backstage/plugin-permission-react';
-import { AwardsPage } from '@seatgeek/plugin-awards';
+import { AwardsPage } from '@seatgeek/backstage-plugin-awards';
 
 const app = createApp({
   apis,

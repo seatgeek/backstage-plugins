@@ -11,7 +11,7 @@ import {
 } from '@backstage/core-components';
 import { identityApiRef, useApi } from '@backstage/core-plugin-api';
 import { Box } from '@material-ui/core';
-import { Award } from '@seatgeek/plugin-awards-common';
+import { Award } from '@seatgeek/backstage-plugin-awards-common';
 import { isEmpty } from 'lodash';
 import React from 'react';
 import useAsync from 'react-use/lib/useAsync';

@@ -1,6 +1,6 @@
-# @seatgeek/plugin-awards-common
+# @seatgeek/backstage-plugin-awards-common
 
-[![npm latest version](https://img.shields.io/npm/v/@seatgeek/plugin-awards-common/latest.svg)](https://www.npmjs.com/package/@seatgeek/plugin-awards-common)
+[![npm latest version](https://img.shields.io/npm/v/@seatgeek/backstage-plugin-awards-common/latest.svg)](https://www.npmjs.com/package/@seatgeek/backstage-plugin-awards-common)
 
 Welcome to the common package for awards plugin!
 
