@@ -41,8 +41,8 @@ import {
 } from '@backstage/plugin-org';
 import { EntityTechdocsContent } from '@backstage/plugin-techdocs';
 import { Button, Grid } from '@material-ui/core';
-import { UserAwardsCard } from '@seatgeek/plugin-awards';
-import { EntityScaffolderContent } from '@seatgeek/plugin-entity-scaffolder-content';
+import { UserAwardsCard } from '@seatgeek/backstage-plugin-awards';
+import { EntityScaffolderContent } from '@seatgeek/backstage-plugin-entity-scaffolder-content';
 import React from 'react';
 
 import { ReportIssue } from '@backstage/plugin-techdocs-module-addons-contrib';

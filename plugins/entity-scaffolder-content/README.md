@@ -1,6 +1,6 @@
-# @seatgeek/plugin-entity-scaffolder-content
+# @seatgeek/backstage-plugin-entity-scaffolder-content
 
-[![npm latest version](https://img.shields.io/npm/v/@seatgeek/plugin-entity-scaffolder-content/latest.svg)](https://www.npmjs.com/package/@seatgeek/plugin-entity-scaffolder-content)
+[![npm latest version](https://img.shields.io/npm/v/@seatgeek/backstage-plugin-entity-scaffolder-content/latest.svg)](https://www.npmjs.com/package/@seatgeek/backstage-plugin-entity-scaffolder-content)
 
 This plugin offers the ability to run Software Templates from within an entity's EntityPage. Templates, once selected, can be autopopulated with data from the Entity. For example, if I am on the EntityPage for `system:default/tickets` and I select a template for creating a new Postgres database, I can autopopulate that template's `system:` field to `system:default/tickets`.
 
@@ -14,17 +14,17 @@ This plugin addresses https://github.com/backstage/backstage/issues/16053 and bu
 
 ### Install the package
 
-Install the `@seatgeek/plugin-entity-scaffolder-content` package in your frontend app package:
+Install the `@seatgeek/backstage-plugin-entity-scaffolder-content` package in your frontend app package:
 
 ```shell
 # From your Backstage root directory
-yarn add --cwd packages/app @seatgeek/plugin-entity-scaffolder-content
+yarn add --cwd packages/app @seatgeek/backstage-plugin-entity-scaffolder-content
 ```
 
 ### Add the plugin to your `EntityPage`
 
 ```tsx
-import { EntityScaffolderContent } from '@seatgeek/plugin-entity-scaffolder-content';
+import { EntityScaffolderContent } from '@seatgeek/backstage-plugin-entity-scaffolder-content';
 
 const systemPage = (
   <EntityLayout>

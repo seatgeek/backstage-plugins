@@ -1,5 +1,5 @@
 {
-  "name": "@seatgeek/plugin-awards-common",
+  "name": "@seatgeek/backstage-plugin-awards-common",
   "version": "0.0.0-semantically-released",
   "main": "src/index.ts",
   "types": "src/index.ts",

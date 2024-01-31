@@ -9,7 +9,7 @@ import {
 } from '@backstage/core-components';
 import { useApi } from '@backstage/core-plugin-api';
 import { Grid, Typography } from '@material-ui/core';
-import { Award } from '@seatgeek/plugin-awards-common';
+import { Award } from '@seatgeek/backstage-plugin-awards-common';
 import React from 'react';
 import useAsync from 'react-use/lib/useAsync';
 import { awardsApiRef } from '../../api';

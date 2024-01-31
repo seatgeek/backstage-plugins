@@ -1,6 +1,6 @@
-# @seatgeek/plugin-awards
+# @seatgeek/backstage-plugin-awards
 
-[![npm latest version](https://img.shields.io/npm/v/@seatgeek/plugin-awards/latest.svg)](https://www.npmjs.com/package/@seatgeek/plugin-awards)
+[![npm latest version](https://img.shields.io/npm/v/@seatgeek/backstage-plugin-awards/latest.svg)](https://www.npmjs.com/package/@seatgeek/backstage-plugin-awards)
 
 This plugin offers a management system for awards that can be created and given
 to recipients in your Backstage deployment, and then displayed onto their
@@ -8,7 +8,7 @@ Entity profile pages.
 
 The plugin offers a set of Page Components and an Information card to achieve
 this. It also requires the installation of its dependency
-`@seatgeek/plugin-awards-backend`.
+`@seatgeek/backstage-plugin-awards-backend`.
 
 Both the backend and the frontend rely on
 [Backstage authentication](https://backstage.io/docs/auth/) in order to enforce
@@ -19,11 +19,11 @@ before attempting to use this plugin!
 
 ### Install the package
 
-Install the `@seatgeek/plugin-awards` package in your frontend app package:
+Install the `@seatgeek/backstage-plugin-awards` package in your frontend app package:
 
 ```shell
 # From your Backstage root directory
-yarn add --cwd packages/app @seatgeek/plugin-awards
+yarn add --cwd packages/app @seatgeek/backstage-plugin-awards
 ```
 
 ### Add routes for the plugin management pages
@@ -33,7 +33,7 @@ the following lines:
 
 ```tsx
 // other imports
-import { AwardsPage } from '@seatgeek/plugin-awards';
+import { AwardsPage } from '@seatgeek/backstage-plugin-awards';
 
 // Add the routes for the plugin pages before the <FlatRoutes> block is closed.
 <FlatRoutes>
@@ -50,7 +50,7 @@ Inside the file `packages/app/src/components/catalog/EntityPage.tsx` file in
 your Backstage deployment, add the following items:
 
 ```tsx
-import { UserAwardsCard } from '@seatgeek/plugin-awards';
+import { UserAwardsCard } from '@seatgeek/backstage-plugin-awards';
 
 // Look for the const userPage and add the card to the Grid
 const userPage = (

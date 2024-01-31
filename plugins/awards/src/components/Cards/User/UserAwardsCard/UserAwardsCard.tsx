@@ -16,7 +16,7 @@ import { awardsApiRef } from '../../../../api';
 
 import { stringifyEntityRef } from '@backstage/catalog-model';
 import { useEntity } from '@backstage/plugin-catalog-react';
-import { Award } from '@seatgeek/plugin-awards-common';
+import { Award } from '@seatgeek/backstage-plugin-awards-common';
 
 // For a reference, check https://github.com/backstage/backstage/blob/77a7ef3fa500fcfb80bee21f971eee682a955655/plugins/org/src/components/Cards/User/UserProfileCard/UserProfileCard.tsx
 /** @public */

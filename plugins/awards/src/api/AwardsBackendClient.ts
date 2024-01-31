@@ -3,7 +3,7 @@
  * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
  */
 import { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
-import { Award } from '@seatgeek/plugin-awards-common';
+import { Award } from '@seatgeek/backstage-plugin-awards-common';
 import { AwardsApi } from './types';
 
 export class AwardsBackendApi implements AwardsApi {
