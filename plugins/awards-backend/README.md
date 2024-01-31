@@ -1,5 +1,7 @@
 # @seatgeek/plugin-awards-backend
 
+[![npm latest version](https://img.shields.io/npm/v/@seatgeek/plugin-awards-backend/latest.svg)](https://www.npmjs.com/package/@seatgeek/plugin-awards-backend)
+
 Welcome to the backend package for awards plugin!
 
 This plugin relies on [Backstage authentication](https://backstage.io/docs/auth/)

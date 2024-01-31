@@ -1,5 +1,7 @@
 # @seatgeek/plugin-entity-scaffolder-content
 
+[![npm latest version](https://img.shields.io/npm/v/@seatgeek/plugin-entity-scaffolder-content/latest.svg)](https://www.npmjs.com/package/@seatgeek/plugin-entity-scaffolder-content)
+
 This plugin offers the ability to run Software Templates from within an entity's EntityPage. Templates, once selected, can be autopopulated with data from the Entity. For example, if I am on the EntityPage for `system:default/tickets` and I select a template for creating a new Postgres database, I can autopopulate that template's `system:` field to `system:default/tickets`.
 
 ![Template groups visible on an EntityPage](screenshot-groups.png)

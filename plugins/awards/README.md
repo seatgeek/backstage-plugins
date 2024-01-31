@@ -1,5 +1,7 @@
 # @seatgeek/plugin-awards
 
+[![npm latest version](https://img.shields.io/npm/v/@seatgeek/plugin-awards/latest.svg)](https://www.npmjs.com/package/@seatgeek/plugin-awards)
+
 This plugin offers a management system for awards that can be created and given
 to recipients in your Backstage deployment, and then displayed onto their
 Entity profile pages.

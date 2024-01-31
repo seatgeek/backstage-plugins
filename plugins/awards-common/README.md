@@ -1,5 +1,7 @@
 # @seatgeek/plugin-awards-common
 
+[![npm latest version](https://img.shields.io/npm/v/@seatgeek/plugin-awards-common/latest.svg)](https://www.npmjs.com/package/@seatgeek/plugin-awards-common)
+
 Welcome to the common package for awards plugin!
 
 This common package provides shared types and utility functions used by the
