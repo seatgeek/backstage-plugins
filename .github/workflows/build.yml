@@ -7,6 +7,13 @@ on:
     branches:
       - main
 jobs:
+  check-copyright-header:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: scripts/add-copyrights.sh
+      - name: Check for changes
+        run: git diff --name-only --exit-code || (echo "Run scripts/add-copyrights.sh locally" && exit 1)
   lint:
     runs-on: ubuntu-latest
     strategy:
