@@ -11,11 +11,8 @@ import { ConfigReader } from '@backstage/config';
 import { EntityProviderConnection } from '@backstage/plugin-catalog-node';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
-import {
-  DBInstanceFilter,
-  DBInstanceTransformer,
-  RDSEntityProvider,
-} from './RDSEntityProvider';
+import { InstanceTransformer } from './BaseEntityProvider';
+import { RDSDBInstance, RDSEntityProvider } from './RDSEntityProvider';
 
 class PersistingTaskRunner implements TaskRunner {
   private tasks: TaskInvocationDefinition[] = [];
@@ -34,7 +31,7 @@ const logger = getVoidLogger();
 
 const server = setupServer();
 
-const simpleRDSTransformer: DBInstanceTransformer = (
+const simpleRDSTransformer: InstanceTransformer<RDSDBInstance> = (
   db: DBInstance,
 ): Promise<ResourceEntity> => {
   return Promise.resolve({
@@ -60,7 +57,7 @@ describe('RDSEntityProvider', () => {
     const providers = RDSEntityProvider.fromConfig(config, {
       logger,
       schedule,
-      dbInstanceTransformer: simpleRDSTransformer,
+      transformer: simpleRDSTransformer,
     });
 
     expect(providers).toHaveLength(0);
@@ -87,7 +84,7 @@ describe('RDSEntityProvider', () => {
     const providers = RDSEntityProvider.fromConfig(config, {
       logger,
       schedule,
-      dbInstanceTransformer: simpleRDSTransformer,
+      transformer: simpleRDSTransformer,
     });
 
     expect(providers).toHaveLength(1);
@@ -123,7 +120,7 @@ describe('RDSEntityProvider', () => {
     const providers = RDSEntityProvider.fromConfig(config, {
       logger,
       schedule,
-      dbInstanceTransformer: simpleRDSTransformer,
+      transformer: simpleRDSTransformer,
     });
 
     expect(providers).toHaveLength(2);
@@ -154,7 +151,7 @@ describe('RDSEntityProvider', () => {
       RDSEntityProvider.fromConfig(config, {
         logger,
         schedule,
-        dbInstanceTransformer: simpleRDSTransformer,
+        transformer: simpleRDSTransformer,
       }),
     ).toThrow(
       "Missing required config value at 'catalog.providers.aws.my-aws.region",
@@ -183,15 +180,12 @@ describe('RDSEntityProvider', () => {
         },
       },
     });
-    const filter: DBInstanceFilter = (db: DBInstance) => {
-      return db.DBInstanceIdentifier !== 'excluded';
-    };
 
     const provider = RDSEntityProvider.fromConfig(config, {
       logger,
       schedule,
-      dbInstanceTransformer: simpleRDSTransformer,
-      dbInstanceFilter: filter,
+      transformer: simpleRDSTransformer,
+      filter: (db: DBInstance) => db.DBInstanceIdentifier !== 'excluded',
     })[0];
 
     server.use(
