@@ -23,7 +23,7 @@ import {
   paginateDescribeDBInstances,
 } from '@aws-sdk/client-rds';
 import { AwsCredentialIdentity } from '@aws-sdk/types';
-import { arn } from '@internal/plugin-aws-catalog-common';
+import { arn } from '@seatgeek/backstage-plugin-aws-catalog-common';
 
 /**
  * A db instance from the AWS SDK.
