@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: scripts/add-copyright.sh
+      - run: scripts/add-copyrights.sh
       - name: Check for changes
         run: git diff --exit-code
   lint:
