@@ -2,20 +2,20 @@
  * Copyright SeatGeek
  * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
  */
+import { DBInstance } from '@aws-sdk/client-rds';
 import { getVoidLogger } from '@backstage/backend-common';
 import { TaskInvocationDefinition, TaskRunner } from '@backstage/backend-tasks';
 import { setupRequestMockHandlers } from '@backstage/backend-test-utils';
 import { ResourceEntity } from '@backstage/catalog-model';
 import { ConfigReader } from '@backstage/config';
 import { EntityProviderConnection } from '@backstage/plugin-catalog-node';
+import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 import {
   DBInstanceFilter,
   DBInstanceTransformer,
   RDSEntityProvider,
 } from './RDSEntityProvider';
-import { DBInstance } from '@aws-sdk/client-rds';
-import { rest } from 'msw';
-import { setupServer } from 'msw/node';
 
 class PersistingTaskRunner implements TaskRunner {
   private tasks: TaskInvocationDefinition[] = [];

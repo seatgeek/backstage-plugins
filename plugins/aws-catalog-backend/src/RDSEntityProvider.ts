@@ -2,6 +2,13 @@
  * Copyright SeatGeek
  * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
  */
+import {
+  DBInstance,
+  DescribeDBInstancesCommandInput,
+  RDSClient,
+  paginateDescribeDBInstances,
+} from '@aws-sdk/client-rds';
+import { AwsCredentialIdentity } from '@aws-sdk/types';
 import { TaskRunner } from '@backstage/backend-tasks';
 import {
   ANNOTATION_LOCATION,
@@ -13,17 +20,10 @@ import {
   EntityProvider,
   EntityProviderConnection,
 } from '@backstage/plugin-catalog-node';
+import { arn } from '@seatgeek/backstage-plugin-aws-catalog-common';
 import { merge } from 'lodash';
 import * as uuid from 'uuid';
 import { Logger } from 'winston';
-import {
-  RDSClient,
-  DBInstance,
-  DescribeDBInstancesCommandInput,
-  paginateDescribeDBInstances,
-} from '@aws-sdk/client-rds';
-import { AwsCredentialIdentity } from '@aws-sdk/types';
-import { arn } from '@seatgeek/backstage-plugin-aws-catalog-common';
 
 /**
  * A db instance from the AWS SDK.

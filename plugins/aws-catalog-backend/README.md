@@ -60,7 +60,7 @@ export default async function createPlugin(
         },
         spec: {
           type: 'rds',
-          owner: 'somebody'
+          owner: 'somebody',
         },
       }),
       // optional filter to limit which entities are ingested
