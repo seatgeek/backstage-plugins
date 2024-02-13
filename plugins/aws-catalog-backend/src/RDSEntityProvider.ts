@@ -17,6 +17,7 @@ import {
   InstanceFilter,
   InstanceTransformer,
 } from './BaseEntityProvider';
+import { PROVIDER_CONFIG_KEY } from './config';
 
 /**
  * A db instance from the AWS SDK.
@@ -48,10 +49,10 @@ export class RDSEntityProvider extends BaseEntityProvider<RDSDBInstance> {
       commandInput?: RDSDescribeDBInstancesCommandInput;
     },
   ): RDSEntityProvider[] {
-    const awsConfig = config.getOptionalConfig('catalog.providers.aws');
+    const awsConfig = config.getOptionalConfig(PROVIDER_CONFIG_KEY);
     if (!awsConfig) {
       options.logger.warn(
-        "RDSEntityProvider will not be created as 'catalog.providers.aws' key is missing in configuration.",
+        `RDSEntityProvider will not be created as '${PROVIDER_CONFIG_KEY}' key is missing in configuration.`,
       );
       return [];
     }
