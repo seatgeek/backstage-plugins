@@ -24,7 +24,7 @@ export abstract class BaseEntityProvider<T> implements EntityProvider {
   protected readonly logger: Logger;
   private readonly scheduleFn: () => Promise<void>;
   private connection?: EntityProviderConnection;
-  protected id?: string;
+  private readonly id?: string;
 
   private readonly transformer: InstanceTransformer<T>;
   private readonly filter: InstanceFilter<T>;
