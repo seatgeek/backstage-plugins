@@ -8,7 +8,6 @@ import {
   RDSClient,
   paginateDescribeDBInstances,
 } from '@aws-sdk/client-rds';
-import { AwsCredentialIdentity } from '@aws-sdk/types';
 import { TaskRunner } from '@backstage/backend-tasks';
 import { Config } from '@backstage/config';
 import { Logger } from 'winston';
@@ -17,7 +16,7 @@ import {
   InstanceFilter,
   InstanceTransformer,
 } from './BaseEntityProvider';
-import { PROVIDER_CONFIG_KEY } from './config';
+import { PROVIDER_CONFIG_KEY, getProviderConfigs } from './config';
 
 /**
  * A db instance from the AWS SDK.
@@ -49,37 +48,28 @@ export class RDSEntityProvider extends BaseEntityProvider<RDSDBInstance> {
       commandInput?: RDSDescribeDBInstancesCommandInput;
     },
   ): RDSEntityProvider[] {
-    const awsConfig = config.getOptionalConfig(PROVIDER_CONFIG_KEY);
-    if (!awsConfig) {
+    const providersConfigs = getProviderConfigs(config);
+    const providers = Object.entries(providersConfigs).map(
+      ([id, { region, credentials }]) => {
+        const client = new RDSClient({ region, credentials });
+
+        return new RDSEntityProvider({
+          ...options,
+          id,
+          client,
+          taskRunner: options.schedule,
+          commandInput: options.commandInput,
+        });
+      },
+    );
+
+    if (providers.length === 0) {
       options.logger.warn(
         `RDSEntityProvider will not be created as '${PROVIDER_CONFIG_KEY}' key is missing in configuration.`,
       );
-      return [];
     }
-    return awsConfig.keys().map(key => {
-      const individalConfig = awsConfig.getConfig(key);
-      const region = individalConfig.getString('region');
-      const accessKeyId = individalConfig.getOptionalString('accessKeyId');
-      const sessionToken = individalConfig.getOptionalString('sessionToken');
-      const secretAccessKey =
-        individalConfig.getOptionalString('secretAccessKey');
-      let credentials: AwsCredentialIdentity | undefined = undefined;
-      if (accessKeyId && secretAccessKey) {
-        credentials = {
-          accessKeyId,
-          secretAccessKey,
-          sessionToken,
-        };
-      }
 
-      return new RDSEntityProvider({
-        ...options,
-        id: key,
-        client: new RDSClient({ region, credentials }),
-        taskRunner: options.schedule,
-        commandInput: options.commandInput,
-      });
-    });
+    return providers;
   }
 
   private constructor(options: {
