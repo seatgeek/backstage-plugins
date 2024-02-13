@@ -19,9 +19,8 @@ class PersistingTaskRunner implements TaskRunner {
     return this.tasks;
   }
 
-  run(task: TaskInvocationDefinition): Promise<void> {
+  async run(task: TaskInvocationDefinition): Promise<void> {
     this.tasks.push(task);
-    return Promise.resolve(undefined);
   }
 }
 
@@ -66,8 +65,8 @@ class TestableEntityProvider extends BaseEntityProvider<SomeInstance> {
     return `arn:aws:whatever:us-east-1:0123456789:${resource.name}`;
   }
 
-  protected getInstances(): Promise<SomeInstance[]> {
-    return Promise.resolve([{ name: 'foo' }, { name: 'bar' }, { name: 'baz' }]);
+  protected async getInstances(): Promise<SomeInstance[]> {
+    return [{ name: 'foo' }, { name: 'bar' }, { name: 'baz' }];
   }
 }
 
