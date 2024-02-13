@@ -29,7 +29,7 @@ export abstract class BaseEntityProvider<T> implements EntityProvider {
   private readonly transformer: InstanceTransformer<T>;
   private readonly filter: InstanceFilter<T>;
 
-  constructor(options: {
+  protected constructor(options: {
     id?: string;
     logger: Logger;
     taskRunner: TaskRunner;
