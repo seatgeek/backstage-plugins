@@ -1,6 +1,6 @@
 # @seatgeek/backstage-plugin-aws-catalog-backend
 
-This plugin offers the ability to ingest certain resources from [AWS](https://aws.amazon.com/) into the Backstage catalog.
+This plugin offers the ability to ingest certain types of resources from [AWS](https://aws.amazon.com/) into the Backstage catalog.
 
 [![npm latest version](https://img.shields.io/npm/v/@seatgeek/backstage-plugin-aws-catalog-backend/latest.svg)](https://www.npmjs.com/package/@seatgeek/backstage-plugin-aws-catalog-backend)
 
