@@ -47,6 +47,13 @@ const simpleRDSTransformer: InstanceTransformer<RDSDBInstance> = (
   });
 };
 
+// Example values from https://docs.aws.amazon.com/sdkref/latest/guide/feature-static-credentials.html
+const EXAMPLE_CREDENTIALS = {
+  accessKeyId: 'AKIAIOSFODNN7EXAMPLE',
+  secretAccessKey: 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
+  sessionToken: 'AQoEXAMPLEH4aoAH0gNCAPyzrkuWJOgQs8IZZaIv2BXIa2R4Olgk',
+};
+
 describe('RDSEntityProvider', () => {
   setupRequestMockHandlers(server);
   afterEach(() => jest.resetAllMocks());
@@ -71,11 +78,7 @@ describe('RDSEntityProvider', () => {
           aws: {
             'my-aws': {
               region: 'us-east-1',
-              // Sample values from https://docs.aws.amazon.com/sdkref/latest/guide/feature-static-credentials.html
-              accessKeyId: 'AKIAIOSFODNN7EXAMPLE',
-              secretAccessKey: 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
-              sessionToken:
-                'AQoEXAMPLEH4aoAH0gNCAPyzrkuWJOgQs8IZZaIv2BXIa2R4Olgk',
+              ...EXAMPLE_CREDENTIALS,
             },
           },
         },
@@ -99,19 +102,11 @@ describe('RDSEntityProvider', () => {
           aws: {
             'my-aws': {
               region: 'us-east-1',
-              // Sample values from https://docs.aws.amazon.com/sdkref/latest/guide/feature-static-credentials.html
-              accessKeyId: 'AKIAIOSFODNN7EXAMPLE',
-              secretAccessKey: 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
-              sessionToken:
-                'AQoEXAMPLEH4aoAH0gNCAPyzrkuWJOgQs8IZZaIv2BXIa2R4Olgk',
+              ...EXAMPLE_CREDENTIALS,
             },
             'other-aws': {
               region: 'us-west-2',
-              // Sample values from https://docs.aws.amazon.com/sdkref/latest/guide/feature-static-credentials.html
-              accessKeyId: 'AKIAIOSFODNN7EXAMPLE',
-              secretAccessKey: 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
-              sessionToken:
-                'AQoEXAMPLEH4aoAH0gNCAPyzrkuWJOgQs8IZZaIv2BXIa2R4Olgk',
+              ...EXAMPLE_CREDENTIALS,
             },
           },
         },
@@ -137,11 +132,7 @@ describe('RDSEntityProvider', () => {
         providers: {
           aws: {
             'my-aws': {
-              // Sample values from https://docs.aws.amazon.com/sdkref/latest/guide/feature-static-credentials.html
-              accessKeyId: 'AKIAIOSFODNN7EXAMPLE',
-              secretAccessKey: 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
-              sessionToken:
-                'AQoEXAMPLEH4aoAH0gNCAPyzrkuWJOgQs8IZZaIv2BXIa2R4Olgk',
+              ...EXAMPLE_CREDENTIALS,
             },
           },
         },
@@ -170,11 +161,7 @@ describe('RDSEntityProvider', () => {
           aws: {
             'my-aws': {
               region: 'us-east-1',
-              // Sample values from https://docs.aws.amazon.com/sdkref/latest/guide/feature-static-credentials.html
-              accessKeyId: 'AKIAIOSFODNN7EXAMPLE',
-              secretAccessKey: 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
-              sessionToken:
-                'AQoEXAMPLEH4aoAH0gNCAPyzrkuWJOgQs8IZZaIv2BXIa2R4Olgk',
+              ...EXAMPLE_CREDENTIALS,
             },
           },
         },
