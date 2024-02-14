@@ -12,6 +12,8 @@ This SeatGeek Backstage Plugins Collection offers the following plugins:
   - [plugins/catalog-backend-module-okta](plugins/catalog-backend-module-okta)
 - **Slack Catalog**: the Slack Catalog Plugin offers catalog integrations with the Slack API.
   - [plugins/slack-catalog-backend](plugins/slack-catalog-backend/)
+- **AWS Catalog**: the AWS Catalog Plugin offers catalog integrations with the AWS API.
+  - [plugins/aws-catalog-backend](plugins/aws-catalog-backend)
 
 Each of the plugins contain instructions for installation and development within
 their respective locations.
