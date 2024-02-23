@@ -75,7 +75,7 @@ export class SlackNotificationsGateway implements NotificationsGateway {
           type: 'header',
           text: {
             type: 'plain_text',
-            text: `:trophy: Woohoo! The following users have received the ${award.name} Award :trophy:`,
+            text: `:trophy: The following users have received the ${award.name} Award :trophy:`,
             emoji: true,
           },
         },
