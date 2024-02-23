@@ -6,13 +6,16 @@ import { NotFoundError } from '@backstage/errors';
 import { Award, AwardInput } from '@seatgeek/backstage-plugin-awards-common';
 import { Logger } from 'winston';
 import { AwardsStore } from './database/awards';
+import { NotificationsGateway } from './notifications/notifications';
 
 export class Awards {
   private readonly db: AwardsStore;
   private readonly logger: Logger;
+  private readonly notifications: NotificationsGateway;
 
-  constructor(db: AwardsStore, logger: Logger) {
+  constructor(db: AwardsStore, notifications: NotificationsGateway, logger: Logger) {
     this.db = db;
+    this. notifications = notifications;
     this.logger = logger.child({ class: 'Awards' });
     this.logger.debug('Constructed');
   }
@@ -29,6 +32,11 @@ export class Awards {
       input.owners,
       input.recipients,
     );
+  }
+
+  private async afterUpdate(identityRef: string, curr: Award, previous: Award): Promise<void> {
+    const newRecipients = curr.recipients.filter(recipient => !previous.recipients.includes(recipient));
+    await this.notifications.notifyNewRecipientsAdded(identityRef, curr, newRecipients);
   }
 
   async update(
@@ -50,6 +58,10 @@ export class Awards {
       input.owners,
       input.recipients,
     );
+
+    this.afterUpdate(identityRef, updated, award).catch(e => {
+      this.logger.error('Error running afterUpdate action', e);
+    });
 
     return updated;
   }
