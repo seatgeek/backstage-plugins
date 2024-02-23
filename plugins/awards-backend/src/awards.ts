@@ -36,7 +36,9 @@ export class Awards {
 
   private async afterUpdate(identityRef: string, curr: Award, previous: Award): Promise<void> {
     const newRecipients = curr.recipients.filter(recipient => !previous.recipients.includes(recipient));
-    await this.notifications.notifyNewRecipientsAdded(identityRef, curr, newRecipients);
+    if (newRecipients.length > 0) {
+      await this.notifications.notifyNewRecipientsAdded(identityRef, curr, newRecipients);
+    }
   }
 
   async update(
