@@ -1,3 +1,10 @@
+import { TokenManager } from '@backstage/backend-common';
+import {
+  CatalogClient,
+  CatalogRequestOptions,
+  GetEntitiesByRefsRequest,
+} from '@backstage/catalog-client';
+import { UserEntity } from '@backstage/catalog-model';
 import { Award } from '@seatgeek/backstage-plugin-awards-common';
 import * as winston from 'winston';
 import { Awards } from './awards';
@@ -17,9 +24,22 @@ function makeAward(): Award {
   };
 }
 
+function makeUser(ref: string): UserEntity {
+  return {
+    apiVersion: 'backstage.io/v1alpha1',
+    kind: 'User',
+    metadata: {
+      name: ref,
+    },
+    spec: {},
+  };
+}
+
 describe('Awards', () => {
   let db: jest.Mocked<AwardsStore>;
   let notifications: jest.Mocked<NotificationsGateway>;
+  let catalogClient: jest.Mocked<CatalogClient>;
+  let tokenManager: jest.Mocked<TokenManager>;
   let awards: Awards;
 
   beforeEach(() => {
@@ -32,11 +52,31 @@ describe('Awards', () => {
     notifications = {
       notifyNewRecipientsAdded: jest.fn(),
     };
+    tokenManager = {
+      authenticate: jest.fn(),
+      getToken: jest.fn().mockReturnValue({ token: 'mocked-token' }),
+    };
+    catalogClient = {
+      getEntitiesByRefs: jest
+        .fn()
+        .mockImplementation(
+          async (
+            request: GetEntitiesByRefsRequest,
+            options?: CatalogRequestOptions,
+          ) => {
+            return {
+              items: request.entityRefs.map(makeUser),
+            };
+          },
+        ),
+    } as unknown as jest.Mocked<CatalogClient>;
     const logger = winston.createLogger({
       transports: [new winston.transports.Console({ silent: true })],
     });
-    awards = new Awards(db, notifications, logger);
+    awards = new Awards(db, notifications, catalogClient, tokenManager, logger);
+  });
 
+  afterEach(() => {
     jest.resetAllMocks();
   });
 
@@ -55,6 +95,9 @@ describe('Awards', () => {
       db.update = jest.fn().mockResolvedValue(updated);
       const result = await awards.update(frank, award.uid, updated);
 
+      // wait for the afterUpdate promises to complete
+      await new Promise(process.nextTick);
+
       expect(result).toEqual(updated);
       expect(db.update).toHaveBeenCalledWith(
         updated.uid,
@@ -67,7 +110,10 @@ describe('Awards', () => {
       expect(notifications.notifyNewRecipientsAdded).toHaveBeenCalledWith(
         frank,
         updated,
-        ['user:default/megan-rapinoe', 'user:default/adrianne-lenker'],
+        [
+          makeUser('user:default/megan-rapinoe'),
+          makeUser('user:default/adrianne-lenker'),
+        ],
       );
     });
   });
