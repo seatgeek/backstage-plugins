@@ -37,4 +37,20 @@ export class Awards {
 
     return updated;
   }
+
+  async delete(identityRef: string, uid: string): Promise<boolean> {
+    const res = await this.db.search(uid, '', [], []);
+
+    if (!res || res.length === 0) {
+      throw new NotFoundError(uid);
+    }
+
+    const award: Award = res[0];
+
+    if (!award.owners.includes(identityRef)) {
+      throw new Error('Unauthorized to delete award');
+    }
+
+    return await this.db.delete(uid);
+  }
 }

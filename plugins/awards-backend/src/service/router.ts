@@ -105,19 +105,9 @@ export async function createRouter(
     const uid = request.params.uid;
     // TODO: validate uuid parameter
 
-    const res = await dbStore.search(uid, '', [], []);
+    const result = await awardsApp.delete(userRef, uid);
 
-    if (!res || res.length === 0) {
-      throw new NotFoundError(uid);
-    }
-
-    const award: Award = res[0];
-
-    if (!award.owners.includes(userRef)) {
-      throw new Error('Unauthorized to delete award');
-    }
-
-    response.json(dbStore.delete(uid));
+    response.json(result);
   });
 
   router.post('/', async (request, response) => {
