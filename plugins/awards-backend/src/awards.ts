@@ -14,13 +14,7 @@ export class Awards {
   }
 
   async update(identityRef: string, uid: string, input: AwardInput): Promise<Award> {
-    const res = await this.db.search(uid, '', [], []);
-
-    if (!res || res.length === 0) {
-      throw new NotFoundError(uid);
-    }
-
-    const award: Award = res[0];
+    const award = await this.getAwardByUid(uid);
 
     if (!award.owners.includes(identityRef)) {
       throw new Error('Unauthorized to update award');
@@ -39,18 +33,22 @@ export class Awards {
   }
 
   async delete(identityRef: string, uid: string): Promise<boolean> {
-    const res = await this.db.search(uid, '', [], []);
-
-    if (!res || res.length === 0) {
-      throw new NotFoundError(uid);
-    }
-
-    const award: Award = res[0];
+    const award = await this.getAwardByUid(uid);
 
     if (!award.owners.includes(identityRef)) {
       throw new Error('Unauthorized to delete award');
     }
 
     return await this.db.delete(uid);
+  }
+
+  private async getAwardByUid(uid: string): Promise<Award> {
+    const res = await this.db.search(uid, '', [], []);
+
+    if (!res || res.length === 0) {
+      throw new NotFoundError(uid);
+    }
+
+    return res[0];
   }
 }
