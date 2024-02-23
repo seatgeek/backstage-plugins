@@ -41,14 +41,46 @@ export class Awards {
     return await this.getAwardByUid(uid);
   }
 
-  async create(input: AwardInput): Promise<Award> {
-    return await this.db.add(
+  private async notifyNewRecipients(
+    identityRef: string,
+    award: Award,
+    newRecipients: string[],
+  ): Promise<void> {
+    const token = await this.tokenManager.getToken();
+    const resp = await this.catalogClient.getEntitiesByRefs(
+      {
+        entityRefs: newRecipients,
+      },
+      token,
+    );
+    const users = resp.items.filter(nonNullable).filter(isUserEntity);
+    await this.notifications.notifyNewRecipientsAdded(
+      identityRef,
+      award,
+      users,
+    );
+  }
+
+  private async afterCreate(identityRef: string, award: Award): Promise<void> {
+    if (award.recipients.length > 0) {
+      await this.notifyNewRecipients(identityRef, award, award.recipients);
+    }
+  }
+
+  async create(identityRef: string, input: AwardInput): Promise<Award> {
+    const award = await this.db.add(
       input.name,
       input.description,
       input.image,
       input.owners,
       input.recipients,
     );
+
+    this.afterCreate(identityRef, award).catch(e => {
+      this.logger.error('Error running afterCreate action', e);
+    });
+
+    return award;
   }
 
   private async afterUpdate(
@@ -61,19 +93,7 @@ export class Awards {
     );
 
     if (newRecipients.length > 0) {
-      const token = await this.tokenManager.getToken();
-      const resp = await this.catalogClient.getEntitiesByRefs(
-        {
-          entityRefs: newRecipients,
-        },
-        token,
-      );
-      const users = resp.items.filter(nonNullable).filter(isUserEntity);
-      await this.notifications.notifyNewRecipientsAdded(
-        identityRef,
-        curr,
-        users,
-      );
+      await this.notifyNewRecipients(identityRef, curr, newRecipients);
     }
   }
 
