@@ -3,12 +3,12 @@
  * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
  */
 import { PluginDatabaseManager, errorHandler } from '@backstage/backend-common';
-import { AuthenticationError, NotFoundError } from '@backstage/errors';
+import { AuthenticationError } from '@backstage/errors';
 import { IdentityApi } from '@backstage/plugin-auth-node';
-import { Award } from '@seatgeek/backstage-plugin-awards-common';
 import express from 'express';
 import Router from 'express-promise-router';
 import { Logger } from 'winston';
+import { Awards } from '../awards';
 import { DatabaseAwardsStore } from '../database/awards';
 
 export interface RouterOptions {
@@ -23,6 +23,7 @@ export async function createRouter(
   const { database, identity, logger } = options;
 
   const dbStore = await DatabaseAwardsStore.create({ database: database });
+  const awardsApp = new Awards(dbStore, logger);
 
   const router = Router();
   router.use(express.json());
@@ -76,13 +77,9 @@ export async function createRouter(
 
     const uid = request.params.uid;
     // TODO: validate uuid parameter
-    const resp = await dbStore.search(uid, '', [], []);
 
-    if (!resp) {
-      throw new NotFoundError(uid);
-    }
-
-    response.json(resp);
+    const award = await awardsApp.get(uid);
+    response.json(award);
   });
 
   router.put('/:uid', async (request, response) => {
@@ -90,30 +87,9 @@ export async function createRouter(
 
     const uid = request.params.uid;
     // TODO: validate uuid parameter
+    // TODO: validate request.body
 
-    const res = await dbStore.search(uid, '', [], []);
-
-    if (!res || res.length === 0) {
-      throw new NotFoundError(uid);
-    }
-
-    const award: Award = res[0];
-
-    if (!award.owners.includes(userRef)) {
-      throw new Error('Unauthorized to update award');
-    }
-
-    logger.debug(request.body);
-    const { name, description, image, owners, recipients } = request.body;
-
-    const upd = await dbStore.update(
-      uid,
-      name,
-      description,
-      image,
-      owners,
-      recipients,
-    );
+    const upd = await awardsApp.update(userRef, uid, request.body);
 
     response.json(upd);
   });
@@ -124,36 +100,18 @@ export async function createRouter(
     const uid = request.params.uid;
     // TODO: validate uuid parameter
 
-    const res = await dbStore.search(uid, '', [], []);
+    const result = await awardsApp.delete(userRef, uid);
 
-    if (!res || res.length === 0) {
-      throw new NotFoundError(uid);
-    }
-
-    const award: Award = res[0];
-
-    if (!award.owners.includes(userRef)) {
-      throw new Error('Unauthorized to delete award');
-    }
-
-    response.json(dbStore.delete(uid));
+    response.json(result);
   });
 
   router.post('/', async (request, response) => {
     // Just to protect the request
     await getUserRef(identity, request);
 
-    const { name, description, image, owners, recipients } = request.body;
+    const award = await awardsApp.create(request.body);
 
-    const resp = await dbStore.add(
-      name,
-      description,
-      image,
-      owners,
-      recipients,
-    );
-
-    response.json(resp);
+    response.json(award);
   });
 
   router.use(errorHandler());

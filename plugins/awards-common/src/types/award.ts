@@ -11,3 +11,5 @@ export interface Award {
   owners: string[];
   recipients: string[];
 }
+
+export type AwardInput = Omit<Award, 'uid'>;
