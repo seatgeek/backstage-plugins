@@ -94,7 +94,7 @@ export async function createRouter(
     // TODO: validate uuid parameter
     // TODO: validate request.body
 
-    const upd = awardsApp.update(userRef, uid, request.body);
+    const upd = await awardsApp.update(userRef, uid, request.body);
 
     response.json(upd);
   });
