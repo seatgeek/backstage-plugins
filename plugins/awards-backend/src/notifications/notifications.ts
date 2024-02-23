@@ -1,3 +1,4 @@
+import { UserEntity } from '@backstage/catalog-model';
 import { Config } from '@backstage/config';
 import { Award } from '@seatgeek/backstage-plugin-awards-common';
 import { IncomingWebhook } from '@slack/webhook';
@@ -9,7 +10,7 @@ export interface NotificationsGateway {
   notifyNewRecipientsAdded(
     identityRef: string,
     award: Award,
-    newRecipients: string[],
+    newRecipients: UserEntity[],
   ): Promise<void>;
 }
 
@@ -17,7 +18,7 @@ export class NullNotificationGateway implements NotificationsGateway {
   async notifyNewRecipientsAdded(
     _: string,
     __: Award,
-    ___: string[],
+    ___: UserEntity[],
   ): Promise<void> {
     return;
   }
@@ -45,22 +46,47 @@ export class SlackNotificationsGateway implements NotificationsGateway {
   }
 
   // todo: this should be in awards-common
-  private viewUrl(award: Award): string {
+  private viewUrl = (award: Award): string => {
     return `${this.backstageBaseUrl}/awards/view/${award.uid}`;
-  }
+  };
+
+  private renderRecipient = (recipient: UserEntity): string => {
+    const namespace = recipient.metadata.namespace || 'default';
+    const url = `${this.backstageBaseUrl}/catalog/${namespace}/${recipient.kind}/${recipient.metadata.name}`;
+    const name = recipient.spec.profile?.displayName || recipient.metadata.name;
+    let rendered = `<${url}|${name}>`;
+    const slackAnnotation =
+      recipient.metadata.annotations?.['slack.com/user_id'];
+    if (slackAnnotation) {
+      rendered += ` (<@${slackAnnotation}>)`;
+    }
+
+    return rendered;
+  };
 
   async notifyNewRecipientsAdded(
     _: string,
     award: Award,
-    newRecipients: string[],
+    newRecipients: UserEntity[],
   ): Promise<void> {
     await this.slack.send({
-      text: `🎉🎉🎉 Woohoo! The following users have received the <${this.viewUrl(
-        award,
-      )}|${award.name}> award! 🎉🎉🎉
-
-${newRecipients.map(recipient => `- ${recipient}`).join('\n')}
-      `,
+      blocks: [
+        {
+          type: 'header',
+          text: {
+            type: 'plain_text',
+            text: `:trophy: Woohoo! The following users have received the ${award.name} Award :trophy:`,
+            emoji: true,
+          },
+        },
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: newRecipients.map(this.renderRecipient).join(', '),
+          },
+        },
+      ],
     });
   }
 }

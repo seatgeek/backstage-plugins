@@ -2,25 +2,38 @@
  * Copyright SeatGeek
  * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
  */
+import { TokenManager } from '@backstage/backend-common';
+import { CatalogClient } from '@backstage/catalog-client';
+import { isUserEntity } from '@backstage/catalog-model';
 import { NotFoundError } from '@backstage/errors';
 import { Award, AwardInput } from '@seatgeek/backstage-plugin-awards-common';
 import { Logger } from 'winston';
 import { AwardsStore } from './database/awards';
 import { NotificationsGateway } from './notifications/notifications';
 
+function nonNullable<T>(value: T): value is NonNullable<T> {
+  return value !== null && value !== undefined;
+}
+
 export class Awards {
   private readonly db: AwardsStore;
   private readonly logger: Logger;
   private readonly notifications: NotificationsGateway;
+  private readonly catalogClient: CatalogClient;
+  private readonly tokenManager: TokenManager;
 
   constructor(
     db: AwardsStore,
     notifications: NotificationsGateway,
+    catalogClient: CatalogClient,
+    tokenManager: TokenManager,
     logger: Logger,
   ) {
     this.db = db;
     this.notifications = notifications;
     this.logger = logger.child({ class: 'Awards' });
+    this.catalogClient = catalogClient;
+    this.tokenManager = tokenManager;
     this.logger.debug('Constructed');
   }
 
@@ -46,11 +59,20 @@ export class Awards {
     const newRecipients = curr.recipients.filter(
       recipient => !previous.recipients.includes(recipient),
     );
+
     if (newRecipients.length > 0) {
+      const token = await this.tokenManager.getToken();
+      const resp = await this.catalogClient.getEntitiesByRefs(
+        {
+          entityRefs: newRecipients,
+        },
+        token,
+      );
+      const users = resp.items.filter(nonNullable).filter(isUserEntity);
       await this.notifications.notifyNewRecipientsAdded(
         identityRef,
         curr,
-        newRecipients,
+        users,
       );
     }
   }

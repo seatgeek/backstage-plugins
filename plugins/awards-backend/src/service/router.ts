@@ -2,7 +2,14 @@
  * Copyright SeatGeek
  * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
  */
-import { PluginDatabaseManager, errorHandler } from '@backstage/backend-common';
+import {
+  PluginDatabaseManager,
+  TokenManager,
+  errorHandler,
+} from '@backstage/backend-common';
+import { DiscoveryService } from '@backstage/backend-plugin-api';
+import { CatalogClient } from '@backstage/catalog-client';
+import { Config } from '@backstage/config';
 import { AuthenticationError } from '@backstage/errors';
 import { IdentityApi } from '@backstage/plugin-auth-node';
 import express from 'express';
@@ -10,8 +17,11 @@ import Router from 'express-promise-router';
 import { Logger } from 'winston';
 import { Awards } from '../awards';
 import { DatabaseAwardsStore } from '../database/awards';
-import { NotificationsGateway, NullNotificationGateway, SlackNotificationsGateway } from '../notifications/notifications';
-import { Config } from '@backstage/config';
+import {
+  NotificationsGateway,
+  NullNotificationGateway,
+  SlackNotificationsGateway,
+} from '../notifications/notifications';
 
 export interface RouterOptions {
   identity: IdentityApi;
@@ -19,11 +29,15 @@ export interface RouterOptions {
   logger: Logger;
   // todo: make required in next breaking change
   config?: Config;
+  discovery: DiscoveryService;
+  tokenManager: TokenManager;
 }
 
-function getNotificationsGateway(config: Config | undefined): NotificationsGateway {
+function getNotificationsGateway(
+  config: Config | undefined,
+): NotificationsGateway {
   if (config) {
-    const slack =  SlackNotificationsGateway.fromConfig(config);
+    const slack = SlackNotificationsGateway.fromConfig(config);
     if (slack) {
       return slack;
     }
@@ -39,9 +53,18 @@ export async function createRouter(
     logger.warn('No config provided, some features will be disabled');
   }
 
+  const catalogClient = new CatalogClient({
+    discoveryApi: options.discovery,
+  });
   const notifications = getNotificationsGateway(config);
   const dbStore = await DatabaseAwardsStore.create({ database: database });
-  const awardsApp = new Awards(dbStore, notifications, logger);
+  const awardsApp = new Awards(
+    dbStore,
+    notifications,
+    catalogClient,
+    options.tokenManager,
+    logger,
+  );
 
   const router = Router();
   router.use(express.json());
