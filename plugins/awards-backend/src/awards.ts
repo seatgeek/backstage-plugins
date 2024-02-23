@@ -13,9 +13,13 @@ export class Awards {
   private readonly logger: Logger;
   private readonly notifications: NotificationsGateway;
 
-  constructor(db: AwardsStore, notifications: NotificationsGateway, logger: Logger) {
+  constructor(
+    db: AwardsStore,
+    notifications: NotificationsGateway,
+    logger: Logger,
+  ) {
     this.db = db;
-    this. notifications = notifications;
+    this.notifications = notifications;
     this.logger = logger.child({ class: 'Awards' });
     this.logger.debug('Constructed');
   }
@@ -34,10 +38,20 @@ export class Awards {
     );
   }
 
-  private async afterUpdate(identityRef: string, curr: Award, previous: Award): Promise<void> {
-    const newRecipients = curr.recipients.filter(recipient => !previous.recipients.includes(recipient));
+  private async afterUpdate(
+    identityRef: string,
+    curr: Award,
+    previous: Award,
+  ): Promise<void> {
+    const newRecipients = curr.recipients.filter(
+      recipient => !previous.recipients.includes(recipient),
+    );
     if (newRecipients.length > 0) {
-      await this.notifications.notifyNewRecipientsAdded(identityRef, curr, newRecipients);
+      await this.notifications.notifyNewRecipientsAdded(
+        identityRef,
+        curr,
+        newRecipients,
+      );
     }
   }
 
