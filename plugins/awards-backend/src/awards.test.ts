@@ -80,6 +80,40 @@ describe('Awards', () => {
     jest.resetAllMocks();
   });
 
+  describe('create', () => {
+    it('should notify new recipients', async () => {
+      const award = makeAward();
+      db.add = jest.fn().mockResolvedValue(award);
+      const result = await awards.create(frank, {
+        name: award.name,
+        description: award.description,
+        image: award.image,
+        owners: award.owners,
+        recipients: award.recipients,
+      });
+
+      // wait for the afterCreate promises to complete
+      await new Promise(process.nextTick);
+
+      expect(result).toEqual(award);
+      expect(db.add).toHaveBeenCalledWith(
+        award.name,
+        award.description,
+        award.image,
+        award.owners,
+        award.recipients,
+      );
+      expect(notifications.notifyNewRecipientsAdded).toHaveBeenCalledWith(
+        frank,
+        award,
+        [
+          makeUser('user:default/peyton-manning'),
+          makeUser('user:default/serena-williams'),
+        ],
+      );
+    });
+  });
+
   describe('update', () => {
     it('should notify new recipients', async () => {
       const award = makeAward();
