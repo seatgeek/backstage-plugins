@@ -147,7 +147,6 @@ export async function createRouter(
   });
 
   router.post('/', async (request, response) => {
-    // Just to protect the request
     const user = await getUserRef(identity, request);
 
     const award = await awardsApp.create(user, request.body);
