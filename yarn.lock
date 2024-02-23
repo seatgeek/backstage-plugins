@@ -7434,7 +7434,7 @@
   dependencies:
     "@types/node" ">=12.0.0"
 
-"@slack/types@^2.11.0":
+"@slack/types@^2.11.0", "@slack/types@^2.9.0":
   version "2.11.0"
   resolved "https://registry.yarnpkg.com/@slack/types/-/types-2.11.0.tgz#948c556081c3db977dfa8433490cc2ff41f47203"
   integrity sha512-UlIrDWvuLaDly3QZhCPnwUSI/KYmV1N9LyhuH6EDKCRS1HWZhyTG3Ja46T3D0rYfqdltKYFXbJSSRPwZpwO0cQ==
@@ -7455,6 +7455,15 @@
     is-stream "^1.1.0"
     p-queue "^6.6.1"
     p-retry "^4.0.0"
+
+"@slack/webhook@^7.0.2":
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/@slack/webhook/-/webhook-7.0.2.tgz#e69d4c8116584fab90e40a1076233de95b737d07"
+  integrity sha512-dsrO/ow6a6+xkLm/lZKbUNTsFJlBc679tD+qwlVTztsQkDxPLH6odM7FKALz1IHa+KpLX8HKUIPV13a7y7z29w==
+  dependencies:
+    "@slack/types" "^2.9.0"
+    "@types/node" ">=18.0.0"
+    axios "^1.6.3"
 
 "@smithy/abort-controller@^1.0.1":
   version "1.1.0"
@@ -9313,6 +9322,13 @@
   dependencies:
     undici-types "~5.26.4"
 
+"@types/node@>=18.0.0":
+  version "20.11.20"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.11.20.tgz#f0a2aee575215149a62784210ad88b3a34843659"
+  integrity sha512-7/rR21OS+fq8IyHTgtLkDK949uzsa6n8BkziAKtPVpugIkO6D+/ooXMvzXxDnZrmtXVfjb1bKQafYpb8s89LOg==
+  dependencies:
+    undici-types "~5.26.4"
+
 "@types/node@^12.7.1":
   version "12.20.55"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-12.20.55.tgz#c329cbd434c42164f846b909bd6f85b5537f6240"
@@ -10692,7 +10708,7 @@ axios@^0.21.1:
   dependencies:
     follow-redirects "^1.14.0"
 
-axios@^1.0.0, axios@^1.4.0, axios@^1.6.0, axios@^1.6.5:
+axios@^1.0.0, axios@^1.4.0, axios@^1.6.0, axios@^1.6.3, axios@^1.6.5:
   version "1.6.7"
   resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.7.tgz#7b48c2e27c96f9c68a2f8f31e2ab19f59b06b0a7"
   integrity sha512-/hDJGff6/c7u0hDkvkGxR/oy6CbCs8ziCsC7SqmhjfozqiJGc8Z11wrv9z9lYfY4K8l+H9TpjcMDX0xOZmx+RA==
