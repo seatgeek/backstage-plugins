@@ -78,13 +78,9 @@ export async function createRouter(
 
     const uid = request.params.uid;
     // TODO: validate uuid parameter
-    const resp = await dbStore.search(uid, '', [], []);
 
-    if (!resp) {
-      throw new NotFoundError(uid);
-    }
-
-    response.json(resp);
+    const award = await awardsApp.get(uid);
+    response.json(award);
   });
 
   router.put('/:uid', async (request, response) => {

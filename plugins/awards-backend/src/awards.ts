@@ -13,6 +13,10 @@ export class Awards {
     this.logger.debug('Constructed');
   }
 
+  async get(uid: string): Promise<Award> {
+    return await this.getAwardByUid(uid);
+  }
+
   async update(identityRef: string, uid: string, input: AwardInput): Promise<Award> {
     const award = await this.getAwardByUid(uid);
 
