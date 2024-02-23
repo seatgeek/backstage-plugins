@@ -25,9 +25,11 @@ export class NullNotificationGateway implements NotificationsGateway {
 
 export class SlackNotificationsGateway implements NotificationsGateway {
   private readonly slack: IncomingWebhook;
+  private readonly backstageBaseUrl: string;
 
-  constructor(slack: IncomingWebhook) {
+  constructor(slack: IncomingWebhook, backstageBaseUrl: string) {
     this.slack = slack;
+    this.backstageBaseUrl = backstageBaseUrl;
   }
 
   static fromConfig(config: Config): SlackNotificationsGateway | null {
@@ -38,7 +40,13 @@ export class SlackNotificationsGateway implements NotificationsGateway {
       return null;
     }
     const slack = new IncomingWebhook(webhookUrl);
-    return new SlackNotificationsGateway(slack);
+    const backstageBaseUrl = config.getString('app.baseUrl');
+    return new SlackNotificationsGateway(slack, backstageBaseUrl);
+  }
+
+  // todo: this should be in awards-common
+  private viewUrl(award: Award): string {
+    return `${this.backstageBaseUrl}/awards/view/${award.uid}`;
   }
 
   async notifyNewRecipientsAdded(
@@ -47,9 +55,9 @@ export class SlackNotificationsGateway implements NotificationsGateway {
     newRecipients: string[],
   ): Promise<void> {
     await this.slack.send({
-      text: `🎉🎉🎉 Woohoo! The following users have received the ${
-        award.name
-      } award! 🎉🎉🎉
+      text: `🎉🎉🎉 Woohoo! The following users have received the <${this.viewUrl(
+        award,
+      )}|${award.name}> award! 🎉🎉🎉
 
 ${newRecipients.map(recipient => `- ${recipient}`).join('\n')}
       `,
