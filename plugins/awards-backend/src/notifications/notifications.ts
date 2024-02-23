@@ -45,7 +45,6 @@ export class SlackNotificationsGateway implements NotificationsGateway {
     return new SlackNotificationsGateway(slack, backstageBaseUrl);
   }
 
-  // todo: this should be in awards-common
   private viewUrl = (award: Award): string => {
     return `${this.backstageBaseUrl}/awards/view/${award.uid}`;
   };
@@ -84,6 +83,13 @@ export class SlackNotificationsGateway implements NotificationsGateway {
           text: {
             type: 'mrkdwn',
             text: newRecipients.map(this.renderRecipient).join(', '),
+          },
+        },
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: `> ${award.description} (<${this.viewUrl(award)}|More info>)`,
           },
         },
       ],
