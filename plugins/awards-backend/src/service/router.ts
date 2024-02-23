@@ -10,20 +10,35 @@ import Router from 'express-promise-router';
 import { Logger } from 'winston';
 import { Awards } from '../awards';
 import { DatabaseAwardsStore } from '../database/awards';
+import { NotificationsGateway, NullNotificationGateway, SlackNotificationsGateway } from '../notifications/notifications';
+import { Config } from '@backstage/config';
 
 export interface RouterOptions {
   identity: IdentityApi;
   database: PluginDatabaseManager;
   logger: Logger;
+  // todo: make required in next breaking change
+  config?: Config;
+}
+
+function getNotificationsGateway(config: Config | undefined): NotificationsGateway {
+  if (config) {
+    const slack =  SlackNotificationsGateway.fromConfig(config);
+    if (slack) {
+      return slack;
+    }
+  }
+  return new NullNotificationGateway();
 }
 
 export async function createRouter(
   options: RouterOptions,
 ): Promise<express.Router> {
-  const { database, identity, logger } = options;
+  const { config, database, identity, logger } = options;
 
+  const notifications = getNotificationsGateway(config);
   const dbStore = await DatabaseAwardsStore.create({ database: database });
-  const awardsApp = new Awards(dbStore, logger);
+  const awardsApp = new Awards(dbStore, notifications, logger);
 
   const router = Router();
   router.use(express.json());
