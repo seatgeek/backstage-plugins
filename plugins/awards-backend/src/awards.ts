@@ -17,6 +17,16 @@ export class Awards {
     return await this.getAwardByUid(uid);
   }
 
+  async create(input: AwardInput): Promise<Award> {
+    return await this.db.add(
+      input.name,
+      input.description,
+      input.image,
+      input.owners,
+      input.recipients,
+    );
+  }
+
   async update(identityRef: string, uid: string, input: AwardInput): Promise<Award> {
     const award = await this.getAwardByUid(uid);
 

@@ -110,17 +110,9 @@ export async function createRouter(
     // Just to protect the request
     await getUserRef(identity, request);
 
-    const { name, description, image, owners, recipients } = request.body;
+    const award = await awardsApp.create(request.body);
 
-    const resp = await dbStore.add(
-      name,
-      description,
-      image,
-      owners,
-      recipients,
-    );
-
-    response.json(resp);
+    response.json(award);
   });
 
   router.use(errorHandler());
