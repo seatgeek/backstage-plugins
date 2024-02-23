@@ -35,6 +35,9 @@ export async function createRouter(
   options: RouterOptions,
 ): Promise<express.Router> {
   const { config, database, identity, logger } = options;
+  if (!config) {
+    logger.warn('No config provided, some features will be disabled');
+  }
 
   const notifications = getNotificationsGateway(config);
   const dbStore = await DatabaseAwardsStore.create({ database: database });
