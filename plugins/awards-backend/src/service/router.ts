@@ -8,8 +8,8 @@ import { IdentityApi } from '@backstage/plugin-auth-node';
 import express from 'express';
 import Router from 'express-promise-router';
 import { Logger } from 'winston';
-import { DatabaseAwardsStore } from '../database/awards';
 import { Awards } from '../awards';
+import { DatabaseAwardsStore } from '../database/awards';
 
 export interface RouterOptions {
   identity: IdentityApi;

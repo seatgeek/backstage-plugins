@@ -2,10 +2,10 @@
  * Copyright SeatGeek
  * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
  */
-import { Award, AwardInput } from "@seatgeek/backstage-plugin-awards-common";
-import { AwardsStore } from "./database/awards";
-import { NotFoundError } from "@backstage/errors";
-import { Logger } from "winston";
+import { NotFoundError } from '@backstage/errors';
+import { Award, AwardInput } from '@seatgeek/backstage-plugin-awards-common';
+import { Logger } from 'winston';
+import { AwardsStore } from './database/awards';
 
 export class Awards {
   private readonly db: AwardsStore;
@@ -31,7 +31,11 @@ export class Awards {
     );
   }
 
-  async update(identityRef: string, uid: string, input: AwardInput): Promise<Award> {
+  async update(
+    identityRef: string,
+    uid: string,
+    input: AwardInput,
+  ): Promise<Award> {
     const award = await this.getAwardByUid(uid);
 
     if (!award.owners.includes(identityRef)) {
