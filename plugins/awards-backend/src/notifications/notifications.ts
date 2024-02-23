@@ -31,17 +31,13 @@ export class SlackNotificationsGateway implements NotificationsGateway {
   }
 
   static fromConfig(config: Config): SlackNotificationsGateway | null {
-    const slackConfig = config.getOptionalConfig('awards.notifications.slack');
-    if (!slackConfig) {
+    const webhookUrl = config.getOptionalString(
+      'awards.notifications.slack.webhook.url',
+    );
+    if (!webhookUrl) {
       return null;
     }
-    const webhookUrl = slackConfig.getString('webhookUrl');
-    const username = slackConfig.getOptionalString('username');
-    const iconEmoji = slackConfig.getOptionalString('icon_emoji');
-    const slack = new IncomingWebhook(webhookUrl, {
-      username,
-      icon_emoji: iconEmoji,
-    });
+    const slack = new IncomingWebhook(webhookUrl);
     return new SlackNotificationsGateway(slack);
   }
 
