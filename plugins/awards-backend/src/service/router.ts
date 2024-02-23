@@ -3,9 +3,8 @@
  * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
  */
 import { PluginDatabaseManager, errorHandler } from '@backstage/backend-common';
-import { AuthenticationError, NotFoundError } from '@backstage/errors';
+import { AuthenticationError } from '@backstage/errors';
 import { IdentityApi } from '@backstage/plugin-auth-node';
-import { Award } from '@seatgeek/backstage-plugin-awards-common';
 import express from 'express';
 import Router from 'express-promise-router';
 import { Logger } from 'winston';
