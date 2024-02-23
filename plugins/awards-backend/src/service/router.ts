@@ -10,6 +10,7 @@ import express from 'express';
 import Router from 'express-promise-router';
 import { Logger } from 'winston';
 import { DatabaseAwardsStore } from '../database/awards';
+import { Awards } from '../awards';
 
 export interface RouterOptions {
   identity: IdentityApi;
@@ -23,6 +24,7 @@ export async function createRouter(
   const { database, identity, logger } = options;
 
   const dbStore = await DatabaseAwardsStore.create({ database: database });
+  const awardsApp = new Awards(dbStore, logger);
 
   const router = Router();
   router.use(express.json());
@@ -90,30 +92,9 @@ export async function createRouter(
 
     const uid = request.params.uid;
     // TODO: validate uuid parameter
+    // TODO: validate request.body
 
-    const res = await dbStore.search(uid, '', [], []);
-
-    if (!res || res.length === 0) {
-      throw new NotFoundError(uid);
-    }
-
-    const award: Award = res[0];
-
-    if (!award.owners.includes(userRef)) {
-      throw new Error('Unauthorized to update award');
-    }
-
-    logger.debug(request.body);
-    const { name, description, image, owners, recipients } = request.body;
-
-    const upd = await dbStore.update(
-      uid,
-      name,
-      description,
-      image,
-      owners,
-      recipients,
-    );
+    const upd = awardsApp.update(userRef, uid, request.body);
 
     response.json(upd);
   });
