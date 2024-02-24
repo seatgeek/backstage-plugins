@@ -162,7 +162,7 @@ export async function createRouter(
     response.json(award);
   });
 
-  router.post('/images/upload', async (request, response) => {
+  router.post('/logos/upload', async (request, response) => {
     await getUserRef(identity, request);
 
     if (!request.files) {
@@ -175,17 +175,17 @@ export async function createRouter(
       return;
     }
 
-    const key = await awardsApp.uploadImage(logo.data, logo.mimetype);
+    const key = await awardsApp.uploadLogo(logo.data, logo.mimetype);
 
     const apiUrl = await options.discovery.getExternalBaseUrl('awards');
     response.status(201).json({
-      location: `${apiUrl}/images/${key}`,
+      location: `${apiUrl}/logos/${key}`,
     });
   });
 
-  router.get('/images/:key', async (request, response) => {
+  router.get('/logos/:key', async (request, response) => {
     const key = request.params.key;
-    const image = await awardsApp.getImage(key);
+    const image = await awardsApp.getLogo(key);
     if (!image) {
       response.status(404).send('Not found');
       return;

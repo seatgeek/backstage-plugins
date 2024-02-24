@@ -26,6 +26,11 @@ function nonNullable<T>(value: T): value is NonNullable<T> {
 // todo: make this configurable
 const BUCKET = 'backstage-awards';
 
+const extensionByMimetype: Record<string, string> = {
+  'image/png': 'png',
+  'image/jpeg': 'jpg',
+};
+
 export class Awards {
   private readonly db: AwardsStore;
   private readonly logger: Logger;
@@ -158,7 +163,7 @@ export class Awards {
     return res[0];
   }
 
-  async uploadImage(image: Buffer, mimeType: string): Promise<string> {
+  async uploadLogo(image: Buffer, mimeType: string): Promise<string> {
     // validate image
     const { width, height } = sizeOf(image);
     if (!width || !height) {
@@ -169,7 +174,7 @@ export class Awards {
     validateImageFormat(mimeType);
 
     // upload image to s3
-    const key = uuid();
+    const key = `${uuid()}.${extensionByMimetype[mimeType]}`;
     await this.s3.send(
       new PutObjectCommand({
         Body: image,
@@ -182,7 +187,7 @@ export class Awards {
     return key;
   }
 
-  async getImage(
+  async getLogo(
     key: string,
   ): Promise<{ body: IncomingMessage; contentType: string } | null> {
     const resp = await this.s3.send(
@@ -215,8 +220,11 @@ function validateImageSize(width: number, _: number): void {
 }
 
 function validateImageFormat(mimeType: string): void {
-  const supportedFormats = ['image/png', 'image/jpeg'];
-  if (!supportedFormats.includes(mimeType)) {
-    throw new Error(`Image must be of format [${supportedFormats.join(', ')}]`);
+  if (!(mimeType in extensionByMimetype)) {
+    throw new Error(
+      `Image must be of format [${Object.keys(extensionByMimetype).join(
+        ', ',
+      )}], got ${mimeType}`,
+    );
   }
 }

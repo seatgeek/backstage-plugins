@@ -170,7 +170,7 @@ export const AwardEditCard = ({ award = emptyAward }: AwardEditCardProps) => {
     }
     const file = event.target.files[0];
     try {
-      const res = await awardsApi.uploadImage(file);
+      const res = await awardsApi.uploadLogo(file);
       setAwardImage(res.location);
     } catch (e) {
       alertApi.post({
