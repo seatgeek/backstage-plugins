@@ -29,7 +29,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Autocomplete from '@mui/material/Autocomplete';
 import Stack from '@mui/material/Stack';
 import { Award } from '@seatgeek/backstage-plugin-awards-common';
-import { isEmpty, random } from 'lodash';
+import { isEmpty } from 'lodash';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAsync from 'react-use/lib/useAsync';
@@ -103,24 +103,6 @@ export const AwardEditCard = ({ award = emptyAward }: AwardEditCardProps) => {
     });
     return users;
   });
-
-  useAsync(async () => {
-    // Initializing a new image
-    if (isEmpty(award.image)) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setAwardImage(reader.result?.toString() ?? '');
-      };
-
-      const newImage = `https://picsum.photos/100/50/?original=${random(
-        1,
-        1000,
-      )}`;
-      const response = await fetch(newImage);
-      const blob = await response.blob();
-      reader.readAsDataURL(blob);
-    }
-  }, [catalogApi]);
 
   async function saveAward() {
     try {
