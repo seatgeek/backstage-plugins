@@ -2,11 +2,18 @@
  * Copyright SeatGeek
  * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
  */
+import {
+  GetObjectCommand,
+  PutObjectCommand,
+  S3Client,
+} from '@aws-sdk/client-s3';
 import { TokenManager } from '@backstage/backend-common';
 import { CatalogClient } from '@backstage/catalog-client';
 import { isUserEntity } from '@backstage/catalog-model';
 import { NotFoundError } from '@backstage/errors';
 import { Award, AwardInput } from '@seatgeek/backstage-plugin-awards-common';
+import sharp from 'sharp';
+import { v4 as uuid } from 'uuid';
 import { Logger } from 'winston';
 import { AwardsStore } from './database/awards';
 import { NotificationsGateway } from './notifications/notifications';
@@ -15,18 +22,23 @@ function nonNullable<T>(value: T): value is NonNullable<T> {
   return value !== null && value !== undefined;
 }
 
+// todo: make this configurable
+const BUCKET = 'backstage-awards';
+
 export class Awards {
   private readonly db: AwardsStore;
   private readonly logger: Logger;
   private readonly notifications: NotificationsGateway;
   private readonly catalogClient: CatalogClient;
   private readonly tokenManager: TokenManager;
+  private readonly s3: S3Client;
 
   constructor(
     db: AwardsStore,
     notifications: NotificationsGateway,
     catalogClient: CatalogClient,
     tokenManager: TokenManager,
+    s3: S3Client,
     logger: Logger,
   ) {
     this.db = db;
@@ -34,6 +46,7 @@ export class Awards {
     this.logger = logger.child({ class: 'Awards' });
     this.catalogClient = catalogClient;
     this.tokenManager = tokenManager;
+    this.s3 = s3;
     this.logger.debug('Constructed');
   }
 
@@ -142,5 +155,61 @@ export class Awards {
     }
 
     return res[0];
+  }
+
+  async uploadImage(image: Buffer): Promise<string> {
+    // validate image
+    const { width, height, format } = await sharp(image).metadata();
+    if (!width || !height || !format) {
+      throw new Error('Could not read image metadata');
+    }
+    validateAspectRatio(width, height);
+    validateImageSize(width, height);
+    validateImageFormat(format);
+
+    // upload image to s3
+    const key = uuid();
+    await this.s3.send(
+      new PutObjectCommand({
+        Body: image,
+        ContentType: `image/${format}`,
+        // todo: make this configurable
+        Bucket: BUCKET,
+        Key: key,
+      }),
+    );
+    return key;
+  }
+
+  async getImage(key: string) {
+    const resp = await this.s3.send(
+      new GetObjectCommand({
+        Bucket: BUCKET,
+        Key: key,
+      }),
+    );
+    return {
+      body: resp.Body,
+      contentType: resp.ContentType,
+    };
+  }
+}
+
+function validateAspectRatio(width: number, height: number): void {
+  if (width / height !== 3 / 2) {
+    throw new Error('Image must have a 3:2 aspect ratio');
+  }
+}
+
+function validateImageSize(width: number, _: number): void {
+  if (width < 100 || width > 1000) {
+    throw new Error('Image width must be between 100 and 1000 pixels');
+  }
+}
+
+function validateImageFormat(format: string): void {
+  const supportedFormats = ['png', 'jpeg'];
+  if (!supportedFormats.includes(format)) {
+    throw new Error(`Image must be of format [${supportedFormats.join(', ')}]`);
   }
 }

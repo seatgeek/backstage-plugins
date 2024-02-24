@@ -2,6 +2,7 @@
  * Copyright SeatGeek
  * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
  */
+import { S3Client } from '@aws-sdk/client-s3';
 import {
   PluginDatabaseManager,
   TokenManager,
@@ -58,11 +59,14 @@ export async function createRouter(
   });
   const notifications = getNotificationsGateway(config);
   const dbStore = await DatabaseAwardsStore.create({ database: database });
+  // todo: configure
+  const s3 = new S3Client({});
   const awardsApp = new Awards(
     dbStore,
     notifications,
     catalogClient,
     options.tokenManager,
+    s3,
     logger,
   );
 
@@ -152,6 +156,31 @@ export async function createRouter(
     const award = await awardsApp.create(user, request.body);
 
     response.json(award);
+  });
+
+  router.post('/images/upload', async (request, response) => {
+    await getUserRef(identity, request);
+
+    // todo: make sure this is right
+    const key = await awardsApp.uploadImage(request.body);
+
+    // todo: 201 with proper location, maybe use discovery api?
+    response.json({ key });
+  });
+
+  router.get('/images/:key', async (request, response) => {
+    await getUserRef(identity, request);
+
+    const key = request.params.key;
+    const image = await awardsApp.getImage(key);
+    if (!image) {
+      response.status(404).send('Not found');
+      return;
+    }
+
+    response.setHeader('Content-Type', image.contentType);
+    // todo: make sure this sends correctly
+    response.send(image.body);
   });
 
   router.use(errorHandler());

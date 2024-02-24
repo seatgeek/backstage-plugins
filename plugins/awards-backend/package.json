@@ -23,6 +23,7 @@
     "postpack": "backstage-cli package postpack"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.521.0",
     "@backstage/backend-common": "^0.20.1",
     "@backstage/backend-plugin-api": "^0.6.9",
     "@backstage/catalog-client": "^1.6.0",
@@ -38,6 +39,7 @@
     "knex": "^3.1.0",
     "lodash": "^4.17.21",
     "node-fetch": "^2.6.7",
+    "sharp": "^0.33.2",
     "uuid": "^9.0.1",
     "winston": "^3.2.1",
     "yn": "^4.0.0"
