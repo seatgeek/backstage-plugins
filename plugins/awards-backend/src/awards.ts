@@ -23,9 +23,6 @@ function nonNullable<T>(value: T): value is NonNullable<T> {
   return value !== null && value !== undefined;
 }
 
-// todo: make this configurable
-const BUCKET = 'backstage-awards';
-
 const extensionByMimetype: Record<string, string> = {
   'image/png': 'png',
   'image/jpeg': 'jpg',
@@ -38,6 +35,7 @@ export class Awards {
   private readonly catalogClient: CatalogClient;
   private readonly tokenManager: TokenManager;
   private readonly s3: S3Client;
+  private readonly s3Bucket: string;
 
   constructor(
     db: AwardsStore,
@@ -45,6 +43,7 @@ export class Awards {
     catalogClient: CatalogClient,
     tokenManager: TokenManager,
     s3: S3Client,
+    logoBucket: string,
     logger: Logger,
   ) {
     this.db = db;
@@ -53,6 +52,7 @@ export class Awards {
     this.catalogClient = catalogClient;
     this.tokenManager = tokenManager;
     this.s3 = s3;
+    this.s3Bucket = logoBucket;
     this.logger.debug('Constructed');
   }
 
@@ -179,8 +179,7 @@ export class Awards {
       new PutObjectCommand({
         Body: image,
         ContentType: mimeType,
-        // todo: make this configurable
-        Bucket: BUCKET,
+        Bucket: this.s3Bucket,
         Key: key,
       }),
     );
@@ -192,7 +191,7 @@ export class Awards {
   ): Promise<{ body: IncomingMessage; contentType: string } | null> {
     const resp = await this.s3.send(
       new GetObjectCommand({
-        Bucket: BUCKET,
+        Bucket: this.s3Bucket,
         Key: key,
       }),
     );

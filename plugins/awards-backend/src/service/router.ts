@@ -60,9 +60,13 @@ export async function createRouter(
   });
   const notifications = getNotificationsGateway(config);
   const dbStore = await DatabaseAwardsStore.create({ database: database });
-  // todo: configure
+
+  // for local dev against localstack
+  const endpoint = config?.getOptionalString('awards.s3.endpoint');
+  const bucket =
+    config?.getOptionalString('awards.s3.bucket') || 'backstage-awards';
   const s3 = new S3Client({
-    endpoint: 'http://127.0.0.1:4566',
+    endpoint,
   });
   const awardsApp = new Awards(
     dbStore,
@@ -70,6 +74,7 @@ export async function createRouter(
     catalogClient,
     options.tokenManager,
     s3,
+    bucket,
     logger,
   );
 
