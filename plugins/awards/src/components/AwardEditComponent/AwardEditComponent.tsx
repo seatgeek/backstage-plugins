@@ -38,8 +38,8 @@ import { editRouteRef } from '../../routes';
 
 const emptyAward: Award = {
   uid: '',
-  name: 'Award Name',
-  description: 'Award description',
+  name: '',
+  description: '',
   image: '',
   owners: [],
   recipients: [],
