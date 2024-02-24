@@ -12,7 +12,8 @@ import { CatalogClient } from '@backstage/catalog-client';
 import { isUserEntity } from '@backstage/catalog-model';
 import { NotFoundError } from '@backstage/errors';
 import { Award, AwardInput } from '@seatgeek/backstage-plugin-awards-common';
-import sharp from 'sharp';
+import { IncomingMessage } from 'http';
+import sizeOf from 'image-size';
 import { v4 as uuid } from 'uuid';
 import { Logger } from 'winston';
 import { AwardsStore } from './database/awards';
@@ -157,22 +158,22 @@ export class Awards {
     return res[0];
   }
 
-  async uploadImage(image: Buffer): Promise<string> {
+  async uploadImage(image: Buffer, mimeType: string): Promise<string> {
     // validate image
-    const { width, height, format } = await sharp(image).metadata();
-    if (!width || !height || !format) {
+    const { width, height } = sizeOf(image);
+    if (!width || !height) {
       throw new Error('Could not read image metadata');
     }
     validateAspectRatio(width, height);
     validateImageSize(width, height);
-    validateImageFormat(format);
+    validateImageFormat(mimeType);
 
     // upload image to s3
     const key = uuid();
     await this.s3.send(
       new PutObjectCommand({
         Body: image,
-        ContentType: `image/${format}`,
+        ContentType: mimeType,
         // todo: make this configurable
         Bucket: BUCKET,
         Key: key,
@@ -181,23 +182,29 @@ export class Awards {
     return key;
   }
 
-  async getImage(key: string) {
+  async getImage(
+    key: string,
+  ): Promise<{ body: IncomingMessage; contentType: string } | null> {
     const resp = await this.s3.send(
       new GetObjectCommand({
         Bucket: BUCKET,
         Key: key,
       }),
     );
+    if (!resp.Body || !resp.ContentType) {
+      return null;
+    }
+
     return {
-      body: resp.Body,
+      body: resp.Body as IncomingMessage,
       contentType: resp.ContentType,
     };
   }
 }
 
 function validateAspectRatio(width: number, height: number): void {
-  if (width / height !== 3 / 2) {
-    throw new Error('Image must have a 3:2 aspect ratio');
+  if (width / height !== 3) {
+    throw new Error('Image must have a 3:1 aspect ratio');
   }
 }
 
@@ -207,9 +214,9 @@ function validateImageSize(width: number, _: number): void {
   }
 }
 
-function validateImageFormat(format: string): void {
-  const supportedFormats = ['png', 'jpeg'];
-  if (!supportedFormats.includes(format)) {
+function validateImageFormat(mimeType: string): void {
+  const supportedFormats = ['image/png', 'image/jpeg'];
+  if (!supportedFormats.includes(mimeType)) {
     throw new Error(`Image must be of format [${supportedFormats.join(', ')}]`);
   }
 }

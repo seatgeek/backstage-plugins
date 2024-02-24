@@ -14,6 +14,7 @@ import { Config } from '@backstage/config';
 import { AuthenticationError } from '@backstage/errors';
 import { IdentityApi } from '@backstage/plugin-auth-node';
 import express from 'express';
+import fileUpload from 'express-fileupload';
 import Router from 'express-promise-router';
 import { Logger } from 'winston';
 import { Awards } from '../awards';
@@ -60,7 +61,9 @@ export async function createRouter(
   const notifications = getNotificationsGateway(config);
   const dbStore = await DatabaseAwardsStore.create({ database: database });
   // todo: configure
-  const s3 = new S3Client({});
+  const s3 = new S3Client({
+    endpoint: 'http://127.0.0.1:4566',
+  });
   const awardsApp = new Awards(
     dbStore,
     notifications,
@@ -72,6 +75,7 @@ export async function createRouter(
 
   const router = Router();
   router.use(express.json());
+  router.use(fileUpload());
 
   router.get('/health', (_, response) => {
     logger.info('PONG!');
@@ -161,16 +165,25 @@ export async function createRouter(
   router.post('/images/upload', async (request, response) => {
     await getUserRef(identity, request);
 
-    // todo: make sure this is right
-    const key = await awardsApp.uploadImage(request.body);
+    if (!request.files) {
+      response.status(400).send('No files were uploaded.');
+      return;
+    }
+    const logo = request.files.file;
+    if (Array.isArray(logo)) {
+      response.status(400).send('Must only upload one file.');
+      return;
+    }
 
-    // todo: 201 with proper location, maybe use discovery api?
-    response.json({ key });
+    const key = await awardsApp.uploadImage(logo.data, logo.mimetype);
+
+    const apiUrl = await options.discovery.getExternalBaseUrl('awards');
+    response.status(201).json({
+      location: `${apiUrl}/images/${key}`,
+    });
   });
 
   router.get('/images/:key', async (request, response) => {
-    await getUserRef(identity, request);
-
     const key = request.params.key;
     const image = await awardsApp.getImage(key);
     if (!image) {
@@ -179,8 +192,10 @@ export async function createRouter(
     }
 
     response.setHeader('Content-Type', image.contentType);
-    // todo: make sure this sends correctly
-    response.send(image.body);
+    image.body.pipe(response);
+    image.body.on('error', (err: Error) => {
+      response.status(500).send(err.message);
+    });
   });
 
   router.use(errorHandler());

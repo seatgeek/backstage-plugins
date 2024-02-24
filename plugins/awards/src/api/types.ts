@@ -16,6 +16,7 @@ export type AwardsApi = {
     owners: string[],
     recipients: string[],
   ) => Promise<Award[]>;
+  uploadImage: (file: File) => Promise<{ location: string }>;
   save: (award: Award) => Promise<Award>;
   delete: (uid: string) => Promise<boolean>;
 };
