@@ -87,9 +87,7 @@ export const AwardEditCard = ({ award = emptyAward }: AwardEditCardProps) => {
         };
       }),
   );
-  const [allUsers, setAllUsers] = useState(new Array<User>());
-
-  useAsync(async () => {
+  const { value: allUsers } = useAsync(async () => {
     // Fetching all users in the catalog.
     // TODO: memoize this
     const entities = await catalogApi.getEntities({
@@ -103,8 +101,10 @@ export const AwardEditCard = ({ award = emptyAward }: AwardEditCardProps) => {
         }`,
       };
     });
-    setAllUsers(users);
+    return users;
+  });
 
+  useAsync(async () => {
     // Initializing a new image
     if (isEmpty(award.image)) {
       const reader = new FileReader();
@@ -254,7 +254,7 @@ export const AwardEditCard = ({ award = emptyAward }: AwardEditCardProps) => {
           </Grid>
           <Autocomplete
             multiple
-            options={allUsers}
+            options={allUsers || []}
             getOptionLabel={option => option.name}
             onChange={(__, v) => setAwardOwners(v)}
             value={awardOwners}
@@ -269,7 +269,7 @@ export const AwardEditCard = ({ award = emptyAward }: AwardEditCardProps) => {
           />
           <Autocomplete
             multiple
-            options={allUsers}
+            options={allUsers || []}
             getOptionLabel={option => option.name}
             onChange={(__, v) => setAwardRecipients(v)}
             value={awardRecipients}
