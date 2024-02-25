@@ -58,6 +58,23 @@ function makeCreateEnv(config: Config) {
 }
 ```
 
+## Configuration
+
+### Slack notifications
+
+To enable Slack notifications, add the following to your `app-config.yaml` file:
+
+```yaml
+awards:
+  notifications:
+    slack:
+      webhook:
+        # https://api.slack.com/messaging/webhooks
+        url: <my_slack_webhook_url>
+```
+
+Users who have the `slack.com/user_id` annotation set (see [slack-catalog-backend](/plugins/slack-catalog-backend/README.md)) will be tagged in notifications that pertain to them.
+
 ## Developing this plugin
 
 The plugin can be executed in isolation during development by running

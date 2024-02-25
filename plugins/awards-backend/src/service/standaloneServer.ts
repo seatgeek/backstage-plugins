@@ -5,6 +5,7 @@
 import {
   DatabaseManager,
   HostDiscovery,
+  ServerTokenManager,
   createServiceBuilder,
   loadBackendConfig,
 } from '@backstage/backend-common';
@@ -45,6 +46,11 @@ export async function startStandaloneServer(
     database,
     identity,
     logger,
+    config,
+    discovery,
+    tokenManager: ServerTokenManager.fromConfig(config, {
+      logger,
+    }),
   });
 
   let service = createServiceBuilder(module)
