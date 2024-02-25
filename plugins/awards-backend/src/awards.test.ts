@@ -62,7 +62,7 @@ describe('Awards', () => {
         .mockImplementation(
           async (
             request: GetEntitiesByRefsRequest,
-            options?: CatalogRequestOptions,
+            _?: CatalogRequestOptions,
           ) => {
             return {
               items: request.entityRefs.map(makeUser),
