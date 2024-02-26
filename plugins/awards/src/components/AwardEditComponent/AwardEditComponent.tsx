@@ -30,7 +30,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import Stack from '@mui/material/Stack';
 import { Award } from '@seatgeek/backstage-plugin-awards-common';
 import { isEmpty, random } from 'lodash';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAsync from 'react-use/lib/useAsync';
 import { awardsApiRef } from '../../api';
@@ -38,8 +38,8 @@ import { editRouteRef } from '../../routes';
 
 const emptyAward: Award = {
   uid: '',
-  name: 'Award Name',
-  description: 'Award description',
+  name: '',
+  description: '',
   image: '',
   owners: [],
   recipients: [],
@@ -87,6 +87,10 @@ export const AwardEditCard = ({ award = emptyAward }: AwardEditCardProps) => {
         };
       }),
   );
+  const hasRequiredFields = useMemo(() => {
+    return awardName !== '' && awardDescription !== '' && awardImage !== '';
+  }, [awardName, awardDescription, awardImage]);
+
   const [allUsers, setAllUsers] = useState(new Array<User>());
 
   useAsync(async () => {
@@ -287,6 +291,7 @@ export const AwardEditCard = ({ award = emptyAward }: AwardEditCardProps) => {
             color="primary"
             variant="contained"
             startIcon={<CreateComponentIcon />}
+            disabled={!hasRequiredFields}
             onClick={saveAward}
           >
             Save
