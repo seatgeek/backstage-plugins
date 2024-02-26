@@ -18,16 +18,6 @@ export interface NotificationsGateway {
   ): Promise<void>;
 }
 
-export class NullNotificationGateway implements NotificationsGateway {
-  async notifyNewRecipientsAdded(
-    _: string,
-    __: Award,
-    ___: UserEntity[],
-  ): Promise<void> {
-    return;
-  }
-}
-
 export class SlackNotificationsGateway implements NotificationsGateway {
   private readonly slack: IncomingWebhook;
   private readonly backstageBaseUrl: string;

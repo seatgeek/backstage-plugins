@@ -17,11 +17,8 @@ import Router from 'express-promise-router';
 import { Logger } from 'winston';
 import { Awards } from '../awards';
 import { DatabaseAwardsStore } from '../database/awards';
-import {
-  NotificationsGateway,
-  NullNotificationGateway,
-  SlackNotificationsGateway,
-} from '../notifications/notifications';
+import { SlackNotificationsGateway } from '../notifications/notifications';
+import { MultiAwardsNotifier } from '../notifier';
 
 export interface RouterOptions {
   identity: IdentityApi;
@@ -31,18 +28,6 @@ export interface RouterOptions {
   config?: Config;
   discovery: DiscoveryService;
   tokenManager: TokenManager;
-}
-
-function getNotificationsGateway(
-  config: Config | undefined,
-): NotificationsGateway {
-  if (config) {
-    const slack = SlackNotificationsGateway.fromConfig(config);
-    if (slack) {
-      return slack;
-    }
-  }
-  return new NullNotificationGateway();
 }
 
 export async function createRouter(
@@ -56,15 +41,20 @@ export async function createRouter(
   const catalogClient = new CatalogClient({
     discoveryApi: options.discovery,
   });
-  const notifications = getNotificationsGateway(config);
-  const dbStore = await DatabaseAwardsStore.create({ database: database });
-  const awardsApp = new Awards(
-    dbStore,
-    notifications,
+  const notifier = new MultiAwardsNotifier(
+    [],
     catalogClient,
     options.tokenManager,
-    logger,
   );
+  if (config) {
+    const slack = SlackNotificationsGateway.fromConfig(config);
+    if (slack) {
+      notifier.addNotificationsGateway(slack);
+    }
+  }
+  const dbStore = await DatabaseAwardsStore.create({ database: database });
+
+  const awardsApp = new Awards(dbStore, notifier, logger);
 
   const router = Router();
   router.use(express.json());

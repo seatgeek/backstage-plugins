@@ -2,38 +2,21 @@
  * Copyright SeatGeek
  * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
  */
-import { TokenManager } from '@backstage/backend-common';
-import { CatalogClient } from '@backstage/catalog-client';
-import { isUserEntity } from '@backstage/catalog-model';
 import { NotFoundError } from '@backstage/errors';
 import { Award, AwardInput } from '@seatgeek/backstage-plugin-awards-common';
 import { Logger } from 'winston';
 import { AwardsStore } from './database/awards';
-import { NotificationsGateway } from './notifications/notifications';
-
-function nonNullable<T>(value: T): value is NonNullable<T> {
-  return value !== null && value !== undefined;
-}
+import { AwardsNotifier } from './notifier';
 
 export class Awards {
   private readonly db: AwardsStore;
   private readonly logger: Logger;
-  private readonly notifications: NotificationsGateway;
-  private readonly catalogClient: CatalogClient;
-  private readonly tokenManager: TokenManager;
+  private readonly notifier: AwardsNotifier;
 
-  constructor(
-    db: AwardsStore,
-    notifications: NotificationsGateway,
-    catalogClient: CatalogClient,
-    tokenManager: TokenManager,
-    logger: Logger,
-  ) {
+  constructor(db: AwardsStore, notifier: AwardsNotifier, logger: Logger) {
     this.db = db;
-    this.notifications = notifications;
+    this.notifier = notifier;
     this.logger = logger.child({ class: 'Awards' });
-    this.catalogClient = catalogClient;
-    this.tokenManager = tokenManager;
     this.logger.debug('Constructed');
   }
 
@@ -41,29 +24,13 @@ export class Awards {
     return await this.getAwardByUid(uid);
   }
 
-  private async notifyNewRecipients(
-    identityRef: string,
-    award: Award,
-    newRecipients: string[],
-  ): Promise<void> {
-    const token = await this.tokenManager.getToken();
-    const resp = await this.catalogClient.getEntitiesByRefs(
-      {
-        entityRefs: newRecipients,
-      },
-      token,
-    );
-    const users = resp.items.filter(nonNullable).filter(isUserEntity);
-    await this.notifications.notifyNewRecipientsAdded(
-      identityRef,
-      award,
-      users,
-    );
-  }
-
   private async afterCreate(identityRef: string, award: Award): Promise<void> {
     if (award.recipients.length > 0) {
-      await this.notifyNewRecipients(identityRef, award, award.recipients);
+      await this.notifier.notifyNewRecipients(
+        identityRef,
+        award,
+        award.recipients,
+      );
     }
   }
 
@@ -93,7 +60,7 @@ export class Awards {
     );
 
     if (newRecipients.length > 0) {
-      await this.notifyNewRecipients(identityRef, curr, newRecipients);
+      await this.notifier.notifyNewRecipients(identityRef, curr, newRecipients);
     }
   }
 
