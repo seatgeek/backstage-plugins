@@ -2,6 +2,7 @@
  * Copyright SeatGeek
  * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
  */
+import { S3Client } from '@aws-sdk/client-s3';
 import { TokenManager } from '@backstage/backend-common';
 import {
   CatalogClient,
@@ -44,6 +45,7 @@ describe('Awards', () => {
   let notifications: jest.Mocked<NotificationsGateway>;
   let catalogClient: jest.Mocked<CatalogClient>;
   let tokenManager: jest.Mocked<TokenManager>;
+  let s3: jest.Mocked<S3Client>;
   let awards: Awards;
 
   beforeEach(() => {
@@ -59,6 +61,10 @@ describe('Awards', () => {
     tokenManager = {
       authenticate: jest.fn(),
       getToken: jest.fn().mockReturnValue({ token: 'mocked-token' }),
+    };
+    // @ts-ignore
+    s3 = {
+      send: jest.fn(),
     };
     catalogClient = {
       getEntitiesByRefs: jest
@@ -77,7 +83,15 @@ describe('Awards', () => {
     const logger = winston.createLogger({
       transports: [new winston.transports.Console({ silent: true })],
     });
-    awards = new Awards(db, notifications, catalogClient, tokenManager, logger);
+    awards = new Awards(
+      db,
+      notifications,
+      catalogClient,
+      tokenManager,
+      s3,
+      'backstage-awards',
+      logger,
+    );
   });
 
   afterEach(() => {
