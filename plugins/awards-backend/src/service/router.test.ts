@@ -56,6 +56,14 @@ describe('backend router', () => {
     const dbm = await createDatabaseManager();
     db = await dbm.getClient();
     const router = await createRouter({
+      config: new ConfigReader({
+        awards: {
+          s3: {
+            region: 'us-east-1',
+            bucket: 'backstage-awards',
+          },
+        },
+      }),
       logger: getVoidLogger(),
       identity: { getIdentity },
       database: dbm,
