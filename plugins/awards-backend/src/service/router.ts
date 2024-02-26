@@ -29,8 +29,7 @@ export interface RouterOptions {
   identity: IdentityApi;
   database: PluginDatabaseManager;
   logger: Logger;
-  // todo: make required in next breaking change
-  config?: Config;
+  config: Config;
   discovery: DiscoveryService;
   tokenManager: TokenManager;
 }
@@ -45,6 +44,32 @@ function getNotificationsGateway(
     }
   }
   return new NullNotificationGateway();
+}
+
+function getS3Client(config: Config): S3Client {
+  const region = config.getString('awards.s3.region');
+
+  // for local dev
+  const endpoint = config.getOptionalString('awards.s3.endpoint');
+
+  // credentials
+  const accessKey = config.getOptionalString('awards.s3.accessKey');
+  const secretKey = config.getOptionalString('awards.s3.secretKey');
+  const sessionToken = config.getOptionalString('awards.s3.sessionToken');
+  let credentials = undefined;
+  if (accessKey && secretKey && sessionToken) {
+    credentials = {
+      accessKeyId: accessKey,
+      secretAccessKey: secretKey,
+      sessionToken,
+    };
+  }
+
+  return new S3Client({
+    endpoint,
+    region,
+    credentials,
+  });
 }
 
 export async function createRouter(
@@ -62,12 +87,8 @@ export async function createRouter(
   const dbStore = await DatabaseAwardsStore.create({ database: database });
 
   // for local dev against localstack
-  const endpoint = config?.getOptionalString('awards.s3.endpoint');
-  const bucket =
-    config?.getOptionalString('awards.s3.bucket') || 'backstage-awards';
-  const s3 = new S3Client({
-    endpoint,
-  });
+  const s3 = getS3Client(config);
+  const bucket = config.getString('awards.s3.bucket');
   const awardsApp = new Awards(
     dbStore,
     notifications,
