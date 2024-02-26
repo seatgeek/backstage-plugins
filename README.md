@@ -20,4 +20,4 @@ their respective locations.
 
 ## Preview the collection
 
-We have created a demo Backstage application to preview the SeatGeek Backstage Plugins Collection. To view it, clone this repository and run `yarn install && yarn dev`.
+We have created a demo Backstage application to preview the SeatGeek Backstage Plugins Collection. To view it, clone this repository and run `yarn install && docker compose up -d && yarn dev`.
