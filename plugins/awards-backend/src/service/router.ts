@@ -24,8 +24,7 @@ export interface RouterOptions {
   identity: IdentityApi;
   database: PluginDatabaseManager;
   logger: Logger;
-  // todo: make required in next breaking change
-  config?: Config;
+  config: Config;
   discovery: DiscoveryService;
   tokenManager: TokenManager;
 }
@@ -34,9 +33,6 @@ export async function createRouter(
   options: RouterOptions,
 ): Promise<express.Router> {
   const { config, database, identity, logger } = options;
-  if (!config) {
-    logger.warn('No config provided, some features will be disabled');
-  }
 
   const catalogClient = new CatalogClient({
     discoveryApi: options.discovery,
@@ -46,11 +42,9 @@ export async function createRouter(
     catalogClient,
     options.tokenManager,
   );
-  if (config) {
-    const slack = SlackNotificationsGateway.fromConfig(config);
-    if (slack) {
-      notifier.addNotificationsGateway(slack);
-    }
+  const slack = SlackNotificationsGateway.fromConfig(config);
+  if (slack) {
+    notifier.addNotificationsGateway(slack);
   }
   const dbStore = await DatabaseAwardsStore.create({ database: database });
 

@@ -16,6 +16,7 @@ export const awardsPlugin = createBackendPlugin({
       deps: {
         database: coreServices.database,
         identity: coreServices.identity,
+        config: coreServices.rootConfig,
         logger: coreServices.logger,
         httpRouter: coreServices.httpRouter,
         discovery: coreServices.discovery,
@@ -24,6 +25,7 @@ export const awardsPlugin = createBackendPlugin({
       async init({
         database,
         identity,
+        config,
         logger,
         httpRouter,
         discovery,
@@ -33,6 +35,7 @@ export const awardsPlugin = createBackendPlugin({
           await createRouter({
             database,
             identity,
+            config,
             logger: loggerToWinstonLogger(logger),
             discovery,
             tokenManager,

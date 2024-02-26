@@ -57,6 +57,7 @@ describe('backend router', () => {
     db = await dbm.getClient();
     const router = await createRouter({
       logger: getVoidLogger(),
+      config: new ConfigReader({}),
       identity: { getIdentity },
       database: dbm,
       discovery: {
