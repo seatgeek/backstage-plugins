@@ -14,6 +14,7 @@ export const awardsPlugin = createBackendPlugin({
   register(env) {
     env.registerInit({
       deps: {
+        config: coreServices.rootConfig,
         database: coreServices.database,
         identity: coreServices.identity,
         logger: coreServices.logger,
@@ -22,6 +23,7 @@ export const awardsPlugin = createBackendPlugin({
         tokenManager: coreServices.tokenManager,
       },
       async init({
+        config,
         database,
         identity,
         logger,
@@ -31,6 +33,7 @@ export const awardsPlugin = createBackendPlugin({
       }) {
         httpRouter.use(
           await createRouter({
+            config,
             database,
             identity,
             logger: loggerToWinstonLogger(logger),
