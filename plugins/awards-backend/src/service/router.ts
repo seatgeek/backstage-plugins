@@ -169,7 +169,7 @@ export async function createRouter(
     response.json(award);
   });
 
-  router.post('/logos/upload', async (request, response) => {
+  router.post('/logos', async (request, response) => {
     await getUserRef(identity, request);
 
     if (!request.files) {

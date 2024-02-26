@@ -76,7 +76,7 @@ export class AwardsBackendApi implements AwardsApi {
   }
 
   async uploadLogo(file: File): Promise<{ location: string }> {
-    const url = `${await this.discoveryApi.getBaseUrl('awards')}/logos/upload`;
+    const url = `${await this.discoveryApi.getBaseUrl('awards')}/logos`;
 
     const formData = new FormData();
     formData.append('file', file);
