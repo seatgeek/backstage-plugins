@@ -2,7 +2,14 @@
  * Copyright SeatGeek
  * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
  */
-import { PluginDatabaseManager, errorHandler } from '@backstage/backend-common';
+import {
+  PluginDatabaseManager,
+  TokenManager,
+  errorHandler,
+} from '@backstage/backend-common';
+import { DiscoveryService } from '@backstage/backend-plugin-api';
+import { CatalogClient } from '@backstage/catalog-client';
+import { Config } from '@backstage/config';
 import { AuthenticationError } from '@backstage/errors';
 import { IdentityApi } from '@backstage/plugin-auth-node';
 import express from 'express';
@@ -10,20 +17,38 @@ import Router from 'express-promise-router';
 import { Logger } from 'winston';
 import { Awards } from '../awards';
 import { DatabaseAwardsStore } from '../database/awards';
+import { SlackNotificationsGateway } from '../notifications/notifications';
+import { MultiAwardsNotifier } from '../notifier';
 
 export interface RouterOptions {
   identity: IdentityApi;
   database: PluginDatabaseManager;
   logger: Logger;
+  config: Config;
+  discovery: DiscoveryService;
+  tokenManager: TokenManager;
 }
 
 export async function createRouter(
   options: RouterOptions,
 ): Promise<express.Router> {
-  const { database, identity, logger } = options;
+  const { config, database, identity, logger } = options;
 
+  const catalogClient = new CatalogClient({
+    discoveryApi: options.discovery,
+  });
+  const notifier = new MultiAwardsNotifier(
+    [],
+    catalogClient,
+    options.tokenManager,
+  );
+  const slack = SlackNotificationsGateway.fromConfig(config);
+  if (slack) {
+    notifier.addNotificationsGateway(slack);
+  }
   const dbStore = await DatabaseAwardsStore.create({ database: database });
-  const awardsApp = new Awards(dbStore, logger);
+
+  const awardsApp = new Awards(dbStore, notifier, logger);
 
   const router = Router();
   router.use(express.json());
@@ -106,7 +131,6 @@ export async function createRouter(
   });
 
   router.post('/', async (request, response) => {
-    // Just to protect the request
     await getUserRef(identity, request);
 
     const award = await awardsApp.create(request.body);

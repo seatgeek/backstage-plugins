@@ -55,11 +55,19 @@ describe('backend router', () => {
       ).forPlugin('awards');
     const dbm = await createDatabaseManager();
     db = await dbm.getClient();
-
     const router = await createRouter({
       logger: getVoidLogger(),
+      config: new ConfigReader({}),
       identity: { getIdentity },
       database: dbm,
+      discovery: {
+        getBaseUrl: jest.fn().mockResolvedValue('/'),
+        getExternalBaseUrl: jest.fn().mockResolvedValue('/'),
+      },
+      tokenManager: {
+        authenticate: jest.fn(),
+        getToken: jest.fn().mockResolvedValue({ token: 'token' }),
+      },
     });
     app = express().use(router);
 

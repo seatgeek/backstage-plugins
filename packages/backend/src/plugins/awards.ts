@@ -9,5 +9,8 @@ export default async function createPlugin(
     logger: env.logger,
     database: env.database,
     identity: env.identity,
+    config: env.config,
+    discovery: env.discovery,
+    tokenManager: env.tokenManager,
   });
 }
