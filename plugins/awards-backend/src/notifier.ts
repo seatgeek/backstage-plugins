@@ -16,11 +16,7 @@ function nonNullable<T>(value: T): value is NonNullable<T> {
  * Interface for handling interactions between Awards and NotificationsGateways.
  */
 export interface AwardsNotifier {
-  notifyNewRecipients(
-    identityRef: string,
-    award: Award,
-    newRecipients: string[],
-  ): Promise<void>;
+  notifyNewRecipients(award: Award, newRecipients: string[]): Promise<void>;
 }
 
 export class MultiAwardsNotifier implements AwardsNotifier {
@@ -43,7 +39,6 @@ export class MultiAwardsNotifier implements AwardsNotifier {
   }
 
   async notifyNewRecipients(
-    identityRef: string,
     award: Award,
     newRecipients: string[],
   ): Promise<void> {
@@ -61,7 +56,7 @@ export class MultiAwardsNotifier implements AwardsNotifier {
     const users = resp.items.filter(nonNullable).filter(isUserEntity);
     await Promise.all(
       this.notificationsGateways.map(gateway =>
-        gateway.notifyNewRecipientsAdded(identityRef, award, users),
+        gateway.notifyNewRecipientsAdded(award, users),
       ),
     );
   }

@@ -131,9 +131,9 @@ export async function createRouter(
   });
 
   router.post('/', async (request, response) => {
-    const user = await getUserRef(identity, request);
+    await getUserRef(identity, request);
 
-    const award = await awardsApp.create(user, request.body);
+    const award = await awardsApp.create(request.body);
 
     response.json(award);
   });

@@ -24,17 +24,13 @@ export class Awards {
     return await this.getAwardByUid(uid);
   }
 
-  private async afterCreate(identityRef: string, award: Award): Promise<void> {
+  private async afterCreate(award: Award): Promise<void> {
     if (award.recipients.length > 0) {
-      await this.notifier.notifyNewRecipients(
-        identityRef,
-        award,
-        award.recipients,
-      );
+      await this.notifier.notifyNewRecipients(award, award.recipients);
     }
   }
 
-  async create(identityRef: string, input: AwardInput): Promise<Award> {
+  async create(input: AwardInput): Promise<Award> {
     const award = await this.db.add(
       input.name,
       input.description,
@@ -43,24 +39,20 @@ export class Awards {
       input.recipients,
     );
 
-    this.afterCreate(identityRef, award).catch(e => {
+    this.afterCreate(award).catch(e => {
       this.logger.error('Error running afterCreate action', e);
     });
 
     return award;
   }
 
-  private async afterUpdate(
-    identityRef: string,
-    curr: Award,
-    previous: Award,
-  ): Promise<void> {
+  private async afterUpdate(curr: Award, previous: Award): Promise<void> {
     const newRecipients = curr.recipients.filter(
       recipient => !previous.recipients.includes(recipient),
     );
 
     if (newRecipients.length > 0) {
-      await this.notifier.notifyNewRecipients(identityRef, curr, newRecipients);
+      await this.notifier.notifyNewRecipients(curr, newRecipients);
     }
   }
 
@@ -84,7 +76,7 @@ export class Awards {
       input.recipients,
     );
 
-    this.afterUpdate(identityRef, updated, award).catch(e => {
+    this.afterUpdate(updated, award).catch(e => {
       this.logger.error('Error running afterUpdate action', e);
     });
 

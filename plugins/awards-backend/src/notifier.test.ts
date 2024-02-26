@@ -63,9 +63,7 @@ describe('MultiAwardsNotifier', () => {
         tokenManager,
       );
 
-      await notifier.notifyNewRecipients('identityRef', award, [
-        'user:default/jeff-buckley',
-      ]);
+      await notifier.notifyNewRecipients(award, ['user:default/jeff-buckley']);
 
       expect(catalogClient.getEntitiesByRefs).toHaveBeenCalledWith(
         {
@@ -74,19 +72,15 @@ describe('MultiAwardsNotifier', () => {
         { token: 'token' },
       );
 
-      expect(gateway.notifyNewRecipientsAdded).toHaveBeenCalledWith(
-        'identityRef',
-        award,
-        [makeUser('user:default/jeff-buckley')],
-      );
+      expect(gateway.notifyNewRecipientsAdded).toHaveBeenCalledWith(award, [
+        makeUser('user:default/jeff-buckley'),
+      ]);
     });
 
     it('does not fetch from the catalog if there are no gateways', async () => {
       const notifier = new MultiAwardsNotifier([], catalogClient, tokenManager);
 
-      await notifier.notifyNewRecipients('identityRef', award, [
-        'user:default/jeff-buckley',
-      ]);
+      await notifier.notifyNewRecipients(award, ['user:default/jeff-buckley']);
 
       expect(tokenManager.getToken).not.toHaveBeenCalled();
       expect(catalogClient.getEntitiesByRefs).not.toHaveBeenCalled();

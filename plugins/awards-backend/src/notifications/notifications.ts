@@ -12,7 +12,6 @@ import { IncomingWebhook } from '@slack/webhook';
  */
 export interface NotificationsGateway {
   notifyNewRecipientsAdded(
-    identityRef: string,
     award: Award,
     newRecipients: UserEntity[],
   ): Promise<void>;
@@ -58,7 +57,6 @@ export class SlackNotificationsGateway implements NotificationsGateway {
   };
 
   async notifyNewRecipientsAdded(
-    _: string,
     award: Award,
     newRecipients: UserEntity[],
   ): Promise<void> {

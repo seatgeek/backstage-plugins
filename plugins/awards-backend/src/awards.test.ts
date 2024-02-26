@@ -50,7 +50,7 @@ describe('Awards', () => {
     it('should notify new recipients', async () => {
       const award = makeAward();
       db.add = jest.fn().mockResolvedValue(award);
-      const result = await awards.create(frank, {
+      const result = await awards.create({
         name: award.name,
         description: award.description,
         image: award.image,
@@ -69,7 +69,7 @@ describe('Awards', () => {
         award.owners,
         award.recipients,
       );
-      expect(notifier.notifyNewRecipients).toHaveBeenCalledWith(frank, award, [
+      expect(notifier.notifyNewRecipients).toHaveBeenCalledWith(award, [
         'user:default/peyton-manning',
         'user:default/serena-williams',
       ]);
@@ -103,11 +103,10 @@ describe('Awards', () => {
         updated.owners,
         updated.recipients,
       );
-      expect(notifier.notifyNewRecipients).toHaveBeenCalledWith(
-        frank,
-        updated,
-        ['user:default/megan-rapinoe', 'user:default/adrianne-lenker'],
-      );
+      expect(notifier.notifyNewRecipients).toHaveBeenCalledWith(updated, [
+        'user:default/megan-rapinoe',
+        'user:default/adrianne-lenker',
+      ]);
     });
   });
 });

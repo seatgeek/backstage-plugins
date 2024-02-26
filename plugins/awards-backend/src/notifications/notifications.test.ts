@@ -63,7 +63,7 @@ describe('SlackNotificationsGateway', () => {
       },
     ];
 
-    await gateway.notifyNewRecipientsAdded('123', award, newRecipients);
+    await gateway.notifyNewRecipientsAdded(award, newRecipients);
 
     expect(slack.send).toHaveBeenCalledWith({
       blocks: [
