@@ -64,6 +64,10 @@
             {
               "type": "docs",
               "release": "patch"
+            },
+            {
+              "type": "style",
+              "release": "patch"
             }
           ]
         }
