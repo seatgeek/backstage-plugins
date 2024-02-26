@@ -19,11 +19,8 @@ import Router from 'express-promise-router';
 import { Logger } from 'winston';
 import { Awards } from '../awards';
 import { DatabaseAwardsStore } from '../database/awards';
-import {
-  NotificationsGateway,
-  NullNotificationGateway,
-  SlackNotificationsGateway,
-} from '../notifications/notifications';
+import { SlackNotificationsGateway } from '../notifications/notifications';
+import { MultiAwardsNotifier } from '../notifier';
 
 export interface RouterOptions {
   identity: IdentityApi;
@@ -32,18 +29,6 @@ export interface RouterOptions {
   config: Config;
   discovery: DiscoveryService;
   tokenManager: TokenManager;
-}
-
-function getNotificationsGateway(
-  config: Config | undefined,
-): NotificationsGateway {
-  if (config) {
-    const slack = SlackNotificationsGateway.fromConfig(config);
-    if (slack) {
-      return slack;
-    }
-  }
-  return new NullNotificationGateway();
 }
 
 function getS3Client(config: Config): S3Client {
@@ -76,28 +61,24 @@ export async function createRouter(
   options: RouterOptions,
 ): Promise<express.Router> {
   const { config, database, identity, logger } = options;
-  if (!config) {
-    logger.warn('No config provided, some features will be disabled');
-  }
 
   const catalogClient = new CatalogClient({
     discoveryApi: options.discovery,
   });
-  const notifications = getNotificationsGateway(config);
-  const dbStore = await DatabaseAwardsStore.create({ database: database });
-
-  // for local dev against localstack
-  const s3 = getS3Client(config);
-  const bucket = config.getString('awards.s3.bucket');
-  const awardsApp = new Awards(
-    dbStore,
-    notifications,
+  const notifier = new MultiAwardsNotifier(
+    [],
     catalogClient,
     options.tokenManager,
-    s3,
-    bucket,
-    logger,
   );
+  const slack = SlackNotificationsGateway.fromConfig(config);
+  if (slack) {
+    notifier.addNotificationsGateway(slack);
+  }
+  const dbStore = await DatabaseAwardsStore.create({ database: database });
+  const s3 = getS3Client(config);
+  const bucket = config.getString('awards.s3.bucket');
+
+  const awardsApp = new Awards(dbStore, notifier, s3, bucket, logger);
 
   const router = Router();
   router.use(express.json());
@@ -181,9 +162,9 @@ export async function createRouter(
   });
 
   router.post('/', async (request, response) => {
-    const user = await getUserRef(identity, request);
+    await getUserRef(identity, request);
 
-    const award = await awardsApp.create(user, request.body);
+    const award = await awardsApp.create(request.body);
 
     response.json(award);
   });

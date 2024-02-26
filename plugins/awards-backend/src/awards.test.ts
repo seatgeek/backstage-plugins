@@ -3,18 +3,11 @@
  * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
  */
 import { S3Client } from '@aws-sdk/client-s3';
-import { TokenManager } from '@backstage/backend-common';
-import {
-  CatalogClient,
-  CatalogRequestOptions,
-  GetEntitiesByRefsRequest,
-} from '@backstage/catalog-client';
-import { UserEntity } from '@backstage/catalog-model';
 import { Award } from '@seatgeek/backstage-plugin-awards-common';
 import * as winston from 'winston';
 import { Awards } from './awards';
 import { AwardsStore } from './database/awards';
-import { NotificationsGateway } from './notifications/notifications';
+import { AwardsNotifier } from './notifier';
 
 const frank = 'user:default/frank-ocean';
 
@@ -29,22 +22,9 @@ function makeAward(): Award {
   };
 }
 
-function makeUser(ref: string): UserEntity {
-  return {
-    apiVersion: 'backstage.io/v1alpha1',
-    kind: 'User',
-    metadata: {
-      name: ref,
-    },
-    spec: {},
-  };
-}
-
 describe('Awards', () => {
   let db: jest.Mocked<AwardsStore>;
-  let notifications: jest.Mocked<NotificationsGateway>;
-  let catalogClient: jest.Mocked<CatalogClient>;
-  let tokenManager: jest.Mocked<TokenManager>;
+  let notifier: jest.Mocked<AwardsNotifier>;
   let s3: jest.Mocked<S3Client>;
   let awards: Awards;
 
@@ -55,43 +35,16 @@ describe('Awards', () => {
       update: jest.fn(),
       delete: jest.fn(),
     };
-    notifications = {
-      notifyNewRecipientsAdded: jest.fn(),
+    notifier = {
+      notifyNewRecipients: jest.fn(),
     };
-    tokenManager = {
-      authenticate: jest.fn(),
-      getToken: jest.fn().mockReturnValue({ token: 'mocked-token' }),
-    };
-    // @ts-ignore
     s3 = {
       send: jest.fn(),
-    };
-    catalogClient = {
-      getEntitiesByRefs: jest
-        .fn()
-        .mockImplementation(
-          async (
-            request: GetEntitiesByRefsRequest,
-            _?: CatalogRequestOptions,
-          ) => {
-            return {
-              items: request.entityRefs.map(makeUser),
-            };
-          },
-        ),
-    } as unknown as jest.Mocked<CatalogClient>;
+    } as unknown as jest.Mocked<S3Client>;
     const logger = winston.createLogger({
       transports: [new winston.transports.Console({ silent: true })],
     });
-    awards = new Awards(
-      db,
-      notifications,
-      catalogClient,
-      tokenManager,
-      s3,
-      'backstage-awards',
-      logger,
-    );
+    awards = new Awards(db, notifier, s3, 'backstage-awards', logger);
   });
 
   afterEach(() => {
@@ -102,7 +55,7 @@ describe('Awards', () => {
     it('should notify new recipients', async () => {
       const award = makeAward();
       db.add = jest.fn().mockResolvedValue(award);
-      const result = await awards.create(frank, {
+      const result = await awards.create({
         name: award.name,
         description: award.description,
         image: award.image,
@@ -121,14 +74,10 @@ describe('Awards', () => {
         award.owners,
         award.recipients,
       );
-      expect(notifications.notifyNewRecipientsAdded).toHaveBeenCalledWith(
-        frank,
-        award,
-        [
-          makeUser('user:default/peyton-manning'),
-          makeUser('user:default/serena-williams'),
-        ],
-      );
+      expect(notifier.notifyNewRecipients).toHaveBeenCalledWith(award, [
+        'user:default/peyton-manning',
+        'user:default/serena-williams',
+      ]);
     });
   });
 
@@ -159,14 +108,10 @@ describe('Awards', () => {
         updated.owners,
         updated.recipients,
       );
-      expect(notifications.notifyNewRecipientsAdded).toHaveBeenCalledWith(
-        frank,
-        updated,
-        [
-          makeUser('user:default/megan-rapinoe'),
-          makeUser('user:default/adrianne-lenker'),
-        ],
-      );
+      expect(notifier.notifyNewRecipients).toHaveBeenCalledWith(updated, [
+        'user:default/megan-rapinoe',
+        'user:default/adrianne-lenker',
+      ]);
     });
   });
 });

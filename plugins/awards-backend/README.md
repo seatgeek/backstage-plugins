@@ -85,7 +85,7 @@ awards:
     slack:
       webhook:
         # https://api.slack.com/messaging/webhooks
-        url: <my_slack_webhook_url>
+        url: ${MY_SLACK_WEBHOOK_URL_ENV_VAR}
 ```
 
 Users who have the `slack.com/user_id` annotation set (see [slack-catalog-backend](/plugins/slack-catalog-backend/README.md)) will be tagged in notifications that pertain to them.

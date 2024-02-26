@@ -7,9 +7,6 @@ import {
   PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3';
-import { TokenManager } from '@backstage/backend-common';
-import { CatalogClient } from '@backstage/catalog-client';
-import { isUserEntity } from '@backstage/catalog-model';
 import { NotFoundError } from '@backstage/errors';
 import { Award, AwardInput } from '@seatgeek/backstage-plugin-awards-common';
 import { IncomingMessage } from 'http';
@@ -17,11 +14,7 @@ import sizeOf from 'image-size';
 import { v4 as uuid } from 'uuid';
 import { Logger } from 'winston';
 import { AwardsStore } from './database/awards';
-import { NotificationsGateway } from './notifications/notifications';
-
-function nonNullable<T>(value: T): value is NonNullable<T> {
-  return value !== null && value !== undefined;
-}
+import { AwardsNotifier } from './notifier';
 
 const extensionByMimetype: Record<string, string> = {
   'image/png': 'png',
@@ -31,28 +24,22 @@ const extensionByMimetype: Record<string, string> = {
 export class Awards {
   private readonly db: AwardsStore;
   private readonly logger: Logger;
-  private readonly notifications: NotificationsGateway;
-  private readonly catalogClient: CatalogClient;
-  private readonly tokenManager: TokenManager;
+  private readonly notifier: AwardsNotifier;
   private readonly s3: S3Client;
-  private readonly s3Bucket: string;
+  private readonly logosS3Bucket: string;
 
   constructor(
     db: AwardsStore,
-    notifications: NotificationsGateway,
-    catalogClient: CatalogClient,
-    tokenManager: TokenManager,
+    notifier: AwardsNotifier,
     s3: S3Client,
-    logoBucket: string,
+    logosS3Bucket: string,
     logger: Logger,
   ) {
     this.db = db;
-    this.notifications = notifications;
-    this.logger = logger.child({ class: 'Awards' });
-    this.catalogClient = catalogClient;
-    this.tokenManager = tokenManager;
+    this.notifier = notifier;
     this.s3 = s3;
-    this.s3Bucket = logoBucket;
+    this.logosS3Bucket = logosS3Bucket;
+    this.logger = logger.child({ class: 'Awards' });
     this.logger.debug('Constructed');
   }
 
@@ -60,33 +47,13 @@ export class Awards {
     return await this.getAwardByUid(uid);
   }
 
-  private async notifyNewRecipients(
-    identityRef: string,
-    award: Award,
-    newRecipients: string[],
-  ): Promise<void> {
-    const token = await this.tokenManager.getToken();
-    const resp = await this.catalogClient.getEntitiesByRefs(
-      {
-        entityRefs: newRecipients,
-      },
-      token,
-    );
-    const users = resp.items.filter(nonNullable).filter(isUserEntity);
-    await this.notifications.notifyNewRecipientsAdded(
-      identityRef,
-      award,
-      users,
-    );
-  }
-
-  private async afterCreate(identityRef: string, award: Award): Promise<void> {
+  private async afterCreate(award: Award): Promise<void> {
     if (award.recipients.length > 0) {
-      await this.notifyNewRecipients(identityRef, award, award.recipients);
+      await this.notifier.notifyNewRecipients(award, award.recipients);
     }
   }
 
-  async create(identityRef: string, input: AwardInput): Promise<Award> {
+  async create(input: AwardInput): Promise<Award> {
     const award = await this.db.add(
       input.name,
       input.description,
@@ -95,24 +62,20 @@ export class Awards {
       input.recipients,
     );
 
-    this.afterCreate(identityRef, award).catch(e => {
+    this.afterCreate(award).catch(e => {
       this.logger.error('Error running afterCreate action', e);
     });
 
     return award;
   }
 
-  private async afterUpdate(
-    identityRef: string,
-    curr: Award,
-    previous: Award,
-  ): Promise<void> {
+  private async afterUpdate(curr: Award, previous: Award): Promise<void> {
     const newRecipients = curr.recipients.filter(
       recipient => !previous.recipients.includes(recipient),
     );
 
     if (newRecipients.length > 0) {
-      await this.notifyNewRecipients(identityRef, curr, newRecipients);
+      await this.notifier.notifyNewRecipients(curr, newRecipients);
     }
   }
 
@@ -136,7 +99,7 @@ export class Awards {
       input.recipients,
     );
 
-    this.afterUpdate(identityRef, updated, award).catch(e => {
+    this.afterUpdate(updated, award).catch(e => {
       this.logger.error('Error running afterUpdate action', e);
     });
 
@@ -179,7 +142,7 @@ export class Awards {
       new PutObjectCommand({
         Body: image,
         ContentType: mimeType,
-        Bucket: this.s3Bucket,
+        Bucket: this.logosS3Bucket,
         Key: key,
       }),
     );
@@ -191,7 +154,7 @@ export class Awards {
   ): Promise<{ body: IncomingMessage; contentType: string } | null> {
     const resp = await this.s3.send(
       new GetObjectCommand({
-        Bucket: this.s3Bucket,
+        Bucket: this.logosS3Bucket,
         Key: key,
       }),
     );
