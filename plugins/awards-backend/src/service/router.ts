@@ -2,7 +2,6 @@
  * Copyright SeatGeek
  * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
  */
-import { S3Client } from '@aws-sdk/client-s3';
 import {
   PluginDatabaseManager,
   TokenManager,
@@ -13,6 +12,7 @@ import { CatalogClient } from '@backstage/catalog-client';
 import { Config } from '@backstage/config';
 import { AuthenticationError } from '@backstage/errors';
 import { IdentityApi } from '@backstage/plugin-auth-node';
+import { Storage, StorageType } from '@tweedegolf/storage-abstraction';
 import express from 'express';
 import fileUpload from 'express-fileupload';
 import Router from 'express-promise-router';
@@ -31,30 +31,58 @@ export interface RouterOptions {
   tokenManager: TokenManager;
 }
 
-function getS3Client(config: Config): S3Client {
-  const region = config.getString('awards.s3.region');
+function buildS3Adapter(config: Config): Storage {
+  const region = config.getString('region');
 
   // for local dev
-  const endpoint = config.getOptionalString('awards.s3.endpoint');
+  const endpoint = config.getOptionalString('endpoint');
 
   // credentials
-  const accessKey = config.getOptionalString('awards.s3.accessKey');
-  const secretKey = config.getOptionalString('awards.s3.secretKey');
-  const sessionToken = config.getOptionalString('awards.s3.sessionToken');
-  let credentials = undefined;
-  if (accessKey && secretKey && sessionToken) {
-    credentials = {
-      accessKeyId: accessKey,
-      secretAccessKey: secretKey,
-      sessionToken,
-    };
-  }
+  const accessKeyId = config.getOptionalString('accessKey');
+  const secretAccessKey = config.getOptionalString('secretKey');
 
-  return new S3Client({
-    endpoint,
+  // bucket name
+  const bucketName = config.getString('bucket');
+
+  return new Storage({
+    type: StorageType.S3,
     region,
-    credentials,
+    accessKeyId,
+    secretAccessKey,
+    endpoint,
+    bucketName,
   });
+}
+
+function buildFsAdapter(config: Config): Storage {
+  const directory =
+    config.getOptionalString('directory') || 'tmp-awards-storage';
+  return new Storage({
+    type: StorageType.LOCAL,
+    directory,
+    bucketName: directory,
+    mode: 755,
+  });
+}
+
+function getStorageClient(config: Config): Storage {
+  const storageConfig = config.getConfig('awards.storage');
+  if (storageConfig.keys().length !== 1) {
+    throw new Error(
+      `Must specify exactly one storage engine in awards.storage, got ${storageConfig.keys()}`,
+    );
+  }
+  const key = storageConfig.keys()[0];
+  switch (key) {
+    case 's3':
+      return buildS3Adapter(storageConfig.getConfig('s3'));
+    case 'fs':
+      return buildFsAdapter(storageConfig.getConfig('fs'));
+    default:
+      throw new Error(
+        `Invalid storage engine type, valid types are "s3", "fs", got: ${key}`,
+      );
+  }
 }
 
 export async function createRouter(
@@ -75,10 +103,9 @@ export async function createRouter(
     notifier.addNotificationsGateway(slack);
   }
   const dbStore = await DatabaseAwardsStore.create({ database: database });
-  const s3 = getS3Client(config);
-  const bucket = config.getString('awards.s3.bucket');
+  const storage = getStorageClient(config);
 
-  const awardsApp = new Awards(dbStore, notifier, s3, bucket, logger);
+  const awardsApp = new Awards(dbStore, notifier, storage, logger);
 
   const router = Router();
   router.use(express.json());

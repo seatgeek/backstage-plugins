@@ -1,3 +1,7 @@
+awards:
+  storage:
+    fs: {}
+
 app:
   title: SeatGeek Backstage Plugins Demo Site
   baseUrl: http://127.0.0.1:3000

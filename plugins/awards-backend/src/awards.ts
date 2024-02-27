@@ -2,15 +2,11 @@
  * Copyright SeatGeek
  * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
  */
-import {
-  GetObjectCommand,
-  PutObjectCommand,
-  S3Client,
-} from '@aws-sdk/client-s3';
 import { NotFoundError } from '@backstage/errors';
 import { Award, AwardInput } from '@seatgeek/backstage-plugin-awards-common';
-import { IncomingMessage } from 'http';
+import { Storage } from '@tweedegolf/storage-abstraction';
 import sizeOf from 'image-size';
+import { Readable } from 'stream';
 import { v4 as uuid } from 'uuid';
 import { Logger } from 'winston';
 import { AwardsStore } from './database/awards';
@@ -21,24 +17,28 @@ const extensionByMimetype: Record<string, string> = {
   'image/jpeg': 'jpg',
 };
 
+const mimetypeByExtension = Object.fromEntries(
+  Object.entries(extensionByMimetype).map(([mimetype, extension]) => [
+    extension,
+    mimetype,
+  ]),
+);
+
 export class Awards {
   private readonly db: AwardsStore;
   private readonly logger: Logger;
   private readonly notifier: AwardsNotifier;
-  private readonly s3: S3Client;
-  private readonly logosS3Bucket: string;
+  private readonly storage: Storage;
 
   constructor(
     db: AwardsStore,
     notifier: AwardsNotifier,
-    s3: S3Client,
-    logosS3Bucket: string,
+    storage: Storage,
     logger: Logger,
   ) {
     this.db = db;
     this.notifier = notifier;
-    this.s3 = s3;
-    this.logosS3Bucket = logosS3Bucket;
+    this.storage = storage;
     this.logger = logger.child({ class: 'Awards' });
     this.logger.debug('Constructed');
   }
@@ -138,33 +138,30 @@ export class Awards {
 
     // upload image to s3
     const key = `${uuid()}.${extensionByMimetype[mimeType]}`;
-    await this.s3.send(
-      new PutObjectCommand({
-        Body: image,
-        ContentType: mimeType,
-        Bucket: this.logosS3Bucket,
-        Key: key,
-      }),
-    );
+    const resp = await this.storage.addFile({
+      buffer: image,
+      targetPath: key,
+    });
+    if (resp.error) {
+      throw new Error(resp.error);
+    }
     return key;
   }
 
   async getLogo(
     key: string,
-  ): Promise<{ body: IncomingMessage; contentType: string } | null> {
-    const resp = await this.s3.send(
-      new GetObjectCommand({
-        Bucket: this.logosS3Bucket,
-        Key: key,
-      }),
-    );
-    if (!resp.Body || !resp.ContentType) {
+  ): Promise<{ body: Readable; contentType: string } | null> {
+    const resp = await this.storage.getFileAsStream(key);
+
+    if (!resp.value) {
       return null;
     }
 
+    const extension = key.split('.').pop();
+
     return {
-      body: resp.Body as IncomingMessage,
-      contentType: resp.ContentType,
+      body: resp.value,
+      contentType: mimetypeByExtension[extension!],
     };
   }
 }
