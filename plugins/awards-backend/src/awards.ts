@@ -151,13 +151,21 @@ export class Awards {
   async getLogo(
     key: string,
   ): Promise<{ body: Readable; contentType: string } | null> {
+    const parts = key.split('.');
+    if (parts.length === 1) {
+      throw new Error('Invalid key, missing extension');
+    }
+    const extension = parts[parts.length - 1];
+    const contentType = mimetypeByExtension[extension];
+    if (!contentType) {
+      throw new Error(`Unknown key extension ${extension}`);
+    }
+
     const resp = await this.storage.getFileAsStream(key);
 
     if (!resp.value) {
       return null;
     }
-
-    const extension = key.split('.').pop();
 
     return {
       body: resp.value,
