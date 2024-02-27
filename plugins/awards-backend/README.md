@@ -71,7 +71,7 @@ awards:
   storage:
     fs:
       # directory where files will be stored relative to the CWD where the application was started
-      directory: my-directory  # optional: defaults to tmp-awards-storage
+      directory: my-directory # optional: defaults to tmp-awards-storage
 ```
 
 ### S3
