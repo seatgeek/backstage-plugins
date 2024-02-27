@@ -65,7 +65,7 @@ function buildFsAdapter(config: Config): Storage {
   });
 }
 
-function getStorageClient(config: Config): Storage {
+export function getStorageClient(config: Config): Storage {
   const storageConfig = config.getConfig('awards.storage');
   if (storageConfig.keys().length !== 1) {
     throw new Error(
