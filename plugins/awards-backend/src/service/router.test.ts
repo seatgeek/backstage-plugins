@@ -58,9 +58,11 @@ describe('backend router', () => {
     const router = await createRouter({
       config: new ConfigReader({
         awards: {
-          s3: {
-            region: 'us-east-1',
-            bucket: 'backstage-awards',
+          storage: {
+            s3: {
+              region: 'us-east-1',
+              bucket: 'awards-bucket',
+            },
           },
         },
       }),
