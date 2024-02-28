@@ -29,7 +29,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Autocomplete from '@mui/material/Autocomplete';
 import Stack from '@mui/material/Stack';
 import { Award } from '@seatgeek/backstage-plugin-awards-common';
-import { isEmpty, random } from 'lodash';
+import { isEmpty } from 'lodash';
 import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAsync from 'react-use/lib/useAsync';
@@ -90,10 +90,7 @@ export const AwardEditCard = ({ award = emptyAward }: AwardEditCardProps) => {
   const hasRequiredFields = useMemo(() => {
     return awardName !== '' && awardDescription !== '' && awardImage !== '';
   }, [awardName, awardDescription, awardImage]);
-
-  const [allUsers, setAllUsers] = useState(new Array<User>());
-
-  useAsync(async () => {
+  const { value: allUsers } = useAsync(async () => {
     // Fetching all users in the catalog.
     // TODO: memoize this
     const entities = await catalogApi.getEntities({
@@ -107,24 +104,8 @@ export const AwardEditCard = ({ award = emptyAward }: AwardEditCardProps) => {
         }`,
       };
     });
-    setAllUsers(users);
-
-    // Initializing a new image
-    if (isEmpty(award.image)) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setAwardImage(reader.result?.toString() ?? '');
-      };
-
-      const newImage = `https://picsum.photos/100/50/?original=${random(
-        1,
-        1000,
-      )}`;
-      const response = await fetch(newImage);
-      const blob = await response.blob();
-      reader.readAsDataURL(blob);
-    }
-  }, [catalogApi]);
+    return users;
+  });
 
   async function saveAward() {
     try {
@@ -184,19 +165,22 @@ export const AwardEditCard = ({ award = emptyAward }: AwardEditCardProps) => {
     }
   }
 
-  function readFile(file: any) {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setAwardImage(reader.result?.toString() ?? '');
-    };
-
-    reader.readAsDataURL(file);
-  }
-
-  function handleFile(event: any) {
-    if (event.files && event.files.length > 0) {
-      const file = event.files[0];
-      readFile(file);
+  async function handleFileInputChange(
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) {
+    if (!(event.target.files && event.target.files.length > 0)) {
+      return;
+    }
+    const file = event.target.files[0];
+    try {
+      const res = await awardsApi.uploadLogo(file);
+      setAwardImage(res.location);
+    } catch (e) {
+      alertApi.post({
+        message: String(e),
+        severity: 'error',
+        display: 'transient',
+      });
     }
   }
 
@@ -236,10 +220,10 @@ export const AwardEditCard = ({ award = emptyAward }: AwardEditCardProps) => {
           />
           <Grid container alignItems="center">
             <Grid item>
-              <InputLabel>Award logo (150x50 px)</InputLabel>
+              <InputLabel>Award logo (3:1 aspect ratio)</InputLabel>
             </Grid>
             <Grid item>
-              <img alt="" src={awardImage} height="50" width="150" />
+              <img alt="" src={awardImage} height="200" width="600" />
             </Grid>
             <Grid item>
               <Button
@@ -251,14 +235,14 @@ export const AwardEditCard = ({ award = emptyAward }: AwardEditCardProps) => {
                 <VisuallyHiddenInput
                   required
                   type="file"
-                  onChange={e => handleFile(e.target)}
+                  onChange={handleFileInputChange}
                 />
               </Button>
             </Grid>
           </Grid>
           <Autocomplete
             multiple
-            options={allUsers}
+            options={allUsers || []}
             getOptionLabel={option => option.name}
             onChange={(__, v) => setAwardOwners(v)}
             value={awardOwners}
@@ -273,7 +257,7 @@ export const AwardEditCard = ({ award = emptyAward }: AwardEditCardProps) => {
           />
           <Autocomplete
             multiple
-            options={allUsers}
+            options={allUsers || []}
             getOptionLabel={option => option.name}
             onChange={(__, v) => setAwardRecipients(v)}
             value={awardRecipients}

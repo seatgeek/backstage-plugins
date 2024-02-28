@@ -12,7 +12,9 @@ import { CatalogClient } from '@backstage/catalog-client';
 import { Config } from '@backstage/config';
 import { AuthenticationError } from '@backstage/errors';
 import { IdentityApi } from '@backstage/plugin-auth-node';
+import { Storage, StorageType } from '@tweedegolf/storage-abstraction';
 import express from 'express';
+import fileUpload from 'express-fileupload';
 import Router from 'express-promise-router';
 import { Logger } from 'winston';
 import { Awards } from '../awards';
@@ -27,6 +29,60 @@ export interface RouterOptions {
   config: Config;
   discovery: DiscoveryService;
   tokenManager: TokenManager;
+}
+
+function buildS3Adapter(config: Config): Storage {
+  const region = config.getString('region');
+
+  // for local dev
+  const endpoint = config.getOptionalString('endpoint');
+
+  // credentials
+  const accessKeyId = config.getOptionalString('accessKey');
+  const secretAccessKey = config.getOptionalString('secretKey');
+
+  // bucket name
+  const bucketName = config.getString('bucket');
+
+  return new Storage({
+    type: StorageType.S3,
+    region,
+    accessKeyId,
+    secretAccessKey,
+    endpoint,
+    bucketName,
+  });
+}
+
+function buildFsAdapter(config: Config): Storage {
+  const directory =
+    config.getOptionalString('directory') || 'tmp-awards-storage';
+  return new Storage({
+    type: StorageType.LOCAL,
+    directory,
+    bucketName: directory,
+    mode: 755,
+  });
+}
+
+export function getStorageClient(config: Config): Storage {
+  const storageConfig = config.getConfig('awards.storage');
+  if (storageConfig.keys().length !== 1) {
+    throw new Error(
+      `Must specify exactly one storage engine in awards.storage, got ${storageConfig.keys()}`,
+    );
+  }
+  const key = storageConfig.keys()[0];
+  switch (key) {
+    case 's3':
+      return buildS3Adapter(storageConfig.getConfig('s3'));
+    case 'fs':
+      return buildFsAdapter(storageConfig.getConfig('fs'));
+    default:
+      throw new Error(
+        `Invalid storage engine type, valid types are "s3", "fs", got: ${key}`,
+      );
+  }
 }
 
 export async function createRouter(
@@ -47,11 +103,13 @@ export async function createRouter(
     notifier.addNotificationsGateway(slack);
   }
   const dbStore = await DatabaseAwardsStore.create({ database: database });
+  const storage = getStorageClient(config);
 
-  const awardsApp = new Awards(dbStore, notifier, logger);
+  const awardsApp = new Awards(dbStore, notifier, storage, logger);
 
   const router = Router();
   router.use(express.json());
+  router.use(fileUpload());
 
   router.get('/health', (_, response) => {
     logger.info('PONG!');
@@ -136,6 +194,42 @@ export async function createRouter(
     const award = await awardsApp.create(request.body);
 
     response.json(award);
+  });
+
+  router.post('/logos', async (request, response) => {
+    await getUserRef(identity, request);
+
+    if (!request.files) {
+      response.status(400).send('No files were uploaded.');
+      return;
+    }
+    const logo = request.files.file;
+    if (Array.isArray(logo)) {
+      response.status(400).send('Must only upload one file.');
+      return;
+    }
+
+    const key = await awardsApp.uploadLogo(logo.data, logo.mimetype);
+
+    const apiUrl = await options.discovery.getExternalBaseUrl('awards');
+    response.status(201).json({
+      location: `${apiUrl}/logos/${key}`,
+    });
+  });
+
+  router.get('/logos/:key', async (request, response) => {
+    const key = request.params.key;
+    const image = await awardsApp.getLogo(key);
+    if (!image) {
+      response.status(404).send('Not found');
+      return;
+    }
+
+    response.setHeader('Content-Type', image.contentType);
+    image.body.pipe(response);
+    image.body.on('error', (err: Error) => {
+      response.status(500).send(err.message);
+    });
   });
 
   router.use(errorHandler());

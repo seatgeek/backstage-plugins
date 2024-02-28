@@ -60,7 +60,36 @@ function makeCreateEnv(config: Config) {
 
 ## Configuration
 
-### Slack notifications
+### Image storage (required)
+
+The awards-backend requires storage to be configured for award images.
+
+### Filesystem
+
+```yaml
+awards:
+  storage:
+    fs:
+      # directory where files will be stored relative to the CWD where the application was started
+      directory: my-directory # optional: defaults to tmp-awards-storage
+```
+
+### S3
+
+```yaml
+awards:
+  storage:
+    s3:
+      bucket: backstage-awards # required
+      region: us-east-1 # required
+      # Omit the following fields if using IAM roles (https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/loading-node-credentials-iam.html)
+      accessKeyId: ${AWS_ACCESS_KEY_ID} # optional
+      secretAccessKey: ${AWS_SECRET_ACCESS_KEY} # optional
+      # For local development, pass the endpoint for your localstack server
+      endpoint: http://127.0.0.1:4566 # optional
+```
+
+### Slack notifications (optional)
 
 To enable Slack notifications, add the following to your `app-config.yaml` file:
 

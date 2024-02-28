@@ -8,7 +8,7 @@ import {
   ResponseErrorPanel,
 } from '@backstage/core-components';
 import { useApi } from '@backstage/core-plugin-api';
-import { Grid, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import { Award } from '@seatgeek/backstage-plugin-awards-common';
 import React from 'react';
 import useAsync from 'react-use/lib/useAsync';
@@ -21,16 +21,8 @@ interface AwardViewCardProps {
 export const AwardViewCard = ({ award }: AwardViewCardProps) => {
   return (
     <InfoCard title={award.name} subheader={award.uid}>
-      <Typography variant="body1">
-        <Grid container spacing={2}>
-          <Grid item xs={6} md={2}>
-            <img alt="" src={award.image} height="50" width="150" />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Typography>{award.description}</Typography>
-          </Grid>
-        </Grid>
-      </Typography>
+      <img alt="" src={award.image} height="200" width="600" />
+      <Typography variant="body1">{award.description}</Typography>
     </InfoCard>
   );
 };

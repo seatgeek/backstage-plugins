@@ -8,10 +8,11 @@ import {
   BackstageIdentityResponse,
   IdentityApiGetIdentityRequest,
 } from '@backstage/plugin-auth-node';
+import { StorageType } from '@tweedegolf/storage-abstraction';
 import express from 'express';
 import { Knex } from 'knex';
 import request from 'supertest';
-import { createRouter } from './router';
+import { createRouter, getStorageClient } from './router';
 
 // Good references for this:
 // https://github.com/backstage/backstage/blob/0c930f8df1f2acb4a0af400e8e31cae354973af4/plugins/tech-insights-backend/src/service/router.test.ts
@@ -56,8 +57,17 @@ describe('backend router', () => {
     const dbm = await createDatabaseManager();
     db = await dbm.getClient();
     const router = await createRouter({
+      config: new ConfigReader({
+        awards: {
+          storage: {
+            s3: {
+              region: 'us-east-1',
+              bucket: 'awards-bucket',
+            },
+          },
+        },
+      }),
       logger: getVoidLogger(),
-      config: new ConfigReader({}),
       identity: { getIdentity },
       database: dbm,
       discovery: {
@@ -85,5 +95,92 @@ describe('backend router', () => {
       expect(response.status).toEqual(200);
       expect(response.body).toEqual({ status: 'ok' });
     });
+  });
+});
+
+describe('getStorageClient', () => {
+  it('creates a fs storage client', () => {
+    const config = new ConfigReader({
+      awards: {
+        storage: {
+          fs: {
+            directory: 'my-directory',
+          },
+        },
+      },
+    });
+    const storage = getStorageClient(config);
+    expect(storage.getConfig()).toEqual({
+      type: StorageType.LOCAL,
+      bucketName: 'my-directory',
+      directory: 'my-directory',
+      mode: 755,
+    });
+  });
+  it('creates an s3 storage client', () => {
+    const config = new ConfigReader({
+      awards: {
+        storage: {
+          s3: {
+            bucket: 'my-bucket',
+            region: 'us-east-1',
+            accessKey: 'my-access-key',
+            secretKey: 'my-secret-key',
+            endpoint: '127.0.0.1',
+          },
+        },
+      },
+    });
+
+    const storage = getStorageClient(config);
+    expect(storage.getConfig()).toEqual({
+      accessKeyId: 'my-access-key',
+      secretAccessKey: 'my-secret-key',
+      endpoint: '127.0.0.1',
+      bucketName: 'my-bucket',
+      region: 'us-east-1',
+      type: StorageType.S3,
+    });
+  });
+
+  it('errors if multiple storage engines provided', () => {
+    const config = new ConfigReader({
+      awards: {
+        storage: {
+          s3: {},
+          fs: {},
+        },
+      },
+    });
+
+    expect(() => getStorageClient(config)).toThrow(
+      /Must specify exactly one storage engine.*/,
+    );
+  });
+
+  it('errors if no storage engines provided', () => {
+    const config = new ConfigReader({
+      awards: {
+        storage: {},
+      },
+    });
+
+    expect(() => getStorageClient(config)).toThrow(
+      /Must specify exactly one storage engine.*/,
+    );
+  });
+
+  it('errors if unknown storage engine provides', () => {
+    const config = new ConfigReader({
+      awards: {
+        storage: {
+          carrierPidgeon: {},
+        },
+      },
+    });
+
+    expect(() => getStorageClient(config)).toThrow(
+      /Invalid storage engine type.*/,
+    );
   });
 });

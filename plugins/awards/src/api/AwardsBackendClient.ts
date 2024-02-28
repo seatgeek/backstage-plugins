@@ -74,4 +74,21 @@ export class AwardsBackendApi implements AwardsApi {
       })
       .then(res => res.json());
   }
+
+  async uploadLogo(file: File): Promise<{ location: string }> {
+    const url = `${await this.discoveryApi.getBaseUrl('awards')}/logos`;
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const resp = await this.fetchApi.fetch(url, {
+      method: 'POST',
+      body: formData,
+    });
+    if (resp.status !== 201) {
+      const text = await resp.text();
+      throw new Error(`Failed to upload logo: ${text}`);
+    }
+    return await resp.json();
+  }
 }
