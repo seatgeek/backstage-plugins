@@ -67,17 +67,27 @@ function buildFsAdapter(config: Config): Storage {
 
 export function getStorageClient(config: Config): Storage {
   const storageConfig = config.getConfig('awards.storage');
-  if (storageConfig.keys().length !== 1) {
+  const configs: Record<string, Config> = {};
+  storageConfig.keys().forEach(key => {
+    try {
+      configs[key] = storageConfig.getConfig(key);
+    } catch {
+      // config object isn't instantiated for this key
+    }
+  });
+  if (Object.keys(configs).length !== 1) {
     throw new Error(
-      `Must specify exactly one storage engine in awards.storage, got ${storageConfig.keys()}`,
+      `Must specify exactly one storage engine in awards.storage, got ${Object.keys(
+        configs,
+      )}`,
     );
   }
-  const key = storageConfig.keys()[0];
+  const key = Object.keys(configs)[0];
   switch (key) {
     case 's3':
-      return buildS3Adapter(storageConfig.getConfig('s3'));
+      return buildS3Adapter(configs.s3);
     case 'fs':
-      return buildFsAdapter(storageConfig.getConfig('fs'));
+      return buildFsAdapter(configs.fs);
     default:
       throw new Error(
         `Invalid storage engine type, valid types are "s3", "fs", got: ${key}`,
