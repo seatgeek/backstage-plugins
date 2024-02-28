@@ -68,6 +68,10 @@
             {
               "type": "style",
               "release": "patch"
+            },
+            {
+              "type": "refactor",
+              "release": "minor"
             }
           ]
         }
