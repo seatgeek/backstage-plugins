@@ -158,6 +158,35 @@ describe('getStorageClient', () => {
     );
   });
 
+  // this allows for app-config overlays to cancel out engines specified in previous configs
+  // e.g. app-config.yaml sets 'fs' but app-config.prod.yaml sets 's3', it can then set fs: null.
+  it('allows multiple storage engines as long as all but one are null', () => {
+    const config = new ConfigReader({
+      awards: {
+        storage: {
+          fs: null,
+          s3: {
+            bucket: 'my-bucket',
+            region: 'us-east-1',
+            accessKey: 'my-access-key',
+            secretKey: 'my-secret-key',
+            endpoint: '127.0.0.1',
+          },
+        },
+      },
+    });
+
+    const storage = getStorageClient(config);
+    expect(storage.getConfig()).toEqual({
+      accessKeyId: 'my-access-key',
+      secretAccessKey: 'my-secret-key',
+      endpoint: '127.0.0.1',
+      bucketName: 'my-bucket',
+      region: 'us-east-1',
+      type: StorageType.S3,
+    });
+  });
+
   it('errors if no storage engines provided', () => {
     const config = new ConfigReader({
       awards: {
