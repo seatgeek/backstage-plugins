@@ -65,6 +65,18 @@ function buildFsAdapter(config: Config): Storage {
   });
 }
 
+function buildGcsAdapter(config: Config): Storage {
+  // bucket name
+  const bucketName = config.getString('bucket');
+  // keyFilename
+  const keyFilename = config.getOptionalString('keyFilename');
+  return new Storage({
+    type: StorageType.GCS,
+    bucketName: bucketName,
+    keyFilename: keyFilename,
+  });
+}
+
 export function getStorageClient(config: Config): Storage {
   const storageConfig = config.getConfig('awards.storage');
   const configs: Record<string, Config> = {};
@@ -88,9 +100,11 @@ export function getStorageClient(config: Config): Storage {
       return buildS3Adapter(configs.s3);
     case 'fs':
       return buildFsAdapter(configs.fs);
+    case 'gcs':
+      return buildGcsAdapter(configs.gcs);
     default:
       throw new Error(
-        `Invalid storage engine type, valid types are "s3", "fs", got: ${key}`,
+        `Invalid storage engine type, valid types are "s3", "fs", "gcs", got: ${key}`,
       );
   }
 }
