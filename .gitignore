@@ -54,3 +54,6 @@ site
 e2e-test-report/
 
 packages/backend/tmp-awards-storage
+
+# webstorm IDE
+.idea

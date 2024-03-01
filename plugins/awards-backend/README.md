@@ -74,6 +74,16 @@ awards:
       directory: my-directory # optional: defaults to tmp-awards-storage
 ```
 
+### GCS
+
+```yaml
+awards:
+  storage:
+    gcs:
+      bucket: gs://backstage-awards # required
+      keyFilename: path/to/keyFile.json # optional: defaults to GOOGLE_APPLICATION_CREDENTIALS
+```
+
 ### S3
 
 ```yaml

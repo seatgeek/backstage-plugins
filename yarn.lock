@@ -5346,7 +5346,7 @@
   resolved "https://registry.yarnpkg.com/@google-cloud/promisify/-/promisify-4.0.0.tgz#a906e533ebdd0f754dca2509933334ce58b8c8b1"
   integrity sha512-Orxzlfb9c67A15cq2JQEyVc7wEsmFBmHjZWZYQMUyJ1qivXyMwdyNOs9odi79hze+2zqdTtu1E19IM/FtqZ10g==
 
-"@google-cloud/storage@^7.0.0":
+"@google-cloud/storage@^7.0.0", "@google-cloud/storage@^7.6.0":
   version "7.7.0"
   resolved "https://registry.yarnpkg.com/@google-cloud/storage/-/storage-7.7.0.tgz#d942ebea018386d276256bad93ceec9bdb955333"
   integrity sha512-EMCEY+6JiIkx7Dt8NXVGGjy1vRdSGdHkoqZoqjJw7cEBkT7ZkX0c7puedfn1MamnzW5SX4xoa2jVq5u7OWBmkQ==
@@ -9816,6 +9816,13 @@
   dependencies:
     "@aws-sdk/client-s3" "^3.503.1"
     "@aws-sdk/s3-request-presigner" "^3.503.1"
+
+"@tweedegolf/sab-adapter-google-cloud@^1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@tweedegolf/sab-adapter-google-cloud/-/sab-adapter-google-cloud-1.0.5.tgz#c80edeab4f145884eecfe6c9eb455878eccd2226"
+  integrity sha512-jA/1ySY5PaDYwFUZ9RgAsK6ObvgHZ3KWdLsRuo1IDN2SAm2LO46LD30nEF4m71gBnlnWEuScogCnUYHiCvflBQ==
+  dependencies:
+    "@google-cloud/storage" "^7.6.0"
 
 "@tweedegolf/sab-adapter-local@^1.0.5":
   version "1.0.5"

@@ -142,6 +142,42 @@ describe('getStorageClient', () => {
       type: StorageType.S3,
     });
   });
+  it('creates a GCS storage client with key file', () => {
+    const config = new ConfigReader({
+      awards: {
+        storage: {
+          gcs: {
+            bucket: 'gs://my-bucket',
+            keyFilename: 'path/to/keyFile.json',
+          },
+        },
+      },
+    });
+
+    const storage = getStorageClient(config);
+    expect(storage.getConfig()).toEqual({
+      bucketName: 'gs://my-bucket',
+      keyFilename: 'path/to/keyFile.json',
+      type: StorageType.GCS,
+    });
+  });
+  it('creates a GCS storage client from GOOGLE_APPLICATION_CREDENTIALS', () => {
+    const config = new ConfigReader({
+      awards: {
+        storage: {
+          gcs: {
+            bucket: 'gs://my-bucket',
+          },
+        },
+      },
+    });
+
+    const storage = getStorageClient(config);
+    expect(storage.getConfig()).toEqual({
+      bucketName: 'gs://my-bucket',
+      type: StorageType.GCS,
+    });
+  });
 
   it('errors if multiple storage engines provided', () => {
     const config = new ConfigReader({
@@ -149,6 +185,7 @@ describe('getStorageClient', () => {
         storage: {
           s3: {},
           fs: {},
+          gcs: {},
         },
       },
     });
