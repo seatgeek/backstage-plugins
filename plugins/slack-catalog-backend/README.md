@@ -19,6 +19,7 @@ Add the following config to your `app-config.yaml`:
 slackCatalog:
   token: ${SLACK_API_TOKEN_CATALOG}
 ```
+
 More information about Slack scopes [requirements](https://api.slack.com/scopes/users:read.email).
 
 ## Processors
