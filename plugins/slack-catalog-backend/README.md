@@ -10,7 +10,7 @@ Install the `@seatgeek/backstage-plugin-slack-catalog-backend` package in your b
 
 ```shell
 # From your Backstage root directory
-yarn add --cwd packages/app @seatgeek/backstage-plugin-slack-catalog-backend
+yarn add --cwd packages/backend @seatgeek/backstage-plugin-slack-catalog-backend
 ```
 
 Add the following config to your `app-config.yaml`:
@@ -19,6 +19,8 @@ Add the following config to your `app-config.yaml`:
 slackCatalog:
   token: ${SLACK_API_TOKEN_CATALOG}
 ```
+
+More information about Slack scopes [requirements](https://api.slack.com/scopes/users:read.email).
 
 ## Processors
 
