@@ -30,6 +30,10 @@
       "plugins/*"
     ]
   },
+  "volta": {
+    "node": "18.19.1",
+    "yarn": "1.22.21"
+  },
   "devDependencies": {
     "@backstage/cli": "^0.25.1",
     "@backstage/e2e-test-utils": "^0.1.0",

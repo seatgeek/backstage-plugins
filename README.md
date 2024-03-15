@@ -21,3 +21,5 @@ their respective locations.
 ## Preview the collection
 
 We have created a demo Backstage application to preview the SeatGeek Backstage Plugins Collection. To view it, clone this repository and run `yarn install && yarn dev`.
+
+If you run into issues running the above command, run `yarn --version` to check the installed yarn version. It is a known issue that the project does not work with the latest version of yarn, so it is recommended to downgrade to the highest known supported version of `1.22.x`.
