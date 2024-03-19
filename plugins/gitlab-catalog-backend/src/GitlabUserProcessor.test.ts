@@ -31,11 +31,12 @@ jest.mock('@gitbeaker/rest', () => {
 
 describe('GitlabUserProcessor', () => {
   let processor: GitlabUserProcessor;
+  // @ts-ignore: intended to reference as such by the library
   let mockGitlabClient: Gitlab;
   let mockLogger: winston.Logger;
 
   beforeEach(() => {
-    mockGitlabClient = new Gitlab();
+    mockGitlabClient = new Gitlab({token: `token`});
     mockLogger = winston.createLogger({
       transports: [
         new winston.transports.Console({
