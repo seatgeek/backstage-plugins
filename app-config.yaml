@@ -47,3 +47,10 @@ catalog:
       target: ../../mock-catalog/templates/create-postgres-database.yaml
     - type: file
       target: ../../mock-catalog/templates/create-python-module.yaml
+
+slackCatalog:
+  token: ${SLACK_API_TOKEN_CATALOG}
+
+gitlabCatalog:
+  host: ${GITLAB_HOST_CATALOG}
+  token: ${GITLAB_TOKEN_CATALOG}
