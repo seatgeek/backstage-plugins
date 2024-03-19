@@ -36,7 +36,7 @@ describe('GitlabUserProcessor', () => {
   let mockLogger: winston.Logger;
 
   beforeEach(() => {
-    mockGitlabClient = new Gitlab({token: `token`});
+    mockGitlabClient = new Gitlab({ token: `token` });
     mockLogger = winston.createLogger({
       transports: [
         new winston.transports.Console({

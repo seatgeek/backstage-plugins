@@ -9,7 +9,7 @@ import type {
   CatalogProcessor,
   CatalogProcessorEmit,
 } from '@backstage/plugin-catalog-node';
-import { Gitlab, ExpandedUserSchema } from '@gitbeaker/rest';
+import { ExpandedUserSchema, Gitlab } from '@gitbeaker/rest';
 import { Logger } from 'winston';
 
 const GITLAB_PER_PAGE_LIMIT = 500;
@@ -28,7 +28,8 @@ export class GitlabUserProcessor implements CatalogProcessor {
   private cacheLoaded: boolean;
   private userLookup: Map<string, ExpandedUserSchema>;
   // guarantee that users are loaded only once
-  private loadUserPromise: Promise<Map<string, ExpandedUserSchema>> | null = null;
+  private loadUserPromise: Promise<Map<string, ExpandedUserSchema>> | null =
+    null;
 
   private async fetchUsers(): Promise<Map<string, ExpandedUserSchema>> {
     if (!this.gitlab) {
@@ -55,18 +56,19 @@ export class GitlabUserProcessor implements CatalogProcessor {
 
     let members: ExpandedUserSchema[] = [];
     try {
-      members = await this.gitlab!.Users.all({ perPage: GITLAB_PER_PAGE_LIMIT });
+      members = await this.gitlab!.Users.all({
+        perPage: GITLAB_PER_PAGE_LIMIT,
+      });
     } catch (error) {
       this.logger.error(`Error loading gitlab users: ${error}`);
       return this.userLookup;
     }
 
-    members
-      .forEach(user => {
-        if (user.email) {
-          this.userLookup.set(user.email, user);
-        }
-      });
+    members.forEach(user => {
+      if (user.email) {
+        this.userLookup.set(user.email, user);
+      }
+    });
 
     this.logger.info(`Loaded ${this.userLookup.size} gitlab users`);
     this.cacheLoaded = true;
@@ -87,12 +89,17 @@ export class GitlabUserProcessor implements CatalogProcessor {
       logger.info(
         `No host provided for GitlabUserProcessor, defaulting to ${GITLAB_DEFAULT_HOST}`,
       );
-      host = GITLAB_DEFAULT_HOST
+      host = GITLAB_DEFAULT_HOST;
     }
-    return [new GitlabUserProcessor(new Gitlab({
-      host: host,
-      token: token,
-    }), logger)];
+    return [
+      new GitlabUserProcessor(
+        new Gitlab({
+          host: host,
+          token: token,
+        }),
+        logger,
+      ),
+    ];
   }
 
   // @ts-ignore: intended to reference as such by the library
@@ -132,7 +139,8 @@ export class GitlabUserProcessor implements CatalogProcessor {
     }
 
     if (gitlabUser.id) {
-      entity.metadata.annotations[`gitlab.com/user_id`] = gitlabUser.id.toString();
+      entity.metadata.annotations[`gitlab.com/user_id`] =
+        gitlabUser.id.toString();
     }
 
     return entity;
