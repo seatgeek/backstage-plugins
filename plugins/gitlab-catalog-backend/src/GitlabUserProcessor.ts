@@ -58,6 +58,8 @@ export class GitlabUserProcessor implements CatalogProcessor {
     try {
       members = await this.gitlab!.Users.all({
         perPage: GITLAB_PER_PAGE_LIMIT,
+        active: true,
+        withoutProjectBots: true,
       });
     } catch (error) {
       this.logger.error(`Error loading gitlab users: ${error}`);
