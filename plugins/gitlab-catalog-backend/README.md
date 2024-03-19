@@ -1,0 +1,51 @@
+# @seatgeek/backstage-plugin-gitlab-catalog-backend
+
+This plugin offers catalog integrations for ingesting data from the Slack API into the Software Catalog.
+
+[![npm latest version](https://img.shields.io/npm/v/@seatgeek/backstage-plugin-gitlab-catalog-backend/latest.svg)](https://www.npmjs.com/package/@seatgeek/backstage-plugin-gitlab-catalog-backend)
+
+## Installation
+
+Install the `@seatgeek/backstage-plugin-gitlab-catalog-backend` package in your backend package:
+
+```shell
+# From your Backstage root directory
+yarn add --cwd packages/backend @seatgeek/backstage-plugin-gitlab-catalog-backend
+```
+
+Add the following config to your `app-config.yaml`:
+
+```yml
+gitlabCatalog:
+  host: ${GITLAB_HOST_CATALOG} # defaults to https://gitlab.com
+  token: ${GITLAB_TOKEN_CATALOG}
+```
+
+Requires `read_user` scope with administrator level permissions to be able to view the email, see [List Users (for administrators)](https://docs.gitlab.com/ee/api/users.html#for-administrators).
+
+## Processors
+
+### `GitlabUserProcessor`
+
+Enriches existing `User` entities with information from Gitlab, notably the user's Gitlab ID, based on the user's `.profile.email`.
+
+#### Installation
+
+Add the following to your `packages/backend/catalog.ts`:
+
+```ts
+import { GitlabUserProcessor } from '@seatgeek/backstage-plugin-gitlab-catalog-backend';
+
+export default async function createPlugin(
+  env: PluginEnvironment,
+): Promise<Router> {
+  const builder = CatalogBuilder.create(env);
+  builder.addProcessor(
+    // Add the gitlab user processor
+    GitlabUserProcessor.fromConfig(env.config, env.logger),
+  );
+  const { processingEngine, router } = await builder.build();
+  processingEngine.start();
+  return router;
+}
+```
