@@ -31,8 +31,7 @@ jest.mock('@gitbeaker/rest', () => {
 
 describe('GitlabUserProcessor', () => {
   let processor: GitlabUserProcessor;
-  // @ts-ignore: intended to reference as such by the library
-  let mockGitlabClient: Gitlab;
+  let mockGitlabClient: InstanceType<typeof Gitlab>;
   let mockLogger: winston.Logger;
 
   beforeEach(() => {
