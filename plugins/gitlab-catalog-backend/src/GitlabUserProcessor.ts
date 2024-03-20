@@ -55,11 +55,11 @@ export class GitlabUserProcessor implements CatalogProcessor {
 
     let members: ExpandedUserSchema[] = [];
     try {
-      members = await this.gitlab!.Users.all({
+      members = (await this.gitlab!.Users.all({
         perPage: GITLAB_PER_PAGE_LIMIT,
         active: true,
         withoutProjectBots: true,
-      }) as ExpandedUserSchema[];
+      })) as ExpandedUserSchema[];
     } catch (error) {
       this.logger.error(`Error loading gitlab users: ${error}`);
       return this.userLookup;
