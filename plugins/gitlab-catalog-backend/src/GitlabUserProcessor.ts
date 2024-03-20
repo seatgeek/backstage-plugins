@@ -22,8 +22,7 @@ const GITLAB_DEFAULT_HOST = 'https://gitlab.com';
  * @public
  */
 export class GitlabUserProcessor implements CatalogProcessor {
-  // @ts-ignore: intended to reference as such by the library
-  private readonly gitlab: Gitlab;
+  private readonly gitlab: InstanceType<typeof Gitlab>;
   private readonly logger: Logger;
   private cacheLoaded: boolean;
   private userLookup: Map<string, ExpandedUserSchema>;
