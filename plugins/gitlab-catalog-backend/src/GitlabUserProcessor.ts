@@ -59,7 +59,7 @@ export class GitlabUserProcessor implements CatalogProcessor {
         perPage: GITLAB_PER_PAGE_LIMIT,
         active: true,
         withoutProjectBots: true,
-      });
+      }) as ExpandedUserSchema[];
     } catch (error) {
       this.logger.error(`Error loading gitlab users: ${error}`);
       return this.userLookup;
