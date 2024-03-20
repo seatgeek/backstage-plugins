@@ -15,7 +15,7 @@ This SeatGeek Backstage Plugins Collection offers the following plugins:
 - **AWS Catalog**: the AWS Catalog Plugin offers catalog integrations with the AWS API.
   - [plugins/aws-catalog-backend](plugins/aws-catalog-backend)
 - **Gitlab Catalog**: the Gitlab Catalog Plugin offers catalog integrations with the Gitlab API.
-  - [plugins/slack-gitlab-backend](plugins/gitlab-catalog-backend/)
+  - [plugins/gitlab-catalog-backend](plugins/gitlab-catalog-backend/)
 
 Each of the plugins contain instructions for installation and development within
 their respective locations.
