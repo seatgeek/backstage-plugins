@@ -104,8 +104,7 @@ export class GitlabUserProcessor implements CatalogProcessor {
     ];
   }
 
-  // @ts-ignore: intended to reference as such by the library
-  constructor(gitlab: Gitlab, logger: Logger) {
+  constructor(gitlab: InstanceType<typeof Gitlab>, logger: Logger) {
     this.gitlab = gitlab;
     this.logger = logger;
     this.userLookup = new Map();
