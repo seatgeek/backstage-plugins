@@ -100,7 +100,7 @@
           "successComment": false,
           "releasedLabels": false
         }
-      ],
+      ]
     ]
   },
   "lint-staged": {
