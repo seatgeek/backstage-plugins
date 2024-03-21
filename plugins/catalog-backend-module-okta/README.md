@@ -6,11 +6,11 @@ This plugin offers the ability to ingest users and groups from the [Okta API](ht
 
 ## Installation
 
-Install the @seatgeek/catalog-backend-module-okta package in your backend package:
+Install the @seatgeek/backstage-plugin-catalog-backend-module-okta package in your backend package:
 
 ```shell
 # From your Backstage root directory
-yarn add --cwd packages/backend @seatgeek/catalog-backend-module-okta
+yarn add --cwd packages/backend @seatgeek/backstage-plugin-catalog-backend-module-okta
 ```
 
 Then add the following config to your `app-config.yml`:
