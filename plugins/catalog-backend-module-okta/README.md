@@ -40,7 +40,7 @@ export default async function createPlugin(
       logger: env.logger,
       schedule: env.scheduler.createScheduledTaskRunner({
         frequency: { days: 1 },
-        timeout: { minutes: 30 },
+        timeout: { minutes: 5 },
       }),
       // query params passed to the okta api groups request
       listGroupsRequest: {
