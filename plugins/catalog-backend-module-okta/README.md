@@ -40,6 +40,7 @@ export default async function createPlugin(
       logger: env.logger,
       schedule: env.scheduler.createScheduledTaskRunner({
         frequency: { days: 1 },
+        timeout: { minutes: 5 },
       }),
       // query params passed to the okta api groups request
       listGroupsRequest: {
@@ -67,10 +68,12 @@ export default async function createPlugin(
           name: oktaGroup.profile!.name!.toLowerCase(),
           description: oktaGroup.profile?.description || '',
         },
-        type: 'team',
-        children: [],
-        profile: {
-          displayName: oktaGroup.profile!.name!,
+        spec: {
+          type: 'team',
+          children: [],
+          profile: {
+            displayName: oktaGroup.profile!.name!,
+          },
         },
       }),
     }),
