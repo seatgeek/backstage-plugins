@@ -27,18 +27,10 @@
     "@backstage/config": "^1.1.1",
     "@backstage/plugin-catalog-common": "^1.0.20",
     "@slack/web-api": "^6.11.2",
-    "@types/express": "*",
-    "express": "^4.17.1",
-    "express-promise-router": "^4.1.0",
-    "node-fetch": "^2.6.7",
-    "winston": "^3.2.1",
-    "yn": "^4.0.0"
+    "winston": "^3.2.1"
   },
   "devDependencies": {
-    "@backstage/cli": "^0.25.1",
-    "@types/supertest": "^2.0.12",
-    "msw": "^1.0.0",
-    "supertest": "^6.2.4"
+    "@backstage/cli": "^0.25.1"
   },
   "files": [
     "dist"
