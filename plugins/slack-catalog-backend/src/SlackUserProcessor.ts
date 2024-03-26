@@ -10,7 +10,7 @@ import type {
   CatalogProcessorEmit,
 } from '@backstage/plugin-catalog-node';
 import { WebClient } from '@slack/web-api';
-import { Member } from '@slack/web-api/dist/response/UsersListResponse';
+import { Member } from '@slack/web-api/dist/types/response/UsersListResponse';
 import { Logger } from 'winston';
 
 const SLACK_USER_LIMIT = 1000;
