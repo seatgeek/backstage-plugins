@@ -5280,6 +5280,15 @@
     qs "^6.11.2"
     xcase "^2.0.1"
 
+"@gitbeaker/core@^40.0.1":
+  version "40.0.1"
+  resolved "https://registry.yarnpkg.com/@gitbeaker/core/-/core-40.0.1.tgz#3b5332936b5965312349c97cbf695fa1ab5b45d9"
+  integrity sha512-Zh2eVUgy2kYVnp7Db4gWoFqFbjgsnm2FvBEERbH3UM3cOA/iMqM+tw/of+Qk4yO+gv6tGZ9f4nF7+vK0tQFmDA==
+  dependencies:
+    "@gitbeaker/requester-utils" "^40.0.1"
+    qs "^6.11.2"
+    xcase "^2.0.1"
+
 "@gitbeaker/node@^35.8.0":
   version "35.8.1"
   resolved "https://registry.yarnpkg.com/@gitbeaker/node/-/node-35.8.1.tgz#d67885c827f2d7405afd7e39538a230721756e5c"
@@ -5310,6 +5319,16 @@
     rate-limiter-flexible "^4.0.0"
     xcase "^2.0.1"
 
+"@gitbeaker/requester-utils@^40.0.1":
+  version "40.0.1"
+  resolved "https://registry.yarnpkg.com/@gitbeaker/requester-utils/-/requester-utils-40.0.1.tgz#d3ae8b1844d2db6ff80e2b7a81b0276a8237c9f0"
+  integrity sha512-cn6fltKuQ3TbthoMTg+JsKQfozqGcRcz1jT9Nqzr4gpHWgjdQ/nr5JpjwzKABQNVL2JH3UJWr6Eji60CFZDZ6Q==
+  dependencies:
+    picomatch-browser "^2.2.6"
+    qs "^6.11.2"
+    rate-limiter-flexible "^4.0.0"
+    xcase "^2.0.1"
+
 "@gitbeaker/rest@^39.25.0":
   version "39.34.0"
   resolved "https://registry.yarnpkg.com/@gitbeaker/rest/-/rest-39.34.0.tgz#cd2b16c5a8e79b80e70cd780de907b939c5d7e4b"
@@ -5317,6 +5336,14 @@
   dependencies:
     "@gitbeaker/core" "^39.34.0"
     "@gitbeaker/requester-utils" "^39.34.0"
+
+"@gitbeaker/rest@^40.0.1":
+  version "40.0.1"
+  resolved "https://registry.yarnpkg.com/@gitbeaker/rest/-/rest-40.0.1.tgz#e77f5a180b62e814057e789f2ffa4d56127be458"
+  integrity sha512-JEd9WNuzgur7gLiJPMWPYKaWe5uX1ic8CGKR1fMtBityFZ2xyZkTZ+LG0nqWTV1MyiowYnJ1swTh8Yff+kLsKA==
+  dependencies:
+    "@gitbeaker/core" "^40.0.1"
+    "@gitbeaker/requester-utils" "^40.0.1"
 
 "@google-cloud/firestore@^7.0.0":
   version "7.2.0"
@@ -7981,34 +8008,34 @@
   dependencies:
     "@sinonjs/commons" "^3.0.0"
 
-"@slack/logger@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@slack/logger/-/logger-3.0.0.tgz#b736d4e1c112c22a10ffab0c2d364620aedcb714"
-  integrity sha512-DTuBFbqu4gGfajREEMrkq5jBhcnskinhr4+AnfJEk48zhVeEv3XnUKGIX98B74kxhYsIMfApGGySTn7V3b5yBA==
+"@slack/logger@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@slack/logger/-/logger-4.0.0.tgz#788303ff1840be91bdad7711ef66ca0cbc7073d2"
+  integrity sha512-Wz7QYfPAlG/DR+DfABddUZeNgoeY7d1J39OCR2jR+v7VBsB8ezulDK5szTnDDPDwLH5IWhLvXIHlCFZV7MSKgA==
   dependencies:
-    "@types/node" ">=12.0.0"
+    "@types/node" ">=18.0.0"
 
-"@slack/types@^2.11.0", "@slack/types@^2.9.0":
+"@slack/types@^2.9.0":
   version "2.11.0"
   resolved "https://registry.yarnpkg.com/@slack/types/-/types-2.11.0.tgz#948c556081c3db977dfa8433490cc2ff41f47203"
   integrity sha512-UlIrDWvuLaDly3QZhCPnwUSI/KYmV1N9LyhuH6EDKCRS1HWZhyTG3Ja46T3D0rYfqdltKYFXbJSSRPwZpwO0cQ==
 
-"@slack/web-api@^6.11.2":
-  version "6.12.0"
-  resolved "https://registry.yarnpkg.com/@slack/web-api/-/web-api-6.12.0.tgz#d0487d90e3db2f7bfabe3430fa5da0cc03d2d9cb"
-  integrity sha512-RPw6F8rWfGveGkZEJ4+4jUin5iazxRK2q3FpQDz/FvdgzC3nZmPyLx8WRzc6nh0w3MBjEbphNnp2VZksfhpBIQ==
+"@slack/web-api@^7.0.2":
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/@slack/web-api/-/web-api-7.0.2.tgz#1291d3af201517d75f04df1170d6cb833c44a778"
+  integrity sha512-nY1KO+7i4iURihThS1kMOElzesx4jqRJtkxLS9FOT8Debh7vQAzzbzxpMB4QauSs15030eyJ16HCf1IfCT4BKQ==
   dependencies:
-    "@slack/logger" "^3.0.0"
-    "@slack/types" "^2.11.0"
-    "@types/is-stream" "^1.1.0"
-    "@types/node" ">=12.0.0"
+    "@slack/logger" "^4.0.0"
+    "@slack/types" "^2.9.0"
+    "@types/node" ">=18.0.0"
     axios "^1.6.5"
-    eventemitter3 "^3.1.0"
-    form-data "^2.5.0"
+    eventemitter3 "^5.0.1"
+    form-data "^4.0.0"
     is-electron "2.2.2"
-    is-stream "^1.1.0"
-    p-queue "^6.6.1"
-    p-retry "^4.0.0"
+    is-stream "^2"
+    p-queue "^6"
+    p-retry "^4"
+    retry "^0.13.1"
 
 "@slack/webhook@^7.0.2":
   version "7.0.2"
@@ -10105,13 +10132,6 @@
   dependencies:
     "@types/node" "*"
 
-"@types/is-stream@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@types/is-stream/-/is-stream-1.1.0.tgz#b84d7bb207a210f2af9bed431dc0fbe9c4143be1"
-  integrity sha512-jkZatu4QVbR60mpIzjINmtS1ZF4a/FqdTUTBeQDVOQ2PYyidtwFKr0B5G6ERukKwliq+7mIXvxyppwzG5EgRYg==
-  dependencies:
-    "@types/node" "*"
-
 "@types/istanbul-lib-coverage@*", "@types/istanbul-lib-coverage@^2.0.0", "@types/istanbul-lib-coverage@^2.0.1":
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/@types/istanbul-lib-coverage/-/istanbul-lib-coverage-2.0.6.tgz#7739c232a1fee9b4d3ce8985f314c0c6d33549d7"
@@ -10281,7 +10301,7 @@
   dependencies:
     "@types/node" "*"
 
-"@types/node@*", "@types/node@>=12.0.0", "@types/node@>=12.12.47", "@types/node@>=13.7.0", "@types/node@^20.1.1":
+"@types/node@*", "@types/node@>=12.12.47", "@types/node@>=13.7.0", "@types/node@^20.1.1":
   version "20.11.13"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-20.11.13.tgz#188263ee2c8d590e181d3f5bfa7e485a932957cb"
   integrity sha512-5G4zQwdiQBSWYTDAH1ctw2eidqdhMJaNsiIDKHFr55ihz5Trl2qqR8fdrT732yPBho5gkNxXm67OxWFBqX9aPg==
@@ -14881,15 +14901,15 @@ event-target-shim@^5.0.0:
   resolved "https://registry.yarnpkg.com/event-target-shim/-/event-target-shim-5.0.1.tgz#5d4d3ebdf9583d63a5333ce2deb7480ab2b05789"
   integrity sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ==
 
-eventemitter3@^3.1.0:
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-3.1.2.tgz#2d3d48f9c346698fce83a85d7d664e98535df6e7"
-  integrity sha512-tvtQIeLVHjDkJYnzf2dgVMxfuSGJeM/7UCG17TT4EumTfNtF+0nebF/4zWOIkCreAbtNqhGEboB6BWrwqNaw4Q==
-
 eventemitter3@^4.0.0, eventemitter3@^4.0.4:
   version "4.0.7"
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-4.0.7.tgz#2de9b68f6528d5644ef5c59526a1b4a07306169f"
   integrity sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==
+
+eventemitter3@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-5.0.1.tgz#53f5ffd0a492ac800721bb42c66b841de96423c4"
+  integrity sha512-GWkBvjiSZK87ELrYOSESUYeVIc9mvLLf/nXalMOS5dYrgZq9o5OVkbZAVM06CVxYsCwH9BDZFPlQTlPA1j4ahA==
 
 events@3.3.0, events@^3.0.0, events@^3.2.0, events@^3.3.0:
   version "3.3.0"
@@ -17311,12 +17331,7 @@ is-stream@2.0.0:
   resolved "https://registry.yarnpkg.com/is-stream/-/is-stream-2.0.0.tgz#bde9c32680d6fae04129d6ac9d921ce7815f78e3"
   integrity sha512-XCoy+WlUr7d1+Z8GgSuXmpuUFC9fOhRXglJMx+dwLKTkL44Cjd4W1Z5P+BQZpr+cR93aGP4S/s7Ftw6Nd/kiEw==
 
-is-stream@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/is-stream/-/is-stream-1.1.0.tgz#12d4a3dd4e68e0b79ceb8dbc84173ae80d91ca44"
-  integrity sha512-uQPm8kcs47jx38atAcWTVxyltQYoPT68y9aWYdV6yWXSyW8mzSat0TL6CiWdZeCdF3KrAvpVtnHbTv4RN+rqdQ==
-
-is-stream@^2.0.0:
+is-stream@^2, is-stream@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/is-stream/-/is-stream-2.0.1.tgz#fac1e3d53b97ad5a9d0ae9cef2389f5810a5c077"
   integrity sha512-hFoiJiTl63nn+kstHGBtewWSKnQLpyb155KHheA1l39uvtO9nWIop1p3udqPcUd/xbF1VLMO4n7OI6p7RbngDg==
@@ -21294,7 +21309,7 @@ p-pipe@3.1.0:
   resolved "https://registry.yarnpkg.com/p-pipe/-/p-pipe-3.1.0.tgz#48b57c922aa2e1af6a6404cb7c6bf0eb9cc8e60e"
   integrity sha512-08pj8ATpzMR0Y80x50yJHn37NF6vjrqHutASaX5LiH5npS9XPvrUmscd9MF5R4fuYRHOxQR1FfMIlF7AzwoPqw==
 
-p-queue@6.6.2, p-queue@^6.6.1, p-queue@^6.6.2:
+p-queue@6.6.2, p-queue@^6, p-queue@^6.6.2:
   version "6.6.2"
   resolved "https://registry.yarnpkg.com/p-queue/-/p-queue-6.6.2.tgz#2068a9dcf8e67dd0ec3e7a2bcb76810faa85e426"
   integrity sha512-RwFpb72c/BhQLEXIZ5K2e+AhgNVmIejGlTgiB9MzZ0e93GRvqZ7uSi0dvRF7/XIXDeNkra2fNHBxTyPDGySpjQ==
@@ -21312,7 +21327,7 @@ p-reduce@^3.0.0:
   resolved "https://registry.yarnpkg.com/p-reduce/-/p-reduce-3.0.0.tgz#f11773794792974bd1f7a14c72934248abff4160"
   integrity sha512-xsrIUgI0Kn6iyDYm9StOpOeK29XM1aboGji26+QEortiFST1hGZaUQOLhtEbqHErPpGW/aSz6allwK2qcptp0Q==
 
-p-retry@^4.0.0, p-retry@^4.5.0:
+p-retry@^4, p-retry@^4.5.0:
   version "4.6.2"
   resolved "https://registry.yarnpkg.com/p-retry/-/p-retry-4.6.2.tgz#9baae7184057edd4e17231cee04264106e092a16"
   integrity sha512-312Id396EbJdvRONlngUx0NydfrIQ5lsYu0znKVUzVvArzEIt08V1qhtyESbGVd1FGX7UKtiFp5uwKZdM8wIuQ==
