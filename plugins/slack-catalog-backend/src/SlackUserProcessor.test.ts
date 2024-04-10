@@ -5,6 +5,7 @@
 import { SystemEntity, UserEntity } from '@backstage/catalog-model';
 import { WebClient } from '@slack/web-api';
 import * as winston from 'winston';
+
 import { SlackUserProcessor } from './SlackUserProcessor';
 
 jest.mock('@slack/web-api', () => {

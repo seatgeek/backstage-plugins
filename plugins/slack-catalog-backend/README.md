@@ -30,6 +30,14 @@ Enriches existing `User` entities with information from Slack, notably the user'
 
 #### Installation
 
+Add the following to your `packages/backend/index.ts`:
+
+```ts
+backend.add(import('@seatgeek/backstage-plugin-slack-catalog-backend'));
+```
+
+##### Legacy backend system
+
 Add the following to your `packages/backend/catalog.ts`:
 
 ```ts
