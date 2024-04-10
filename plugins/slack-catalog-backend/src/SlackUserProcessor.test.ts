@@ -59,7 +59,13 @@ describe('SlackUserProcessor', () => {
     jest.clearAllMocks();
   });
 
-  test('should add slack info', async () => {
+  test.each([
+    { beforePicture: '', expectedPicture: 'rufus-192.png' },
+    {
+      beforePicture: 'https://example.com/me.jpg',
+      expectedPicture: 'https://example.com/me.jpg',
+    },
+  ])('should add slack info', async ({ beforePicture, expectedPicture }) => {
     const before: UserEntity = {
       apiVersion: 'backstage.io/v1alpha1',
       kind: 'User',
@@ -67,9 +73,7 @@ describe('SlackUserProcessor', () => {
         name: 'rufus',
       },
       spec: {
-        profile: {
-          email: 'rufus@seatgeek.com',
-        },
+        profile: { email: 'rufus@seatgeek.com', picture: beforePicture },
       },
     };
     const result = await processor.postProcessEntity(
@@ -89,7 +93,7 @@ describe('SlackUserProcessor', () => {
       },
       spec: {
         profile: {
-          picture: 'rufus-192.png',
+          picture: expectedPicture,
           email: 'rufus@seatgeek.com',
         },
       },

@@ -138,7 +138,8 @@ export class SlackUserProcessor implements CatalogProcessor {
     if (slackUser.id) {
       entity.metadata.annotations['slack.com/user_id'] = slackUser.id;
     }
-    if (slackUser.profile?.image_192) {
+    // if the user entity doesn't already have a profile picture set, *and* there's a slack avatar for the user, add that.
+    if (!entity.spec.profile.picture && slackUser.profile?.image_192) {
       entity.spec.profile.picture = slackUser.profile.image_192;
     }
 
