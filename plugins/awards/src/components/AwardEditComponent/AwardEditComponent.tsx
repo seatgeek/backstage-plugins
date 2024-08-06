@@ -36,11 +36,25 @@ import useAsync from 'react-use/lib/useAsync';
 import { awardsApiRef } from '../../api';
 import { editRouteRef } from '../../routes';
 
+function generatePlaceholderImage(content: string) {
+  const svgContent = `
+    <svg width="200" height="50" xmlns="http://www.w3.org/2000/svg">
+      <rect width="200" height="50" fill="#f3f3f3" />
+      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#555" font-family="Arial" font-size="14">
+        ${content}
+      </text>
+    </svg>
+  `;
+
+  const base64SVG = btoa(svgContent);
+  return `data:image/svg+xml;base64,${base64SVG}`;
+}
+
 const emptyAward: Award = {
   uid: '',
   name: '',
   description: '',
-  image: '',
+  image: generatePlaceholderImage("No image uploaded"),
   owners: [],
   recipients: [],
 };
