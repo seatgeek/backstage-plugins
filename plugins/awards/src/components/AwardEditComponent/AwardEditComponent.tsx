@@ -54,7 +54,7 @@ const emptyAward: Award = {
   uid: '',
   name: '',
   description: '',
-  image: generatePlaceholderImage("No image uploaded"),
+  image: generatePlaceholderImage('No image uploaded'),
   owners: [],
   recipients: [],
 };
