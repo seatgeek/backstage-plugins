@@ -2,7 +2,7 @@
  * Copyright SeatGeek
  * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
  */
-import { TokenManager } from '@backstage/backend-common';
+import { AuthService } from '@backstage/backend-plugin-api';
 import {
   CatalogClient,
   CatalogRequestOptions,
@@ -24,10 +24,10 @@ function makeUser(ref: string): UserEntity {
 }
 
 describe('MultiAwardsNotifier', () => {
-  const tokenManager: jest.Mocked<TokenManager> = {
-    getToken: jest.fn().mockResolvedValue({ token: 'token' }),
-    authenticate: jest.fn(),
-  };
+  const authService: jest.Mocked<AuthService> = {
+    getPluginRequestToken: jest.fn().mockResolvedValue({ token: 'token' }),
+    getOwnServiceCredentials: jest.fn().mockResolvedValue({}),
+  } as unknown as jest.Mocked<AuthService>;
   const catalogClient: jest.Mocked<CatalogClient> = {
     getEntitiesByRefs: jest
       .fn()
@@ -64,7 +64,7 @@ describe('MultiAwardsNotifier', () => {
       const notifier = new MultiAwardsNotifier(
         [gateway],
         catalogClient,
-        tokenManager,
+        authService,
       );
 
       await notifier.notifyNewRecipients(award, ['user:default/jeff-buckley']);
@@ -82,11 +82,11 @@ describe('MultiAwardsNotifier', () => {
     });
 
     it('does not fetch from the catalog if there are no gateways', async () => {
-      const notifier = new MultiAwardsNotifier([], catalogClient, tokenManager);
+      const notifier = new MultiAwardsNotifier([], catalogClient, authService);
 
       await notifier.notifyNewRecipients(award, ['user:default/jeff-buckley']);
 
-      expect(tokenManager.getToken).not.toHaveBeenCalled();
+      expect(authService.getPluginRequestToken).not.toHaveBeenCalled();
       expect(catalogClient.getEntitiesByRefs).not.toHaveBeenCalled();
     });
   });

@@ -2,99 +2,57 @@
  * Copyright SeatGeek
  * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
  */
-import { DatabaseManager, getVoidLogger } from '@backstage/backend-common';
-import { ConfigReader } from '@backstage/config';
 import {
-  BackstageIdentityResponse,
-  IdentityApiGetIdentityRequest,
-} from '@backstage/plugin-auth-node';
+  mockServices,
+  startTestBackend,
+  TestDatabaseId,
+  TestDatabases,
+} from '@backstage/backend-test-utils';
+import { ConfigReader } from '@backstage/config';
 import { StorageType } from '@tweedegolf/storage-abstraction';
-import express from 'express';
-import { Knex } from 'knex';
 import request from 'supertest';
-import { createRouter, getStorageClient } from './router';
+import { awardsPlugin } from '../plugin';
+import { getStorageClient } from './router';
 
-// Good references for this:
-// https://github.com/backstage/backstage/blob/0c930f8df1f2acb4a0af400e8e31cae354973af4/plugins/tech-insights-backend/src/service/router.test.ts
-// https://github.com/backstage/backstage/blob/0c930f8df1f2acb4a0af400e8e31cae354973af4/plugins/playlist-backend/src/service/router.test.ts#L112
 describe('backend router', () => {
-  let app: express.Express;
-  let db: Knex;
-
-  const getIdentity = jest.fn();
-  getIdentity.mockImplementation(
-    async ({
-      request: _request,
-    }: IdentityApiGetIdentityRequest): Promise<
-      BackstageIdentityResponse | undefined
-    > => {
-      return {
-        identity: {
-          userEntityRef: 'user:default/guest',
-          ownershipEntityRefs: [],
-          type: 'user',
-        },
-        token: 'token',
-      };
-    },
-  );
-
-  beforeEach(async () => {
-    // Need to do this to avoid using @backstage/backend-test-utils and run into
-    // a conflict with the knex import from the plugin.
-    // This means that the tests will run only on SQLite.
-    const createDatabaseManager = async () =>
-      DatabaseManager.fromConfig(
-        new ConfigReader({
-          backend: {
-            database: {
-              client: 'better-sqlite3',
-              connection: ':memory:',
+  const databases = TestDatabases.create({
+    ids: ['SQLITE_3'],
+  });
+  async function makeTestServer(databaseId: TestDatabaseId) {
+    const knex = await databases.init(databaseId);
+    const { server } = await startTestBackend({
+      features: [
+        awardsPlugin,
+        mockServices.rootConfig.factory({
+          data: {
+            awards: {
+              storage: {
+                s3: {
+                  bucket: 'awards-bucket',
+                  region: 'us-east-1',
+                },
+              },
             },
           },
         }),
-      ).forPlugin('awards');
-    const dbm = await createDatabaseManager();
-    db = await dbm.getClient();
-    const router = await createRouter({
-      config: new ConfigReader({
-        awards: {
-          storage: {
-            s3: {
-              region: 'us-east-1',
-              bucket: 'awards-bucket',
-            },
-          },
-        },
-      }),
-      logger: getVoidLogger(),
-      identity: { getIdentity },
-      database: dbm,
-      discovery: {
-        getBaseUrl: jest.fn().mockResolvedValue('/'),
-        getExternalBaseUrl: jest.fn().mockResolvedValue('/'),
-      },
-      tokenManager: {
-        authenticate: jest.fn(),
-        getToken: jest.fn().mockResolvedValue({ token: 'token' }),
-      },
+        mockServices.database.mock({
+          getClient: async () => knex,
+        }).factory,
+      ],
     });
-    app = express().use(router);
-
-    jest.resetAllMocks();
-  });
-
-  afterEach(async () => {
-    await db.destroy();
-  });
+    return server;
+  }
 
   describe('GET /health', () => {
-    it('returns ok', async () => {
-      const response = await request(app).get('/health');
-
-      expect(response.status).toEqual(200);
-      expect(response.body).toEqual({ status: 'ok' });
-    });
+    it.each(databases.eachSupportedId())(
+      'returns ok for %s',
+      async databaseId => {
+        const server = await makeTestServer(databaseId);
+        const response = await request(server).get('/api/awards/health');
+        expect(response.status).toEqual(200);
+        expect(response.body).toEqual({ status: 'ok' });
+      },
+    );
   });
 });
 
