@@ -61,6 +61,7 @@ function makeCreateEnv(config: Config) {
       discovery,
       tokenManager,
       scheduler,
+      reader: undefined as any,
       permissions,
       identity,
     };

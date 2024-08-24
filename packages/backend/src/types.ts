@@ -16,6 +16,7 @@ export type PluginEnvironment = {
   cache: PluginCacheManager;
   config: Config;
   discovery: PluginEndpointDiscovery;
+  reader: any;
   tokenManager: TokenManager;
   scheduler: PluginTaskScheduler;
   permissions: PermissionEvaluator;
