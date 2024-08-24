@@ -51,6 +51,7 @@
   },
   "devDependencies": {
     "@backstage/cli": "^0.27.0",
+    "@types/lodash": "^4.17.7",
     "@types/supertest": "^2.0.12",
     "better-sqlite3": "^9.1.1",
     "msw": "^1.0.0",
