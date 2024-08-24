@@ -4,7 +4,7 @@
  */
 import { getVoidLogger } from '@backstage/backend-common';
 import { TaskInvocationDefinition, TaskRunner } from '@backstage/backend-tasks';
-import { setupRequestMockHandlers } from '@backstage/backend-test-utils';
+import { registerMswTestHooks } from '@backstage/backend-test-utils';
 import { GroupEntity, UserEntity } from '@backstage/catalog-model';
 import { ConfigReader } from '@backstage/config';
 import { EntityProviderConnection } from '@backstage/plugin-catalog-node';
@@ -69,7 +69,7 @@ const simpleGroupTransformer: OktaGroupTransformer = (
 };
 
 describe('GitlabOrgDiscoveryEntityProvider', () => {
-  setupRequestMockHandlers(server);
+  registerMswTestHooks(server);
   afterEach(() => jest.resetAllMocks());
 
   it('no provider config', () => {
