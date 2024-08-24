@@ -10,7 +10,11 @@
     "types": "dist/index.d.ts"
   },
   "backstage": {
-    "role": "frontend-plugin"
+    "role": "frontend-plugin",
+    "pluginId": "entity-scaffolder-content",
+    "pluginPackages": [
+      "@seatgeek/backstage-plugin-entity-scaffolder-content"
+    ]
   },
   "sideEffects": false,
   "scripts": {

@@ -10,7 +10,11 @@
     "types": "dist/index.d.ts"
   },
   "backstage": {
-    "role": "backend-plugin"
+    "role": "backend-plugin",
+    "pluginId": "gitlab-catalog",
+    "pluginPackages": [
+      "@seatgeek/backstage-plugin-gitlab-catalog-backend"
+    ]
   },
   "scripts": {
     "start": "backstage-cli package start",

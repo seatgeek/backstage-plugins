@@ -11,7 +11,10 @@
   },
   "backstage": {
     "role": "backend-plugin",
-    "pluginId": "catalog-backend-module-okta"
+    "pluginId": "catalog-backend-module-okta",
+    "pluginPackages": [
+      "@seatgeek/backstage-plugin-catalog-backend-module-okta"
+    ]
   },
   "scripts": {
     "start": "backstage-cli package start",

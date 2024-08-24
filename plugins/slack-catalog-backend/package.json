@@ -10,7 +10,11 @@
     "types": "dist/index.d.ts"
   },
   "backstage": {
-    "role": "backend-plugin"
+    "role": "backend-plugin",
+    "pluginId": "slack-catalog",
+    "pluginPackages": [
+      "@seatgeek/backstage-plugin-slack-catalog-backend"
+    ]
   },
   "scripts": {
     "start": "backstage-cli package start",

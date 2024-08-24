@@ -19,7 +19,10 @@
   },
   "backstage": {
     "role": "backend-plugin",
-    "pluginId": "awards-common"
+    "pluginId": "awards-common",
+    "pluginPackages": [
+      "@seatgeek/backstage-plugin-awards-common"
+    ]
   },
   "dependencies": {
     "@backstage/backend-common": "^0.24.0",

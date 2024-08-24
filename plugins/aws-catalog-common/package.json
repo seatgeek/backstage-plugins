@@ -12,7 +12,12 @@
     "types": "dist/index.d.ts"
   },
   "backstage": {
-    "role": "common-library"
+    "role": "common-library",
+    "pluginId": "aws-catalog",
+    "pluginPackages": [
+      "@seatgeek/backstage-plugin-aws-catalog-backend",
+      "@seatgeek/backstage-plugin-aws-catalog-common"
+    ]
   },
   "sideEffects": false,
   "scripts": {
