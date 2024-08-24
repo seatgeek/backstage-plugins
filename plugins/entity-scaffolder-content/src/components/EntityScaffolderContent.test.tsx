@@ -26,6 +26,7 @@ import {
   useEntity,
   useEntityList,
 } from '@backstage/plugin-catalog-react';
+import { permissionApiRef } from '@backstage/plugin-permission-react';
 import { TemplateEntityV1beta3 } from '@backstage/plugin-scaffolder-common';
 import { scaffolderApiRef } from '@backstage/plugin-scaffolder-react';
 import { Workflow } from '@backstage/plugin-scaffolder-react/alpha';
@@ -79,6 +80,12 @@ describe('EntityScaffolderContent', () => {
     }),
   };
 
+  const mockPermissionApi = {
+    authorize: async (_: any) => ({
+      result: 'ALLOW',
+    }),
+  } as any;
+
   beforeEach(() => {
     jest.clearAllMocks();
 
@@ -99,6 +106,7 @@ describe('EntityScaffolderContent', () => {
       <TestApiProvider
         apis={[
           [errorApiRef, {}],
+          [permissionApiRef, mockPermissionApi],
           [catalogApiRef, mockCatalogApi],
           [starredEntitiesApiRef, new MockStarredEntitiesApi()],
         ]}
@@ -125,6 +133,7 @@ describe('EntityScaffolderContent', () => {
         apis={[
           [errorApiRef, {}],
           [catalogApiRef, mockCatalogApi],
+          [permissionApiRef, mockPermissionApi],
           [starredEntitiesApiRef, new MockStarredEntitiesApi()],
           [scaffolderApiRef, {}],
         ]}

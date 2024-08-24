@@ -5,7 +5,7 @@
 import { DBInstance } from '@aws-sdk/client-rds';
 import { getVoidLogger } from '@backstage/backend-common';
 import { TaskInvocationDefinition, TaskRunner } from '@backstage/backend-tasks';
-import { setupRequestMockHandlers } from '@backstage/backend-test-utils';
+import { registerMswTestHooks } from '@backstage/backend-test-utils';
 import { ResourceEntity } from '@backstage/catalog-model';
 import { ConfigReader } from '@backstage/config';
 import { EntityProviderConnection } from '@backstage/plugin-catalog-node';
@@ -55,7 +55,7 @@ const EXAMPLE_CREDENTIALS = {
 };
 
 describe('RDSEntityProvider', () => {
-  setupRequestMockHandlers(server);
+  registerMswTestHooks(server);
   afterEach(() => jest.resetAllMocks());
 
   it('no provider config', () => {

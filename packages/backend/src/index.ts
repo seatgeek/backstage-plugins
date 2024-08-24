@@ -11,7 +11,6 @@ import {
   DatabaseManager,
   HostDiscovery,
   ServerTokenManager,
-  UrlReaders,
   createServiceBuilder,
   getRootLogger,
   loadBackendConfig,
@@ -35,7 +34,6 @@ import { PluginEnvironment } from './types';
 
 function makeCreateEnv(config: Config) {
   const root = getRootLogger();
-  const reader = UrlReaders.default({ logger: root, config });
   const discovery = HostDiscovery.fromConfig(config);
   const cacheManager = CacheManager.fromConfig(config);
   const databaseManager = DatabaseManager.fromConfig(config, { logger: root });
@@ -50,8 +48,6 @@ function makeCreateEnv(config: Config) {
     tokenManager,
   });
 
-  root.info(`Created UrlReader ${reader}`);
-
   return (plugin: string): PluginEnvironment => {
     const logger = root.child({ type: 'plugin', plugin });
     const database = databaseManager.forPlugin(plugin);
@@ -62,10 +58,10 @@ function makeCreateEnv(config: Config) {
       database,
       cache,
       config,
-      reader,
       discovery,
       tokenManager,
       scheduler,
+      reader: undefined as any,
       permissions,
       identity,
     };
