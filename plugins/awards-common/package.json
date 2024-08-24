@@ -18,7 +18,8 @@
     "postpack": "backstage-cli package postpack"
   },
   "backstage": {
-    "role": "backend-plugin"
+    "role": "backend-plugin",
+    "pluginId": "awards-common"
   },
   "dependencies": {
     "@backstage/backend-common": "^0.24.0",

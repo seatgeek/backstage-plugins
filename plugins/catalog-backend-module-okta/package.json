@@ -10,7 +10,8 @@
     "types": "dist/index.d.ts"
   },
   "backstage": {
-    "role": "backend-plugin"
+    "role": "backend-plugin",
+    "pluginId": "catalog-backend-module-okta"
   },
   "scripts": {
     "start": "backstage-cli package start",
