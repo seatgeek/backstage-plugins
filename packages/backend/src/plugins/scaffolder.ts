@@ -14,7 +14,7 @@ export default async function createPlugin(
     logger: env.logger,
     config: env.config,
     database: env.database,
-    reader: env.reader,
+    reader: undefined as any,
     catalogClient,
     identity: env.identity,
     permissions: env.permissions,
