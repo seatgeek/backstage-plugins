@@ -38,5 +38,5 @@ Add the following to your `packages/backend/index.ts`:
 import { catalogModuleGitlabUserProcessor } from '@seatgeek/backstage-plugin-gitlab-catalog-backend';
 
 // in your catalog modules
-backend.add(catalogModuleGitlabUserProcessor());
+backend.add(catalogModuleGitlabUserProcessor);
 ```
