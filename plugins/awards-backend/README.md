@@ -14,48 +14,8 @@ Currently we support only `SQLite` and `PostgreSQL` databases.
 
 Install the @seatgeek/backstage-plugin-awards-backend package in your backend package:
 
-```shell
-# From your Backstage root directory
-yarn add --cwd packages/backend @seatgeek/backstage-plugin-awards-backend
-```
-
-Then create a plugin entry inside `packages/src/plugins/awards.ts` in your
-Backstage root with the following content:
-
-```typescript
-import { createRouter } from '@seatgeek/backstage-plugin-awards-backend';
-import { Router } from 'express';
-import { PluginEnvironment } from '../types';
-
-export default async function createPlugin(
-  env: PluginEnvironment,
-): Promise<Router> {
-  return await createRouter({
-    logger: env.logger,
-    database: env.database,
-    identity: env.identity,
-  });
-}
-```
-
-Import the plugin inside `packages/backend/src/index.ts` in your Backstage root:
-
-```typescript
-// Other imports here
-import awards from './plugins/awards';
-
-function makeCreateEnv(config: Config) {
-  // Lots of code here. Add the following line before the router is instantiated.
-  const awardsEnv = useHotMemoize(module, () => createEnv('awards'));
-
-  const apiRouter = Router();
-  // Several apiRouter.use() statements here.
-  // Add the route for /awards as the last one before the notFoundHandler() is
-  // setup.
-  apiRouter.use('/awards', await awards(awardsEnv));
-
-  apiRouter.use(notFoundHandler());
-}
+```ts
+backend.add(import('@seatgeek/backstage-plugin-awards-backend'));
 ```
 
 ## Configuration

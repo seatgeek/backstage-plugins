@@ -31,7 +31,7 @@ import { AppRouter, FlatRoutes } from '@backstage/core-app-api';
 import {
   AlertDisplay,
   OAuthRequestDialog,
-  ProxiedSignInPage,
+  SignInPage,
 } from '@backstage/core-components';
 import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/alpha';
 import { CatalogGraphPage } from '@backstage/plugin-catalog-graph';
@@ -41,7 +41,7 @@ import { AwardsPage } from '@seatgeek/backstage-plugin-awards';
 const app = createApp({
   apis,
   components: {
-    SignInPage: props => <ProxiedSignInPage {...props} provider="dummy-auth" />,
+    SignInPage: props => <SignInPage {...props} auto providers={['guest']} />,
   },
   bindRoutes({ bind }) {
     bind(catalogPlugin.externalRoutes, {
