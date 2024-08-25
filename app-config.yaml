@@ -33,7 +33,7 @@ techdocs:
 auth:
   environment: development
   providers:
-    'dummy-auth': {}
+    guest: {}
 
 catalog:
   rules:

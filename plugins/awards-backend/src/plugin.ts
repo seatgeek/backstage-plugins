@@ -2,7 +2,6 @@
  * Copyright SeatGeek
  * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
  */
-import { loggerToWinstonLogger } from '@backstage/backend-common';
 import {
   coreServices,
   createBackendPlugin,
@@ -14,33 +13,45 @@ export const awardsPlugin = createBackendPlugin({
   register(env) {
     env.registerInit({
       deps: {
+        auth: coreServices.auth,
         config: coreServices.rootConfig,
         database: coreServices.database,
-        identity: coreServices.identity,
-        logger: coreServices.logger,
-        httpRouter: coreServices.httpRouter,
         discovery: coreServices.discovery,
-        tokenManager: coreServices.tokenManager,
+        httpAuth: coreServices.httpAuth,
+        httpRouter: coreServices.httpRouter,
+        logger: coreServices.logger,
+        userInfo: coreServices.userInfo,
       },
       async init({
+        auth,
         config,
         database,
-        identity,
-        logger,
-        httpRouter,
         discovery,
-        tokenManager,
+        httpAuth,
+        httpRouter,
+        logger,
+        userInfo,
       }) {
         httpRouter.use(
           await createRouter({
+            auth,
             config,
             database,
-            identity,
-            logger: loggerToWinstonLogger(logger),
             discovery,
-            tokenManager,
+            httpAuth,
+            logger,
+            userInfo,
           }),
         );
+        httpRouter.addAuthPolicy({
+          path: '/health',
+          allow: 'unauthenticated',
+        });
+        // Award logos are rendered on the frontend as img tags, so they need to be public.
+        httpRouter.addAuthPolicy({
+          path: '/logos/:id',
+          allow: 'unauthenticated',
+        });
       },
     });
   },

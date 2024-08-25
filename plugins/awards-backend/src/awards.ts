@@ -2,13 +2,13 @@
  * Copyright SeatGeek
  * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
  */
+import { LoggerService } from '@backstage/backend-plugin-api';
 import { NotFoundError } from '@backstage/errors';
 import { Award, AwardInput } from '@seatgeek/backstage-plugin-awards-common';
 import { Storage } from '@tweedegolf/storage-abstraction';
 import sizeOf from 'image-size';
 import { Readable } from 'stream';
 import { v4 as uuid } from 'uuid';
-import { Logger } from 'winston';
 import { AwardsStore } from './database/awards';
 import { AwardsNotifier } from './notifier';
 
@@ -26,7 +26,7 @@ const mimetypeByExtension = Object.fromEntries(
 
 export class Awards {
   private readonly db: AwardsStore;
-  private readonly logger: Logger;
+  private readonly logger: LoggerService;
   private readonly notifier: AwardsNotifier;
   private readonly storage: Storage;
 
@@ -34,7 +34,7 @@ export class Awards {
     db: AwardsStore,
     notifier: AwardsNotifier,
     storage: Storage,
-    logger: Logger,
+    logger: LoggerService,
   ) {
     this.db = db;
     this.notifier = notifier;

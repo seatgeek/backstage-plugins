@@ -2,7 +2,7 @@
  * Copyright SeatGeek
  * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
  */
-import { TokenManager } from '@backstage/backend-common';
+import { AuthService } from '@backstage/backend-plugin-api';
 import { CatalogClient } from '@backstage/catalog-client';
 import { isUserEntity } from '@backstage/catalog-model';
 import { Award } from '@seatgeek/backstage-plugin-awards-common';
@@ -22,16 +22,16 @@ export interface AwardsNotifier {
 export class MultiAwardsNotifier implements AwardsNotifier {
   private readonly notificationsGateways: NotificationsGateway[];
   private readonly catalogClient: CatalogClient;
-  private readonly tokenManager: TokenManager;
+  private readonly auth: AuthService;
 
   constructor(
     notificationsGateways: NotificationsGateway[],
     catalogClient: CatalogClient,
-    tokenManager: TokenManager,
+    auth: AuthService,
   ) {
     this.notificationsGateways = notificationsGateways;
     this.catalogClient = catalogClient;
-    this.tokenManager = tokenManager;
+    this.auth = auth;
   }
 
   addNotificationsGateway(gateway: NotificationsGateway) {
@@ -46,7 +46,10 @@ export class MultiAwardsNotifier implements AwardsNotifier {
       return;
     }
 
-    const token = await this.tokenManager.getToken();
+    const token = await this.auth.getPluginRequestToken({
+      onBehalfOf: await this.auth.getOwnServiceCredentials(),
+      targetPluginId: 'catalog',
+    });
     const resp = await this.catalogClient.getEntitiesByRefs(
       {
         entityRefs: newRecipients,
