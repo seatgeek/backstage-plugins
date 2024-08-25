@@ -3565,7 +3565,7 @@
     yauzl "^3.0.0"
     yn "^4.0.0"
 
-"@backstage/backend-defaults@^0.4.2", "@backstage/backend-defaults@^0.4.3":
+"@backstage/backend-defaults@0.4.3", "@backstage/backend-defaults@^0.4.2", "@backstage/backend-defaults@^0.4.3":
   version "0.4.3"
   resolved "https://registry.yarnpkg.com/@backstage/backend-defaults/-/backend-defaults-0.4.3.tgz#9078d176ae0fd1df77d2073286ea943c0fbfbee7"
   integrity sha512-/xmUY506bGt9JLYcW9h5HeSMFTkS4ZtSHVM5EEsTsb704qrWwGDtfKpp92o+fQt2yZS4XIigskQUkCX1SB5FHQ==
