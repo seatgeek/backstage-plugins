@@ -3565,7 +3565,7 @@
     yauzl "^3.0.0"
     yn "^4.0.0"
 
-"@backstage/backend-defaults@^0.4.2", "@backstage/backend-defaults@^0.4.3":
+"@backstage/backend-defaults@0.4.3", "@backstage/backend-defaults@^0.4.2", "@backstage/backend-defaults@^0.4.3":
   version "0.4.3"
   resolved "https://registry.yarnpkg.com/@backstage/backend-defaults/-/backend-defaults-0.4.3.tgz#9078d176ae0fd1df77d2073286ea943c0fbfbee7"
   integrity sha512-/xmUY506bGt9JLYcW9h5HeSMFTkS4ZtSHVM5EEsTsb704qrWwGDtfKpp92o+fQt2yZS4XIigskQUkCX1SB5FHQ==
@@ -8266,10 +8266,10 @@
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==
 
-"@qiwi/multi-semantic-release@^7.1.1":
-  version "7.1.1"
-  resolved "https://registry.yarnpkg.com/@qiwi/multi-semantic-release/-/multi-semantic-release-7.1.1.tgz#160a7b2c8b4e03bd5a67aae5154450f150d62042"
-  integrity sha512-Zl3KDbVXAqkSTNKC4lmakmD8i2pCNuwz5Dg/VCLBnnh8XK7B6LmnH5RQxCIAORyT9QdvOVUYZCsx1LtX+EvDzA==
+"@qiwi/multi-semantic-release@^7.1.2":
+  version "7.1.2"
+  resolved "https://registry.yarnpkg.com/@qiwi/multi-semantic-release/-/multi-semantic-release-7.1.2.tgz#bc1cc8a5ef98160939b39fef01d40d2334eaac4e"
+  integrity sha512-2caeNdiHSYGVPsgaO50elTv24TMwQsS03hbJXyT3o3lGhlEOaN5Rtbv+iqbCcNtuzfm9P3yxNUB2k++tG+zmAQ==
   dependencies:
     "@semrel-extra/topo" "^1.14.0"
     blork "^9.3.0"
