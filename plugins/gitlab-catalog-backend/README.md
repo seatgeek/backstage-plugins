@@ -31,21 +31,12 @@ Enriches existing `User` entities with information from Gitlab, notably the user
 
 #### Installation
 
-Add the following to your `packages/backend/catalog.ts`:
+Add the following to your `packages/backend/index.ts`:
 
 ```ts
-import { GitlabUserProcessor } from '@seatgeek/backstage-plugin-gitlab-catalog-backend';
+// in your imports
+import { catalogModuleGitlabUserProcessor } from '@seatgeek/backstage-plugin-gitlab-catalog-backend';
 
-export default async function createPlugin(
-  env: PluginEnvironment,
-): Promise<Router> {
-  const builder = CatalogBuilder.create(env);
-  builder.addProcessor(
-    // Add the gitlab user processor
-    GitlabUserProcessor.fromConfig(env.config, env.logger),
-  );
-  const { processingEngine, router } = await builder.build();
-  processingEngine.start();
-  return router;
-}
+// in your catalog modules
+backend.add(catalogModuleGitlabUserProcessor);
 ```

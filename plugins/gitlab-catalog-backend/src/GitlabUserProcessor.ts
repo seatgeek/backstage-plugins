@@ -2,6 +2,7 @@
  * Copyright SeatGeek
  * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
  */
+import { LoggerService } from '@backstage/backend-plugin-api';
 import { Entity, isUserEntity } from '@backstage/catalog-model';
 import { Config } from '@backstage/config';
 import { LocationSpec } from '@backstage/plugin-catalog-common';
@@ -10,7 +11,6 @@ import type {
   CatalogProcessorEmit,
 } from '@backstage/plugin-catalog-node';
 import { ExpandedUserSchema, Gitlab } from '@gitbeaker/rest';
-import { Logger } from 'winston';
 
 const GITLAB_PER_PAGE_LIMIT = 500;
 const GITLAB_DEFAULT_HOST = 'https://gitlab.com';
@@ -23,7 +23,7 @@ const GITLAB_DEFAULT_HOST = 'https://gitlab.com';
  */
 export class GitlabUserProcessor implements CatalogProcessor {
   private readonly gitlab: InstanceType<typeof Gitlab>;
-  private readonly logger: Logger;
+  private readonly logger: LoggerService;
   private cacheLoaded: boolean;
   private userLookup: Map<string, ExpandedUserSchema>;
   // guarantee that users are loaded only once
@@ -77,7 +77,10 @@ export class GitlabUserProcessor implements CatalogProcessor {
     return this.userLookup;
   }
 
-  static fromConfig(config: Config, logger: Logger): GitlabUserProcessor[] {
+  static fromConfig(
+    config: Config,
+    logger: LoggerService,
+  ): GitlabUserProcessor[] {
     const token = config.getOptionalString('gitlabCatalog.token');
     if (!token) {
       logger.warn(
@@ -103,7 +106,7 @@ export class GitlabUserProcessor implements CatalogProcessor {
     ];
   }
 
-  constructor(gitlab: InstanceType<typeof Gitlab>, logger: Logger) {
+  constructor(gitlab: InstanceType<typeof Gitlab>, logger: LoggerService) {
     this.gitlab = gitlab;
     this.logger = logger;
     this.userLookup = new Map();
