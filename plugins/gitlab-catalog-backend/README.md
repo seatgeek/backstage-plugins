@@ -6,7 +6,7 @@ This plugin offers catalog integrations for ingesting data from gitlab API.
 
 ## Installation
 
-Install the `@seatgeek/backstage-plugin-gitlab-catalog-backend` package in your backend package:
+Install the `@seatgeek/backstage-plugin-gitlab-catalog-backend` package in your backend package using the [new backend](https://backstage.io/docs/plugins/new-backend-system/):
 
 ```shell
 # From your Backstage root directory
