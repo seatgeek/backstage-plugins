@@ -31,8 +31,8 @@
     ]
   },
   "volta": {
-    "node": "18.19.1",
-    "yarn": "1.22.21"
+    "node": "20.8.1",
+    "yarn": "1.22.22"
   },
   "devDependencies": {
     "@backstage/cli": "^0.27.0",
