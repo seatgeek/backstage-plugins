@@ -12,7 +12,7 @@ Currently we support only `SQLite` and `PostgreSQL` databases.
 
 ## Installation
 
-Install the @seatgeek/backstage-plugin-awards-backend package in your backend package:
+Install the @seatgeek/backstage-plugin-awards-backend package using the [new backend](https://backstage.io/docs/plugins/new-backend-system/):
 
 ```ts
 backend.add(import('@seatgeek/backstage-plugin-awards-backend'));
