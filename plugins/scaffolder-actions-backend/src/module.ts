@@ -1,0 +1,29 @@
+/*
+ * Copyright SeatGeek
+ * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
+ */
+import {
+  createBackendModule,
+  coreServices,
+} from '@backstage/backend-plugin-api';
+import { scaffolderActionsExtensionPoint } from '@backstage/plugin-scaffolder-node/alpha';
+import * as actions from './actions';
+
+export const scaffolderBackendModuleActions = createBackendModule({
+  pluginId: 'scaffolder',
+  moduleId: 'scaffolder-backend-module-actions',
+  register({ registerInit }) {
+    registerInit({
+      deps: {
+        scaffolder: scaffolderActionsExtensionPoint,
+        config: coreServices.rootConfig,
+      },
+      async init({ scaffolder }) {
+        scaffolder.addActions(actions.createHclMergeAction());
+        scaffolder.addActions(actions.createHclMergeWriteAction());
+        scaffolder.addActions(actions.createHclMergeFilesAction());
+        scaffolder.addActions(actions.createHclMergeFilesWriteAction());
+      },
+    });
+  },
+});
