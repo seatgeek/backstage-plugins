@@ -9,14 +9,19 @@
   },
   "publishConfig": {
     "access": "public",
-    "main": "dist/src/index.cjs.js",
-    "types": "dist/src/index.d.ts"
+    "main": "dist/index.cjs.js",
+    "types": "dist/index.d.ts"
   },
   "scripts": {
-    "build": "tsc && scripts/go-build.sh",
-    "test": "jest && scripts/go-test.sh",
+    "build:go": "scripts/go-build.sh",
+    "build": "backstage-cli package build",
+    "test": "backstage-cli package test --no-cache && scripts/go-test.sh",
     "tsc": "tsc",
-    "tsc:full": "tsc --skipLibCheck false --incremental false"
+    "tsc:full": "tsc --skipLibCheck false --incremental false",
+    "lint": "backstage-cli package lint",
+    "clean": "backstage-cli package clean",
+    "prepack": "backstage-cli package prepack",
+    "postpack": "backstage-cli package postpack"
   },
   "devDependencies": {
     "@types/fs-extra": "11.0.4",
