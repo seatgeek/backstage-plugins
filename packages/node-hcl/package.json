@@ -15,7 +15,8 @@
   "scripts": {
     "build:go": "scripts/go-build.sh",
     "build": "backstage-cli package build",
-    "test": "backstage-cli package test --no-cache && scripts/go-test.sh",
+    "test:go": "scripts/go-test.sh",
+    "test": "backstage-cli package test --no-cache",
     "tsc": "tsc",
     "tsc:full": "tsc --skipLibCheck false --incremental false",
     "lint": "backstage-cli package lint",
