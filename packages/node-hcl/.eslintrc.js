@@ -19,6 +19,6 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: 'module',
   },
-  ignorePatterns: ['wasm/**/*'],
+  ignorePatterns: ['wasm', 'dist'],
   plugins: ['@typescript-eslint'],
 };
