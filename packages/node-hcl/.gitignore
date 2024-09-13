@@ -1,5 +1,6 @@
 # wasm
 main.wasm
+main.wasm.*
 
 # js
 **/dist
@@ -7,4 +8,4 @@ main.wasm
 **/*.d.ts
 
 *.tsbuildinfo
-lib/*.js
+src/*.js

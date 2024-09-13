@@ -2,7 +2,7 @@
   "extends": "@backstage/cli/config/tsconfig.json",
   "include": [
     "packages/*/src",
-    "packages/*/lib",
+    "packages/*/wasm",
     "plugins/*/src",
     "plugins/*/dev",
     "plugins/*/migrations"

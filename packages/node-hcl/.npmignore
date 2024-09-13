@@ -1,17 +1,4 @@
-!*.js
-*.ts
-!*.d.ts
-test
-.yarn
-dist
-Makefile
 *.go
 go.mod
 go.sum
-scripts
-.github
-.editorconfig
-.prettierignore
-jest.config.js
-**/*.test.**
 scripts/
