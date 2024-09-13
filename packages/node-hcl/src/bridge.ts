@@ -27,7 +27,7 @@ function goBridge(getBytes: Promise<Buffer>) {
   let ready = false;
 
   async function init() {
-    await import(`../wasm/bridge_wasm_exec.js`);
+    await import(`./wasm/bridge_wasm_exec.js`);
     const go = new (global as any).Go();
     const bytes = await getBytes;
     const result = await WebAssembly.instantiate(bytes, go.importObject);
@@ -77,7 +77,7 @@ function goBridge(getBytes: Promise<Buffer>) {
 
 const loadWasm = async () => {
   return gunzipSync(
-    await fs.readFile(join(__dirname, '..', 'wasm/main.wasm.gz')),
+    await fs.readFile(join(__dirname, 'wasm/main.wasm.gz')),
   );
 };
 
