@@ -1,9 +1,6 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
-  extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-  ],
+  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
   rules: {
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/ban-ts-comment': 'off',
@@ -18,10 +15,6 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: 'module',
   },
-  ignorePatterns: [
-    "wasm/**/*"
-  ],
-  plugins: [
-    '@typescript-eslint',
-  ],
+  ignorePatterns: ['wasm/**/*'],
+  plugins: ['@typescript-eslint'],
 };

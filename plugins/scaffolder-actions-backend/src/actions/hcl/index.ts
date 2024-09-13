@@ -4,7 +4,7 @@
  */
 export {
   createHclMergeAction,
-  createHclMergeWriteAction,
   createHclMergeFilesAction,
   createHclMergeFilesWriteAction,
+  createHclMergeWriteAction,
 } from './hcl';

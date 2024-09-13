@@ -13,7 +13,7 @@ yarn add @seatgeek/node-hcl
 ### Merge HCL content
 
 ```javascript
-import { merge } from "@seatgeek/node-hcl";
+import { merge } from '@seatgeek/node-hcl';
 
 const a = `
 variable "a" {

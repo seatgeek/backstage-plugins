@@ -2,10 +2,10 @@
  * Copyright SeatGeek
  * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
  */
-import { merge } from "./hcl";
+import { merge } from './hcl';
 
-describe("merge", () => {
-  it("should merge two hcl strings", async () => {
+describe('merge', () => {
+  it('should merge two hcl strings', async () => {
     const a = `variable "a" {
   type        = string
   description = "Variable A"
@@ -34,7 +34,7 @@ variable "b" {
     expect(out).toBe(expected);
   });
 
-  it("should merge when empty string", async () => {
+  it('should merge when empty string', async () => {
     const a = ``;
     const b = `variable "b" {
   type        = string

@@ -2,13 +2,12 @@
  * Copyright SeatGeek
  * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
  */
-import { tmpdir } from 'os';
-import { createHclMergeAction, createHclMergeFilesAction } from './hcl';
 import { getVoidLogger } from '@backstage/backend-common';
-import { PassThrough } from 'stream';
-import { writeFileSync } from 'fs-extra';
 import { randomBytes } from 'crypto';
-
+import { writeFileSync } from 'fs-extra';
+import { tmpdir } from 'os';
+import { PassThrough } from 'stream';
+import { createHclMergeAction, createHclMergeFilesAction } from './hcl';
 
 // Since we have to
 const TMP_DIR = tmpdir();
@@ -21,7 +20,7 @@ describe('createHclMergeAction', () => {
     createTemporaryDirectory: jest.fn(),
     checkpoint: jest.fn(),
     getInitiatorCredentials: jest.fn(),
-    workspacePath: ".",
+    workspacePath: '.',
   };
 
   it('should merge HCL files', async () => {
@@ -94,10 +93,14 @@ describe('createHclMergeFilesAction', () => {
 
 `;
 
-    const aPath = `${mockContext.workspacePath}/${randomBytes(12).toString('hex')}.hcl`;
+    const aPath = `${mockContext.workspacePath}/${randomBytes(12).toString(
+      'hex',
+    )}.hcl`;
     await writeFileSync(aPath, a, 'utf8');
 
-    const bPath = `${mockContext.workspacePath}/${randomBytes(12).toString('hex')}.hcl`;
+    const bPath = `${mockContext.workspacePath}/${randomBytes(12).toString(
+      'hex',
+    )}.hcl`;
     await writeFileSync(bPath, b, 'utf8');
 
     const mockCtx = {

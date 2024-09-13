@@ -3,3 +3,4 @@ dist-types
 coverage
 .vscode
 e2e-test-report/
+wasm_exec.js

@@ -23,6 +23,7 @@ backend.add(import('@seatgeek/backstage-plugin-scaffolder-actions-backend'));
 After that you can use the actions in your template.
 
 ## Actions
+
 This contains a collection of actions to use in scaffolder templates:
 
 - `hcl:merge` Merge HCL strings

@@ -6,19 +6,19 @@ import { resolveSafeChildPath } from '@backstage/backend-plugin-api';
 import { createTemplateAction } from '@backstage/plugin-scaffolder-node';
 import { merge } from '@seatgeek/node-hcl';
 
-import { z } from 'zod';
-import { ensureDirSync, writeFileSync, readFileSync } from 'fs-extra';
+import { ensureDirSync, readFileSync, writeFileSync } from 'fs-extra';
 import { dirname } from 'path';
+import { z } from 'zod';
 
 async function readFileSafe(path: string): Promise<string> {
   try {
-    return readFileSync(path, "utf8");
+    return readFileSync(path, 'utf8');
   } catch (error) {
-    if ((error as NodeJS.ErrnoException).code === "ENOENT") {
+    if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
       console.warn(
         `file not found at path ${path}, defaulting to empty string`,
       );
-      return "";
+      return '';
     }
 
     console.error(`error reading hcl file: ${(error as Error).message}`);
@@ -34,16 +34,13 @@ async function mergeWrite(
   const out = await merge(a, b);
 
   try {
-    await writeFileSync(outPath, out, "utf8");
+    await writeFileSync(outPath, out, 'utf8');
   } catch (error) {
     console.error(`error writing hcl file: ${(error as Error).message}`);
   }
 }
 
-async function mergeFiles(
-  aPath: string,
-  bPath: string,
-): Promise<string> {
+async function mergeFiles(aPath: string, bPath: string): Promise<string> {
   const a = await readFileSafe(aPath);
   const b = await readFileSafe(bPath);
 
@@ -58,7 +55,7 @@ async function mergeFilesWrite(
   const out = await mergeFiles(aPath, bPath);
 
   try {
-    await writeFileSync(outPath, out, "utf8");
+    await writeFileSync(outPath, out, 'utf8');
   } catch (error) {
     console.error(`error writing hcl file: ${(error as Error).message}`);
   }
