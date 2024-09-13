@@ -1,6 +1,6 @@
 {
   "name": "@seatgeek/node-hcl",
-  "version": "1.0.0",
+  "version": "0.0.0-semantically-released",
   "main": "src/index.js",
   "types": "src/index.d.ts",
   "private": true,
