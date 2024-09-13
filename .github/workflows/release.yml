@@ -20,7 +20,14 @@ jobs:
         with:
           node-version: '>=20.8.0'
           cache: 'yarn'
+      - name: Use Golang 1.23.1
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.23.1
+          cache-dependency-path: |
+              packages/node-hcl/go.sum
       - run: yarn install
+      - run: yarn run lerna run build:go --stream
       - run: yarn tsc
       - run: yarn backstage-cli repo build
       - name: Release

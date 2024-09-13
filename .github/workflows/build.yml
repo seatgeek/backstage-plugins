@@ -109,8 +109,8 @@ jobs:
           go-version: 1.23.1
           cache-dependency-path: |
               packages/node-hcl/go.sum
-      - run: yarn run lerna run build:go --stream
       - run: yarn install
+      - run: yarn run lerna run build:go --stream
       - run: yarn tsc
       - run: yarn backstage-cli repo build
       - run: yarn multi-semantic-release --ignore-private-packages --dry-run
