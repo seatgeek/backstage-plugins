@@ -48,7 +48,7 @@ jobs:
         with:
           go-version: ${{ matrix.go-version }}
           cache-dependency-path: |
-              packages/node-hcl/go.sum
+            packages/node-hcl/go.sum
       - run: yarn install
       - run: yarn run lerna run build:go --stream
       - run: yarn run lerna run test:go --stream
@@ -71,7 +71,7 @@ jobs:
         with:
           go-version: ${{ matrix.go-version }}
           cache-dependency-path: |
-              packages/node-hcl/go.sum
+            packages/node-hcl/go.sum
       - run: yarn install
       - run: yarn run lerna run build:go --stream
       - run: yarn tsc
@@ -108,7 +108,7 @@ jobs:
         with:
           go-version: 1.23.1
           cache-dependency-path: |
-              packages/node-hcl/go.sum
+            packages/node-hcl/go.sum
       - run: yarn install
       - run: yarn run lerna run build:go --stream
       - run: yarn tsc
