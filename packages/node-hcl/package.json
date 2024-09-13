@@ -1,0 +1,29 @@
+{
+  "name": "@seatgeek/node-hcl",
+  "version": "1.0.0",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "private": true,
+  "engines": {
+    "node": "18 || 20"
+  },
+  "scripts": {
+    "build": "tsc && scripts/go-build.sh",
+    "test": "jest && scripts/go-test.sh",
+    "tsc": "tsc",
+    "tsc:full": "tsc --skipLibCheck false --incremental false"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "11.0.4",
+    "@types/jest": "29.5.12",
+    "@types/node": "18.19.44",
+    "globals": "^15.9.0",
+    "jest": "29.7.0",
+    "ts-jest": "29.2.4",
+    "typescript": "5.2.2"
+  },
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "fs-extra": "^11.2.0"
+  }
+}

@@ -1,0 +1,10 @@
+# wasm
+main.wasm
+
+# js
+**/dist
+**/*.d.ts.map
+**/*.d.ts
+
+*.tsbuildinfo
+lib/*.js
