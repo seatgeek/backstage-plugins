@@ -116,5 +116,6 @@
     "*.{json,md}": [
       "prettier --write"
     ]
-  }
+  },
+  "dependencies": {}
 }

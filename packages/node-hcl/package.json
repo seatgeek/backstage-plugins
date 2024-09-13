@@ -7,6 +7,11 @@
   "engines": {
     "node": "18 || 20"
   },
+  "publishConfig": {
+    "access": "public",
+    "main": "dist/lib/index.cjs.js",
+    "types": "dist/lib/index.d.ts"
+  },
   "scripts": {
     "build": "tsc && scripts/go-build.sh",
     "test": "jest && scripts/go-test.sh",
