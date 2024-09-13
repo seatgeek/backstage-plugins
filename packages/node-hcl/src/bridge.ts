@@ -76,9 +76,7 @@ function goBridge(getBytes: Promise<Buffer>) {
 }
 
 const loadWasm = async () => {
-  return gunzipSync(
-    await fs.readFile(join(__dirname, 'wasm/main.wasm.gz')),
-  );
+  return gunzipSync(await fs.readFile(join(__dirname, 'wasm/main.wasm.gz')));
 };
 
 export const wasm = goBridge(loadWasm());
