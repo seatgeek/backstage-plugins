@@ -18,11 +18,7 @@
     "test:go": "scripts/go-test.sh",
     "test": "backstage-cli package test",
     "tsc": "tsc",
-    "tsc:full": "tsc --skipLibCheck false --incremental false",
-    "lint": "backstage-cli package lint",
-    "clean": "backstage-cli package clean",
-    "prepack": "backstage-cli package prepack",
-    "postpack": "backstage-cli package postpack"
+    "tsc:full": "tsc --skipLibCheck false --incremental false"
   },
   "devDependencies": {
     "@types/fs-extra": "11.0.4",

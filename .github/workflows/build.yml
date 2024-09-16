@@ -110,9 +110,11 @@ jobs:
           cache-dependency-path: |
             packages/node-hcl/go.sum
       - run: yarn install
-      - run: yarn run lerna run build:go --stream
       - run: yarn tsc
       - run: yarn backstage-cli repo build
+      - run: yarn run lerna run build:go --stream
+        env:
+          WASM_OUTPUT_DIR: dist/wasm
       - run: yarn multi-semantic-release --ignore-private-packages --dry-run
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
