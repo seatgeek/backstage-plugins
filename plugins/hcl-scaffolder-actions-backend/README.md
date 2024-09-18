@@ -17,7 +17,9 @@ Then ensure that both the scaffolder and this module are added to your backend:
 // In packages/backend/src/index.ts
 const backend = createBackend();
 // ...
-backend.add(import('@seatgeek/backstage-plugin-hcl-scaffolder-actions-backend'));
+backend.add(
+  import('@seatgeek/backstage-plugin-hcl-scaffolder-actions-backend'),
+);
 ```
 
 After that you can use the actions in your template.
