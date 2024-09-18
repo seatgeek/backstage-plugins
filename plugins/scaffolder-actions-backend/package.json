@@ -14,7 +14,8 @@
     "pluginId": "scaffolder",
     "pluginPackages": [
       "@seatgeek/backstage-plugin-scaffolder-actions-backend"
-    ]
+    ],
+    "pluginPackage": "@backstage/plugin-scaffolder-backend"
   },
   "scripts": {
     "start": "backstage-cli package start",
@@ -30,7 +31,7 @@
     "@backstage/backend-plugin-api": "^0.8.1",
     "@backstage/config": "^1.2.0",
     "@backstage/plugin-scaffolder-node": "^0.4.10",
-    "@seatgeek/node-hcl": "link:*",
+    "@seatgeek/node-hcl": "^1.0.0",
     "fs-extra": "^11.2.0",
     "zod": "^3.23.8"
   },
