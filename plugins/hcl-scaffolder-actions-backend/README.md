@@ -1,6 +1,6 @@
-# scaffolder-backend-module-actions
+# hcl-scaffolder-actions-backend
 
-Welcome to the scaffolder-backend-module-actions plugin!
+This contains a collection of actions to use in scaffolder templates for working with HCL (Hashicorp Configuration Language). See https://github.com/hashicorp/hcl to learn more about HCL.
 
 ## Getting started
 
@@ -8,7 +8,7 @@ Welcome to the scaffolder-backend-module-actions plugin!
 
 ```bash
 # From your Backstage root directory
-yarn add --cwd packages/backend @seatgeek/backstage-plugin-scaffolder-actions-backend
+yarn add --cwd packages/backend @seatgeek/backstage-plugin-hcl-scaffolder-actions-backend
 ```
 
 Then ensure that both the scaffolder and this module are added to your backend:
@@ -17,14 +17,12 @@ Then ensure that both the scaffolder and this module are added to your backend:
 // In packages/backend/src/index.ts
 const backend = createBackend();
 // ...
-backend.add(import('@seatgeek/backstage-plugin-scaffolder-actions-backend'));
+backend.add(import('@seatgeek/backstage-plugin-hcl-scaffolder-actions-backend'));
 ```
 
 After that you can use the actions in your template.
 
 ## Actions
-
-This contains a collection of actions to use in scaffolder templates:
 
 - `hcl:merge` Merge HCL strings
 - `hcl:merge:write` Merge HCL strings and write to a file

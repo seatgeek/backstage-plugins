@@ -11,7 +11,7 @@ import * as actions from './actions';
 
 export const scaffolderBackendModuleActions = createBackendModule({
   pluginId: 'scaffolder',
-  moduleId: 'seatgeek-scaffolder-actions-backend-module',
+  moduleId: 'hcl-scaffolder-actions-backend-module',
   register({ registerInit }) {
     registerInit({
       deps: {

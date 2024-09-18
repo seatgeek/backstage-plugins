@@ -1,5 +1,5 @@
 {
-  "name": "@seatgeek/backstage-plugin-scaffolder-actions-backend",
+  "name": "@seatgeek/backstage-plugin-hcl-scaffolder-actions-backend",
   "version": "0.0.0-semantically-released",
   "main": "src/index.ts",
   "types": "src/index.ts",
@@ -13,7 +13,7 @@
     "role": "backend-plugin-module",
     "pluginId": "scaffolder",
     "pluginPackages": [
-      "@seatgeek/backstage-plugin-scaffolder-actions-backend"
+      "@seatgeek/backstage-plugin-hcl-scaffolder-actions-backend"
     ],
     "pluginPackage": "@backstage/plugin-scaffolder-backend"
   },
