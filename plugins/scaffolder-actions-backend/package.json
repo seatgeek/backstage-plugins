@@ -38,6 +38,7 @@
   "devDependencies": {
     "@backstage/cli": "^0.27.0",
     "@testing-library/jest-dom": "^5.10.1",
+    "@types/fs-extra": "^11.0.4",
     "msw": "^1.0.0",
     "stream": "^0.0.3"
   },
