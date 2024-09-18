@@ -1,4 +1,4 @@
-# hcl-scaffolder-actions-backend
+# scaffolder-backend-module-hcl
 
 This contains a collection of actions to use in scaffolder templates for working with HCL (Hashicorp Configuration Language). See https://github.com/hashicorp/hcl to learn more about HCL.
 
@@ -8,7 +8,7 @@ This contains a collection of actions to use in scaffolder templates for working
 
 ```bash
 # From your Backstage root directory
-yarn add --cwd packages/backend @seatgeek/backstage-plugin-hcl-scaffolder-actions-backend
+yarn add --cwd packages/backend @seatgeek/backstage-plugin-scaffolder-backend-module-hcl
 ```
 
 Then ensure that both the scaffolder and this module are added to your backend:
@@ -17,9 +17,7 @@ Then ensure that both the scaffolder and this module are added to your backend:
 // In packages/backend/src/index.ts
 const backend = createBackend();
 // ...
-backend.add(
-  import('@seatgeek/backstage-plugin-hcl-scaffolder-actions-backend'),
-);
+backend.add(import('@seatgeek/backstage-plugin-scaffolder-backend-module-hcl'));
 ```
 
 After that you can use the actions in your template.

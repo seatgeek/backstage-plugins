@@ -11,7 +11,7 @@ import * as actions from './actions';
 
 export const scaffolderBackendModuleActions = createBackendModule({
   pluginId: 'scaffolder',
-  moduleId: 'hcl-scaffolder-actions-backend-module',
+  moduleId: 'scaffolder-backend-module-hcl',
   register({ registerInit }) {
     registerInit({
       deps: {
