@@ -16,8 +16,8 @@ This SeatGeek Backstage Plugins Collection offers the following plugins:
   - [plugins/aws-catalog-backend](plugins/aws-catalog-backend)
 - **Gitlab Catalog**: the Gitlab Catalog Plugin offers catalog integrations with the Gitlab API.
   - [plugins/gitlab-catalog-backend](plugins/gitlab-catalog-backend/)
-- **Scaffolder Actions**: the Scaffolder Actions plugin includes custom actions for your Backstage Software Templates.
-  - [plugins/scaffolder-actions-backend](plugins/scaffolder-actions-backend/)
+- **HCL Scaffolder Actions**: the HCL Scaffolder Actions plugin includes custom actions for working with HCL in your Backstage Software Templates.
+  - [plugins/scaffolder-actions-backend](plugins/hcl-scaffolder-actions-backend/)
 
 Each of the plugins contain instructions for installation and development within
 their respective locations.
