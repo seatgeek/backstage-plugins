@@ -33,6 +33,9 @@ export type EntityScaffolderContentProps = {
     template: TemplateEntityV1beta3,
   ) => Record<string, JsonValue>;
   ScaffolderFieldExtensions?: React.ReactNode;
+  components?: {
+    TemplateCard?: React.ComponentType<{ template: TemplateEntityV1beta3 }>;
+  };
 };
 
 /**
@@ -44,6 +47,7 @@ export const EntityScaffolderContent = ({
   templateGroupFilters,
   buildInitialState,
   ScaffolderFieldExtensions,
+  components,
 }: EntityScaffolderContentProps) => {
   const { entity } = useEntity();
   const [selectedTemplate, setSelectedTemplate] =
@@ -81,6 +85,7 @@ export const EntityScaffolderContent = ({
           <TemplateGroups
             groups={groupFilters}
             onTemplateSelected={setSelectedTemplate}
+            TemplateCardComponent={components?.TemplateCard ?? undefined}
           />
         )}
       </TemplateListProvider>
