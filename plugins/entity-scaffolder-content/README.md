@@ -33,7 +33,7 @@ const systemPage = (
       <EntityScaffolderContent
         templateGroupFilters={[
           // We show all resource templates that have the label `forEntity:system``
-          // on our systen EntityPage
+          // on our system EntityPage
           {
             title: 'Resources',
             filter: (_, template) =>
@@ -51,6 +51,11 @@ const systemPage = (
           },
         ]}
         buildInitialState={entity => ({ system: stringifyEntityRef(entity) })}
+        ScaffolderFieldExtensions={
+          <ScaffolderFieldExtensions>
+            {/* Any field extensions you need */}
+          </ScaffolderFieldExtensions>
+        }
       />
     </EntityLayout.Route>
   </EntityLayout>
