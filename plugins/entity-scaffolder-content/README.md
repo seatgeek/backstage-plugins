@@ -51,13 +51,15 @@ const systemPage = (
           },
         ]}
         buildInitialState={entity => ({ system: stringifyEntityRef(entity) })}
-        ScaffolderFieldExtensions={ // optional
+        // optional
+        ScaffolderFieldExtensions={
           <ScaffolderFieldExtensions>
             {/* Any field extensions you need */}
           </ScaffolderFieldExtensions>
         }
-        components={{ // optional
-          TemplateCard: CustomTemplateCard 
+        // optional
+        components={{
+          TemplateCard: CustomTemplateCard,
         }}
       />
     </EntityLayout.Route>
