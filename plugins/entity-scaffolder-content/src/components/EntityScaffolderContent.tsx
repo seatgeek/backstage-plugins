@@ -32,6 +32,7 @@ export type EntityScaffolderContentProps = {
     entity: Entity,
     template: TemplateEntityV1beta3,
   ) => Record<string, JsonValue>;
+  ScaffolderFieldExtensions?: React.ReactNode;
 };
 
 /**
@@ -42,6 +43,7 @@ export type EntityScaffolderContentProps = {
 export const EntityScaffolderContent = ({
   templateGroupFilters,
   buildInitialState,
+  ScaffolderFieldExtensions,
 }: EntityScaffolderContentProps) => {
   const { entity } = useEntity();
   const [selectedTemplate, setSelectedTemplate] =
@@ -64,7 +66,9 @@ export const EntityScaffolderContent = ({
               onError={(error: Error | undefined) => (
                 <h2>{error?.message ?? 'Error running workflow'}</h2>
               )}
-            />
+            >
+              {ScaffolderFieldExtensions ?? null}
+            </EmbeddedScaffolderWorkflow>
             <Button
               variant="contained"
               color="primary"
