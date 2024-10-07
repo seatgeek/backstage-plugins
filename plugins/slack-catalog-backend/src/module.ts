@@ -2,7 +2,6 @@
  * Copyright SeatGeek
  * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
  */
-import { loggerToWinstonLogger } from '@backstage/backend-common';
 import {
   coreServices,
   createBackendModule,
@@ -32,10 +31,7 @@ export const catalogModuleSlackUserProcessor = createBackendModule({
           return;
         }
         catalog.addProcessor(
-          new SlackUserProcessor(
-            new WebClient(slackToken),
-            loggerToWinstonLogger(logger),
-          ),
+          new SlackUserProcessor(new WebClient(slackToken), logger),
         );
       },
     });
