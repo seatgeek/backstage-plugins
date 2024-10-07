@@ -2,6 +2,7 @@
  * Copyright SeatGeek
  * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
  */
+import { LoggerService } from '@backstage/backend-plugin-api';
 import { Entity, isUserEntity } from '@backstage/catalog-model';
 import { Config } from '@backstage/config';
 import { LocationSpec } from '@backstage/plugin-catalog-common';
@@ -11,7 +12,6 @@ import type {
 } from '@backstage/plugin-catalog-node';
 import { WebClient } from '@slack/web-api';
 import { Member } from '@slack/web-api/dist/types/response/UsersListResponse';
-import { Logger } from 'winston';
 
 const SLACK_USER_LIMIT = 1000;
 
@@ -23,7 +23,7 @@ const SLACK_USER_LIMIT = 1000;
  */
 export class SlackUserProcessor implements CatalogProcessor {
   private readonly slack: WebClient;
-  private readonly logger: Logger;
+  private readonly logger: LoggerService;
   private cacheLoaded: boolean;
   private userLookup: Map<string, Member>;
   // guarantee that users are loaded only once
@@ -86,7 +86,10 @@ export class SlackUserProcessor implements CatalogProcessor {
     return this.userLookup;
   }
 
-  static fromConfig(config: Config, logger: Logger): SlackUserProcessor[] {
+  static fromConfig(
+    config: Config,
+    logger: LoggerService,
+  ): SlackUserProcessor[] {
     const slackToken = config.getOptionalString('slackCatalog.token');
     if (!slackToken) {
       logger.warn(
@@ -97,7 +100,7 @@ export class SlackUserProcessor implements CatalogProcessor {
     return [new SlackUserProcessor(new WebClient(slackToken), logger)];
   }
 
-  constructor(slack: WebClient, logger: Logger) {
+  constructor(slack: WebClient, logger: LoggerService) {
     this.slack = slack;
     this.logger = logger;
     this.userLookup = new Map();
