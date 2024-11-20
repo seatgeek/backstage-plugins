@@ -29,8 +29,10 @@
   "dependencies": {
     "@backstage/backend-common": "^0.24.1",
     "@backstage/backend-plugin-api": "^0.8.1",
+    "@backstage/backend-test-utils": "^1.1.0",
     "@backstage/config": "^1.2.0",
     "@backstage/plugin-scaffolder-node": "^0.4.10",
+    "@backstage/types": "^1.2.0",
     "@seatgeek/node-hcl": "^1.0.0",
     "fs-extra": "^11.2.0",
     "zod": "^3.23.8"
