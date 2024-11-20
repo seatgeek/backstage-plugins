@@ -3,9 +3,12 @@
  * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
  */
 import { resolveSafeChildPath } from '@backstage/backend-plugin-api';
+import {
+  TemplateAction,
+  createTemplateAction,
+} from '@backstage/plugin-scaffolder-node';
 import { JsonObject, JsonValue } from '@backstage/types';
-import { createTemplateAction, TemplateAction } from '@backstage/plugin-scaffolder-node';
-import { merge, MergeOptions } from '@seatgeek/node-hcl';
+import { MergeOptions, merge } from '@seatgeek/node-hcl';
 
 import { ensureDirSync, readFileSync, writeFileSync } from 'fs-extra';
 import { dirname } from 'path';
@@ -42,7 +45,11 @@ async function mergeWrite(
   }
 }
 
-async function mergeFiles(aPath: string, bPath: string, options: MergeOptions): Promise<string> {
+async function mergeFiles(
+  aPath: string,
+  bPath: string,
+  options: MergeOptions,
+): Promise<string> {
   const a = await readFileSafe(aPath);
   const b = await readFileSafe(bPath);
 
@@ -64,9 +71,12 @@ async function mergeFilesWrite(
   }
 }
 
-const optionsSchema = z.object({
-  mergeMapKeys: z.boolean().optional().default(false),
-}).optional().default({ mergeMapKeys: false });
+const optionsSchema = z
+  .object({
+    mergeMapKeys: z.boolean().optional().default(false),
+  })
+  .optional()
+  .default({ mergeMapKeys: false });
 
 export const createHclMergeAction = (): TemplateAction<{
   aSourceContent: string;
@@ -172,7 +182,11 @@ export const createHclMergeFilesAction = (): TemplateAction<{
     options: optionsSchema,
   });
 
-  return createTemplateAction<{ aSourcePath: string; bSourcePath: string, options: JsonObject | undefined }>({
+  return createTemplateAction<{
+    aSourcePath: string;
+    bSourcePath: string;
+    options: JsonObject | undefined;
+  }>({
     id: 'hcl:merge:files',
     schema: {
       input: inputSchema,

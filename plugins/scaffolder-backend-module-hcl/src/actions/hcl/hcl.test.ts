@@ -108,7 +108,7 @@ describe('createHclMergeAction', () => {
 }
 
 `;
-  
+
     const mockCtx = {
       ...mockContext,
       input: {
