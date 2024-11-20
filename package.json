@@ -31,7 +31,7 @@
     ]
   },
   "volta": {
-    "node": "20.18.0",
+    "node": "20.8.1",
     "yarn": "1.22.22"
   },
   "devDependencies": {
@@ -53,8 +53,7 @@
   "resolutions": {
     "@types/react": "^17",
     "@types/react-dom": "^17",
-    "knex": "^3.1.0",
-    "@octokit/core": "4.2.4"
+    "knex": "^3.1.0"
   },
   "prettier": "@spotify/prettier-config",
   "release": {
