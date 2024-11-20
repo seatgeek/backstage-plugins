@@ -3,8 +3,12 @@
  * Licensed under the terms of the Apache-2.0 license. See LICENSE file in project root for terms.
  */
 import { resolveSafeChildPath } from '@backstage/backend-plugin-api';
-import { createTemplateAction } from '@backstage/plugin-scaffolder-node';
-import { merge } from '@seatgeek/node-hcl';
+import {
+  TemplateAction,
+  createTemplateAction,
+} from '@backstage/plugin-scaffolder-node';
+import { JsonObject, JsonValue } from '@backstage/types';
+import { MergeOptions, merge } from '@seatgeek/node-hcl';
 
 import { ensureDirSync, readFileSync, writeFileSync } from 'fs-extra';
 import { dirname } from 'path';
@@ -29,9 +33,10 @@ async function readFileSafe(path: string): Promise<string> {
 async function mergeWrite(
   a: string,
   b: string,
+  options: MergeOptions,
   outPath: string,
 ): Promise<void> {
-  const out = await merge(a, b);
+  const out = await merge(a, b, options);
 
   try {
     await writeFileSync(outPath, out, 'utf8');
@@ -40,19 +45,24 @@ async function mergeWrite(
   }
 }
 
-async function mergeFiles(aPath: string, bPath: string): Promise<string> {
+async function mergeFiles(
+  aPath: string,
+  bPath: string,
+  options: MergeOptions,
+): Promise<string> {
   const a = await readFileSafe(aPath);
   const b = await readFileSafe(bPath);
 
-  return await merge(a, b);
+  return await merge(a, b, options);
 }
 
 async function mergeFilesWrite(
   aPath: string,
   bPath: string,
+  options: MergeOptions,
   outPath: string,
 ): Promise<void> {
-  const out = await mergeFiles(aPath, bPath);
+  const out = await mergeFiles(aPath, bPath, options);
 
   try {
     await writeFileSync(outPath, out, 'utf8');
@@ -61,15 +71,28 @@ async function mergeFilesWrite(
   }
 }
 
-export const createHclMergeAction = () => {
+const optionsSchema = z
+  .object({
+    mergeMapKeys: z.boolean().optional().default(false),
+  })
+  .optional()
+  .default({ mergeMapKeys: false });
+
+export const createHclMergeAction = (): TemplateAction<{
+  aSourceContent: string;
+  bSourceContent: string;
+  options: JsonObject | undefined;
+}> => {
   const inputSchema = z.object({
     aSourceContent: z.string().describe('The HCL content to be merged'),
     bSourceContent: z.string().describe('The HCL content to be merged'),
+    options: optionsSchema,
   });
 
   return createTemplateAction<{
     aSourceContent: string;
     bSourceContent: string;
+    options: JsonValue | undefined;
   }>({
     id: 'hcl:merge',
     schema: {
@@ -86,19 +109,28 @@ export const createHclMergeAction = () => {
         );
       }
 
+      ctx.logger.error('output', input.data.options);
+
       const out = await merge(
         input.data.aSourceContent,
         input.data.bSourceContent,
+        input.data.options,
       );
       ctx.output('hcl', out);
     },
   });
 };
 
-export const createHclMergeWriteAction = () => {
+export const createHclMergeWriteAction = (): TemplateAction<{
+  aSourceContent: string;
+  bSourceContent: string;
+  options: JsonObject | undefined;
+  outputPath: string;
+}> => {
   const inputSchema = z.object({
     aSourceContent: z.string().describe('The HCL content to be merged'),
     bSourceContent: z.string().describe('The HCL content to be merged'),
+    options: optionsSchema,
     outputPath: z
       .string()
       .describe('The path to write the merged HCL content to'),
@@ -107,6 +139,7 @@ export const createHclMergeWriteAction = () => {
   return createTemplateAction<{
     aSourceContent: string;
     bSourceContent: string;
+    options: JsonValue | undefined;
     outputPath: string;
   }>({
     id: 'hcl:merge:write',
@@ -131,19 +164,29 @@ export const createHclMergeWriteAction = () => {
       await mergeWrite(
         input.data.aSourceContent,
         input.data.bSourceContent,
+        input.data.options,
         outPath,
       );
     },
   });
 };
 
-export const createHclMergeFilesAction = () => {
+export const createHclMergeFilesAction = (): TemplateAction<{
+  aSourcePath: string;
+  bSourcePath: string;
+  options: JsonObject | undefined;
+}> => {
   const inputSchema = z.object({
     aSourcePath: z.string().describe('The path to the HCL file to be merged'),
     bSourcePath: z.string().describe('The path to the HCL file to be merged'),
+    options: optionsSchema,
   });
 
-  return createTemplateAction<{ aSourcePath: string; bSourcePath: string }>({
+  return createTemplateAction<{
+    aSourcePath: string;
+    bSourcePath: string;
+    options: JsonObject | undefined;
+  }>({
     id: 'hcl:merge:files',
     schema: {
       input: inputSchema,
@@ -167,17 +210,24 @@ export const createHclMergeFilesAction = () => {
         ctx.workspacePath,
         input.data.bSourcePath,
       );
+      const options = input.data.options;
 
-      const out = await mergeFiles(aPath, bPath);
+      const out = await mergeFiles(aPath, bPath, options);
       ctx.output('hcl', out);
     },
   });
 };
 
-export const createHclMergeFilesWriteAction = () => {
+export const createHclMergeFilesWriteAction = (): TemplateAction<{
+  aSourcePath: string;
+  bSourcePath: string;
+  options: JsonObject | undefined;
+  outputPath: string;
+}> => {
   const inputSchema = z.object({
     aSourcePath: z.string().describe('The path to the HCL file to be merged'),
     bSourcePath: z.string().describe('The path to the HCL file to be merged'),
+    options: optionsSchema,
     outputPath: z
       .string()
       .describe('The path to write the merged HCL content to'),
@@ -186,6 +236,7 @@ export const createHclMergeFilesWriteAction = () => {
   return createTemplateAction<{
     aSourcePath: string;
     bSourcePath: string;
+    options: JsonObject | undefined;
     outputPath: string;
   }>({
     id: 'hcl:merge:files:write',
@@ -212,10 +263,11 @@ export const createHclMergeFilesWriteAction = () => {
         ctx.workspacePath,
         input.data.outputPath,
       );
+      const options = input.data.options;
 
       ensureDirSync(dirname(outPath));
 
-      await mergeFilesWrite(aPath, bPath, outPath);
+      await mergeFilesWrite(aPath, bPath, options, outPath);
     },
   });
 };
