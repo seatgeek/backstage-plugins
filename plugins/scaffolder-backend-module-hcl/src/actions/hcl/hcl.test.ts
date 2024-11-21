@@ -189,8 +189,7 @@ describe('createHclMergeFilesAction', () => {
     expect(mockCtx.output.mock.calls[0][1]).toEqual(expected);
   });
 
-
-  it("should merge HCL files with mergeMapKeys set to true", async () => {
+  it('should merge HCL files with mergeMapKeys set to true', async () => {
     const a = `
   locals {
     my_var = {
@@ -219,7 +218,7 @@ describe('createHclMergeFilesAction', () => {
     var     = local.my_var
   }
   `;
-  
+
     const b = `
   locals {
     my_var = {
@@ -242,7 +241,7 @@ describe('createHclMergeFilesAction', () => {
   
   // some comment
   `;
-  
+
     const expected = `locals {
   my_var = {
     bar = "baz"
@@ -272,7 +271,7 @@ module "my_module" {
 }
 
 `;
-  
+
     const aPath = `${mockContext.workspacePath}/${randomBytes(12).toString(
       'hex',
     )}.hcl`;
