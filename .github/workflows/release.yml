@@ -19,8 +19,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '20.x'
-          cache: 'yarn'
-      - run: yarn install
+          cache: 'npm'
+      - run: ./scripts/prepare-release.sh
+      - run: npm install --force
       - run: yarn tsc
       - run: yarn backstage-cli repo build
       - name: Release
