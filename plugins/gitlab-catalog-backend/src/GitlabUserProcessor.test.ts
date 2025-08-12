@@ -16,10 +16,12 @@ jest.mock('@gitbeaker/rest', () => {
             {
               id: 123,
               email: 'rufus@seatgeek.com',
+              username: 'rufus',
             },
             {
               id: 999,
               email: 'taylor@seatgeek.com',
+              username: 'taylor',
             },
           ]),
           // mock other methods as needed
@@ -77,6 +79,7 @@ describe('GitlabUserProcessor', () => {
         name: 'rufus',
         annotations: {
           'gitlab.com/user_id': '123',
+          'gitlab.com/username': 'rufus',
         },
       },
       spec: {

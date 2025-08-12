@@ -146,6 +146,10 @@ export class GitlabUserProcessor implements CatalogProcessor {
         gitlabUser.id.toString();
     }
 
+    if (gitlabUser.username) {
+      entity.metadata.annotations[`gitlab.com/username`] = gitlabUser.username;
+    }
+
     return entity;
   }
 }
