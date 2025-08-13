@@ -16,11 +16,11 @@ Configuration is kept in [package.json](/package.json)'s `"release"` field and f
 
 ### Workflow
 
-> ⚠️ The Github Action workflow seems to be [broken](https://github.com/seatgeek/backstage-plugins/actions/runs/7730814643/job/21077039936). To release, run the same commands in [release.yml](/.github/workflows/release.yml) on your local machine, pulling `NPM_TOKEN` from the repository's secrets and a personal `GITHUB_TOKEN` with permissions listed [here](https://github.com/semantic-release/github?tab=readme-ov-file#github-authentication). Don't commit the state of your repository after the release.
-
 On all pushes to `main` we run `multi-semantic-release --dry-run` in CI to see what would be released.
 
 To actually run a release, trigger the Release workflow.
+
+(If the Release workflow is ever broken, run the same commands in [release.yml](/.github/workflows/release.yml) on your local machine, pulling `NPM_TOKEN` from the repository's secrets and a personal `GITHUB_TOKEN` with permissions listed [here](https://github.com/semantic-release/github?tab=readme-ov-file#github-authentication). Don't commit the state of your repository after the release.)
 
 ### Merging
 
