@@ -9,7 +9,10 @@ import {
   SecretsContextProvider,
   TemplateGroupFilter,
 } from '@backstage/plugin-scaffolder-react';
-import { TemplateGroups } from '@backstage/plugin-scaffolder-react/alpha';
+import {
+  TemplateCard,
+  TemplateGroups,
+} from '@backstage/plugin-scaffolder-react/alpha';
 import type { JsonValue } from '@backstage/types';
 import { EmbeddedScaffolderWorkflow } from '@frontside/backstage-plugin-scaffolder-workflow';
 import { Button } from '@material-ui/core';
@@ -34,7 +37,7 @@ export type EntityScaffolderContentProps = {
   ) => Record<string, JsonValue>;
   ScaffolderFieldExtensions?: React.ReactNode;
   components?: {
-    TemplateCard?: React.ComponentType<{ template: TemplateEntityV1beta3 }>;
+    TemplateCard?: typeof TemplateCard;
   };
 };
 
