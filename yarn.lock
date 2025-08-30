@@ -9595,10 +9595,10 @@
   version "0.0.0"
   uid ""
 
-"@seatgeek/node-hcl@^1.0.0":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@seatgeek/node-hcl/-/node-hcl-1.1.1.tgz#13e9a2127a665d8ebedeed31c28e7e4aef6033cc"
-  integrity sha512-pvqj6rzI8sG8/O62vcaj4WL4F6eQSVStGE+97GAONk1a8WLwL4yF68MXo8hfzUSsN+ljUTMoF1qnJECpHpAyLg==
+"@seatgeek/node-hcl@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@seatgeek/node-hcl/-/node-hcl-2.0.0.tgz#ca0d538bbd99b501a5cf20c0c83d913c791109df"
+  integrity sha512-f4B9DFVjAcXlEYQVxsWSvXYKPZLhds4nZQ0fSeqW0c+Q+xdjg296CmtjxOsvOt2tip6q6KtmJPejxXQ2C/gceA==
   dependencies:
     fs-extra "^11.2.0"
 

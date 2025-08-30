@@ -57,7 +57,6 @@ describe('createHclMergeAction', () => {
   }
   type = string
 }
-
 `;
 
     const mockCtx = {
@@ -106,7 +105,6 @@ describe('createHclMergeAction', () => {
   }
   type = string
 }
-
 `;
 
     const mockCtx = {
@@ -158,7 +156,6 @@ describe('createHclMergeFilesAction', () => {
   description = "Name to be used on all the resources as identifier"
   type        = string
 }
-
 `;
 
     const aPath = `${mockContext.workspacePath}/${randomBytes(12).toString(
@@ -252,7 +249,6 @@ describe('createHclMergeFilesAction', () => {
   }
 }
 
-
 module "my_module" {
   my_map = {
     "map_a" = {
@@ -269,7 +265,6 @@ module "my_module" {
   var     = local.my_var
   version = "0.0.2"
 }
-
 `;
 
     const aPath = `${mockContext.workspacePath}/${randomBytes(12).toString(
