@@ -19,7 +19,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           # Configure types to match semantic-release rules from package.json
-          types: >
+          types: |
             feat
             fix
             docs
