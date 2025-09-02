@@ -33,7 +33,7 @@
     "@backstage/config": "^1.2.0",
     "@backstage/plugin-scaffolder-node": "^0.4.10",
     "@backstage/types": "^1.2.0",
-    "@seatgeek/node-hcl": "^1.0.0",
+    "@seatgeek/node-hcl": "^2.0.0",
     "fs-extra": "^11.2.0",
     "zod": "^3.23.8"
   },
