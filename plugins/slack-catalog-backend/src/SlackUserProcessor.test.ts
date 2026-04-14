@@ -146,7 +146,7 @@ describe('SlackUserProcessor', () => {
     });
   });
 
-  test('should fall back to top-level slack user id when enterprise_user.id is missing', async () => {
+  test('should fall back to top-level slack user id when enterprise_user is missing', async () => {
     const before: UserEntity = {
       apiVersion: 'backstage.io/v1alpha1',
       kind: 'User',
