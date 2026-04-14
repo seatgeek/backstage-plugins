@@ -24,6 +24,9 @@ jest.mock('@slack/web-api', () => {
               },
               {
                 id: 'ID_taylor',
+                enterprise_user: {
+                  id: 'ENTERPRISE_ID_taylor',
+                },
                 profile: {
                   email: 'taylor@seatgeek.com',
                   image_192: 'taylor-192.png',
@@ -106,6 +109,76 @@ describe('SlackUserProcessor', () => {
     // make sure that the slack users are only fetched once
     await processor.postProcessEntity(before, {} as any, () => {});
     expect(mockSlackClient.users.list).toHaveBeenCalledTimes(1);
+  });
+
+  test('should use enterprise slack user id when present', async () => {
+    const before: UserEntity = {
+      apiVersion: 'backstage.io/v1alpha1',
+      kind: 'User',
+      metadata: {
+        name: 'taylor',
+      },
+      spec: {
+        profile: { email: 'taylor@seatgeek.com' },
+      },
+    };
+    const result = await processor.postProcessEntity(
+      before,
+      {} as any,
+      () => {},
+    );
+
+    expect(result).toEqual({
+      apiVersion: 'backstage.io/v1alpha1',
+      kind: 'User',
+      metadata: {
+        name: 'taylor',
+        annotations: {
+          'slack.com/user_id': 'ENTERPRISE_ID_taylor',
+        },
+      },
+      spec: {
+        profile: {
+          email: 'taylor@seatgeek.com',
+          picture: 'taylor-192.png',
+        },
+      },
+    });
+  });
+
+  test('should fall back to top-level slack user id when enterprise_user is missing', async () => {
+    const before: UserEntity = {
+      apiVersion: 'backstage.io/v1alpha1',
+      kind: 'User',
+      metadata: {
+        name: 'rufus',
+      },
+      spec: {
+        profile: { email: 'rufus@seatgeek.com' },
+      },
+    };
+    const result = await processor.postProcessEntity(
+      before,
+      {} as any,
+      () => {},
+    );
+
+    expect(result).toEqual({
+      apiVersion: 'backstage.io/v1alpha1',
+      kind: 'User',
+      metadata: {
+        name: 'rufus',
+        annotations: {
+          'slack.com/user_id': 'ID_rufus',
+        },
+      },
+      spec: {
+        profile: {
+          email: 'rufus@seatgeek.com',
+          picture: 'rufus-192.png',
+        },
+      },
+    });
   });
 
   test('should no op if not a user', async () => {
