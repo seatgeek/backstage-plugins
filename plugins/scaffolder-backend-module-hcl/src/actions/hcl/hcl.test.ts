@@ -305,9 +305,9 @@ describe('schema validation', () => {
     const result = validate({}, schema);
     expect(result.valid).toBe(false);
     expect(result.errors.length).toBeGreaterThan(0);
-    expect(
-      result.errors.some(e => e.message.includes('aSourceContent')),
-    ).toBe(true);
+    expect(result.errors.some(e => e.message.includes('aSourceContent'))).toBe(
+      true,
+    );
   });
 
   it('schema rejects wrong types', () => {
@@ -319,9 +319,7 @@ describe('schema validation', () => {
       schema,
     );
     expect(result.valid).toBe(false);
-    expect(
-      result.errors.some(e => e.name === 'type'),
-    ).toBe(true);
+    expect(result.errors.some(e => e.name === 'type')).toBe(true);
   });
 
   it('schema accepts valid input', () => {

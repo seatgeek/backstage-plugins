@@ -78,12 +78,9 @@ const optionsJsonSchema = {
   default: { mergeMapKeys: false },
 };
 
-function defaultOptions(input: {
-  options?: JsonObject;
-}): MergeOptions {
+function defaultOptions(input: { options?: JsonObject }): MergeOptions {
   return {
-    mergeMapKeys:
-      (input.options?.mergeMapKeys as boolean | undefined) ?? false,
+    mergeMapKeys: (input.options?.mergeMapKeys as boolean | undefined) ?? false,
   };
 }
 
@@ -103,8 +100,14 @@ export const createHclMergeAction = (): TemplateAction<{
         type: 'object' as const,
         required: ['aSourceContent', 'bSourceContent'],
         properties: {
-          aSourceContent: { type: 'string', description: 'The HCL content to be merged' },
-          bSourceContent: { type: 'string', description: 'The HCL content to be merged' },
+          aSourceContent: {
+            type: 'string',
+            description: 'The HCL content to be merged',
+          },
+          bSourceContent: {
+            type: 'string',
+            description: 'The HCL content to be merged',
+          },
           options: optionsJsonSchema,
         },
       },
@@ -145,10 +148,19 @@ export const createHclMergeWriteAction = (): TemplateAction<{
         type: 'object' as const,
         required: ['aSourceContent', 'bSourceContent', 'outputPath'],
         properties: {
-          aSourceContent: { type: 'string', description: 'The HCL content to be merged' },
-          bSourceContent: { type: 'string', description: 'The HCL content to be merged' },
+          aSourceContent: {
+            type: 'string',
+            description: 'The HCL content to be merged',
+          },
+          bSourceContent: {
+            type: 'string',
+            description: 'The HCL content to be merged',
+          },
           options: optionsJsonSchema,
-          outputPath: { type: 'string', description: 'The path to write the merged HCL content to' },
+          outputPath: {
+            type: 'string',
+            description: 'The path to write the merged HCL content to',
+          },
         },
       },
     },
@@ -187,8 +199,14 @@ export const createHclMergeFilesAction = (): TemplateAction<{
         type: 'object' as const,
         required: ['aSourcePath', 'bSourcePath'],
         properties: {
-          aSourcePath: { type: 'string', description: 'The path to the HCL file to be merged' },
-          bSourcePath: { type: 'string', description: 'The path to the HCL file to be merged' },
+          aSourcePath: {
+            type: 'string',
+            description: 'The path to the HCL file to be merged',
+          },
+          bSourcePath: {
+            type: 'string',
+            description: 'The path to the HCL file to be merged',
+          },
           options: optionsJsonSchema,
         },
       },
@@ -234,10 +252,19 @@ export const createHclMergeFilesWriteAction = (): TemplateAction<{
         type: 'object' as const,
         required: ['aSourcePath', 'bSourcePath', 'outputPath'],
         properties: {
-          aSourcePath: { type: 'string', description: 'The path to the HCL file to be merged' },
-          bSourcePath: { type: 'string', description: 'The path to the HCL file to be merged' },
+          aSourcePath: {
+            type: 'string',
+            description: 'The path to the HCL file to be merged',
+          },
+          bSourcePath: {
+            type: 'string',
+            description: 'The path to the HCL file to be merged',
+          },
           options: optionsJsonSchema,
-          outputPath: { type: 'string', description: 'The path to write the merged HCL content to' },
+          outputPath: {
+            type: 'string',
+            description: 'The path to write the merged HCL content to',
+          },
         },
       },
     },
