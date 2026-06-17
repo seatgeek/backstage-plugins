@@ -7,12 +7,11 @@ import {
   TemplateAction,
   createTemplateAction,
 } from '@backstage/plugin-scaffolder-node';
-import { JsonObject, JsonValue } from '@backstage/types';
+import { JsonObject } from '@backstage/types';
 import { MergeOptions, merge } from '@seatgeek/node-hcl';
 
 import { ensureDirSync, readFileSync, writeFileSync } from 'fs-extra';
 import { dirname } from 'path';
-import { z } from 'zod';
 
 async function readFileSafe(path: string): Promise<string> {
   try {
@@ -71,13 +70,6 @@ async function mergeFilesWrite(
   }
 }
 
-const optionsSchema = z
-  .object({
-    mergeMapKeys: z.boolean().optional().default(false),
-  })
-  .optional()
-  .default({ mergeMapKeys: false });
-
 const optionsJsonSchema = {
   type: 'object' as const,
   properties: {
@@ -86,21 +78,24 @@ const optionsJsonSchema = {
   default: { mergeMapKeys: false },
 };
 
+function defaultOptions(input: {
+  options?: JsonObject;
+}): MergeOptions {
+  return {
+    mergeMapKeys:
+      (input.options?.mergeMapKeys as boolean | undefined) ?? false,
+  };
+}
+
 export const createHclMergeAction = (): TemplateAction<{
   aSourceContent: string;
   bSourceContent: string;
   options: JsonObject | undefined;
 }> => {
-  const inputSchema = z.object({
-    aSourceContent: z.string().describe('The HCL content to be merged'),
-    bSourceContent: z.string().describe('The HCL content to be merged'),
-    options: optionsSchema,
-  });
-
   return createTemplateAction<{
     aSourceContent: string;
     bSourceContent: string;
-    options: JsonValue | undefined;
+    options: JsonObject | undefined;
   }>({
     id: 'hcl:merge',
     schema: {
@@ -121,17 +116,11 @@ export const createHclMergeAction = (): TemplateAction<{
       },
     },
     async handler(ctx) {
-      const input = inputSchema.safeParse(ctx.input);
-      if (!input.success) {
-        throw new Error(
-          `Invalid input: ${Object.keys(input.error.flatten().fieldErrors)}`,
-        );
-      }
-
+      const options = defaultOptions(ctx.input);
       const out = await merge(
-        input.data.aSourceContent,
-        input.data.bSourceContent,
-        input.data.options,
+        ctx.input.aSourceContent,
+        ctx.input.bSourceContent,
+        options,
       );
       ctx.output('hcl', out);
     },
@@ -144,19 +133,10 @@ export const createHclMergeWriteAction = (): TemplateAction<{
   options: JsonObject | undefined;
   outputPath: string;
 }> => {
-  const inputSchema = z.object({
-    aSourceContent: z.string().describe('The HCL content to be merged'),
-    bSourceContent: z.string().describe('The HCL content to be merged'),
-    options: optionsSchema,
-    outputPath: z
-      .string()
-      .describe('The path to write the merged HCL content to'),
-  });
-
   return createTemplateAction<{
     aSourceContent: string;
     bSourceContent: string;
-    options: JsonValue | undefined;
+    options: JsonObject | undefined;
     outputPath: string;
   }>({
     id: 'hcl:merge:write',
@@ -173,24 +153,18 @@ export const createHclMergeWriteAction = (): TemplateAction<{
       },
     },
     async handler(ctx) {
-      const input = inputSchema.safeParse(ctx.input);
-      if (!input.success) {
-        throw new Error(
-          `Invalid input: ${Object.keys(input.error.flatten().fieldErrors)}`,
-        );
-      }
-
+      const options = defaultOptions(ctx.input);
       const outPath = resolveSafeChildPath(
         ctx.workspacePath,
-        input.data.outputPath,
+        ctx.input.outputPath,
       );
 
       ensureDirSync(dirname(outPath));
 
       await mergeWrite(
-        input.data.aSourceContent,
-        input.data.bSourceContent,
-        input.data.options,
+        ctx.input.aSourceContent,
+        ctx.input.bSourceContent,
+        options,
         outPath,
       );
     },
@@ -202,12 +176,6 @@ export const createHclMergeFilesAction = (): TemplateAction<{
   bSourcePath: string;
   options: JsonObject | undefined;
 }> => {
-  const inputSchema = z.object({
-    aSourcePath: z.string().describe('The path to the HCL file to be merged'),
-    bSourcePath: z.string().describe('The path to the HCL file to be merged'),
-    options: optionsSchema,
-  });
-
   return createTemplateAction<{
     aSourcePath: string;
     bSourcePath: string;
@@ -232,22 +200,15 @@ export const createHclMergeFilesAction = (): TemplateAction<{
       },
     },
     async handler(ctx) {
-      const input = inputSchema.safeParse(ctx.input);
-      if (!input.success) {
-        throw new Error(
-          `Invalid input: ${Object.keys(input.error.flatten().fieldErrors)}`,
-        );
-      }
-
+      const options = defaultOptions(ctx.input);
       const aPath = resolveSafeChildPath(
         ctx.workspacePath,
-        input.data.aSourcePath,
+        ctx.input.aSourcePath,
       );
       const bPath = resolveSafeChildPath(
         ctx.workspacePath,
-        input.data.bSourcePath,
+        ctx.input.bSourcePath,
       );
-      const options = input.data.options;
 
       const out = await mergeFiles(aPath, bPath, options);
       ctx.output('hcl', out);
@@ -261,15 +222,6 @@ export const createHclMergeFilesWriteAction = (): TemplateAction<{
   options: JsonObject | undefined;
   outputPath: string;
 }> => {
-  const inputSchema = z.object({
-    aSourcePath: z.string().describe('The path to the HCL file to be merged'),
-    bSourcePath: z.string().describe('The path to the HCL file to be merged'),
-    options: optionsSchema,
-    outputPath: z
-      .string()
-      .describe('The path to write the merged HCL content to'),
-  });
-
   return createTemplateAction<{
     aSourcePath: string;
     bSourcePath: string;
@@ -290,26 +242,19 @@ export const createHclMergeFilesWriteAction = (): TemplateAction<{
       },
     },
     async handler(ctx) {
-      const input = inputSchema.safeParse(ctx.input);
-      if (!input.success) {
-        throw new Error(
-          `Invalid input: ${Object.keys(input.error.flatten().fieldErrors)}`,
-        );
-      }
-
+      const options = defaultOptions(ctx.input);
       const aPath = resolveSafeChildPath(
         ctx.workspacePath,
-        input.data.aSourcePath,
+        ctx.input.aSourcePath,
       );
       const bPath = resolveSafeChildPath(
         ctx.workspacePath,
-        input.data.bSourcePath,
+        ctx.input.bSourcePath,
       );
       const outPath = resolveSafeChildPath(
         ctx.workspacePath,
-        input.data.outputPath,
+        ctx.input.outputPath,
       );
-      const options = input.data.options;
 
       ensureDirSync(dirname(outPath));
 

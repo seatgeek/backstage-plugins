@@ -5,6 +5,7 @@
 import { mockServices } from '@backstage/backend-test-utils';
 import { randomBytes } from 'crypto';
 import { writeFileSync } from 'fs-extra';
+import { validate } from 'jsonschema';
 import { tmpdir } from 'os';
 import { PassThrough } from 'stream';
 import { createHclMergeAction, createHclMergeFilesAction } from './hcl';
@@ -293,5 +294,50 @@ module "my_module" {
 
     expect(mockCtx.output.mock.calls[0][0]).toEqual('hcl');
     expect(mockCtx.output.mock.calls[0][1]).toEqual(expected);
+  });
+});
+
+describe('action schemas are plain JSON Schema (Zod v4 compatibility)', () => {
+  // Backstage's createTemplateAction detects Zod schemas via "safeParseAsync in schema"
+  // and converts them with zod-to-json-schema, which silently breaks under Zod v4
+  // (producing { "type": "string" } instead of an object schema). By passing plain
+  // JSON Schema objects, we bypass this conversion entirely.
+  // See: https://github.com/seatgeek/backstage-plugins/issues/87
+
+  it('schema rejects invalid input (missing required fields)', () => {
+    const action = createHclMergeAction();
+    const schema = action.schema?.input;
+
+    const result = validate({}, schema);
+    expect(result.valid).toBe(false);
+    expect(result.errors.length).toBeGreaterThan(0);
+    expect(
+      result.errors.some(e => e.message.includes('aSourceContent')),
+    ).toBe(true);
+  });
+
+  it('schema rejects wrong types', () => {
+    const action = createHclMergeAction();
+    const schema = action.schema?.input;
+
+    const result = validate(
+      { aSourceContent: 123, bSourceContent: true },
+      schema,
+    );
+    expect(result.valid).toBe(false);
+    expect(
+      result.errors.some(e => e.name === 'type'),
+    ).toBe(true);
+  });
+
+  it('schema accepts valid input', () => {
+    const action = createHclMergeAction();
+    const schema = action.schema?.input;
+
+    const result = validate(
+      { aSourceContent: 'foo', bSourceContent: 'bar' },
+      schema,
+    );
+    expect(result.valid).toBe(true);
   });
 });
