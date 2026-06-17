@@ -78,6 +78,14 @@ const optionsSchema = z
   .optional()
   .default({ mergeMapKeys: false });
 
+const optionsJsonSchema = {
+  type: 'object' as const,
+  properties: {
+    mergeMapKeys: { type: 'boolean' as const, default: false },
+  },
+  default: { mergeMapKeys: false },
+};
+
 export const createHclMergeAction = (): TemplateAction<{
   aSourceContent: string;
   bSourceContent: string;
@@ -96,10 +104,21 @@ export const createHclMergeAction = (): TemplateAction<{
   }>({
     id: 'hcl:merge',
     schema: {
-      input: inputSchema,
-      output: z.object({
-        hcl: z.string(),
-      }),
+      input: {
+        type: 'object' as const,
+        required: ['aSourceContent', 'bSourceContent'],
+        properties: {
+          aSourceContent: { type: 'string', description: 'The HCL content to be merged' },
+          bSourceContent: { type: 'string', description: 'The HCL content to be merged' },
+          options: optionsJsonSchema,
+        },
+      },
+      output: {
+        type: 'object' as const,
+        properties: {
+          hcl: { type: 'string' },
+        },
+      },
     },
     async handler(ctx) {
       const input = inputSchema.safeParse(ctx.input);
@@ -108,8 +127,6 @@ export const createHclMergeAction = (): TemplateAction<{
           `Invalid input: ${Object.keys(input.error.flatten().fieldErrors)}`,
         );
       }
-
-      ctx.logger.error('output', input.data.options);
 
       const out = await merge(
         input.data.aSourceContent,
@@ -144,7 +161,16 @@ export const createHclMergeWriteAction = (): TemplateAction<{
   }>({
     id: 'hcl:merge:write',
     schema: {
-      input: inputSchema,
+      input: {
+        type: 'object' as const,
+        required: ['aSourceContent', 'bSourceContent', 'outputPath'],
+        properties: {
+          aSourceContent: { type: 'string', description: 'The HCL content to be merged' },
+          bSourceContent: { type: 'string', description: 'The HCL content to be merged' },
+          options: optionsJsonSchema,
+          outputPath: { type: 'string', description: 'The path to write the merged HCL content to' },
+        },
+      },
     },
     async handler(ctx) {
       const input = inputSchema.safeParse(ctx.input);
@@ -189,10 +215,21 @@ export const createHclMergeFilesAction = (): TemplateAction<{
   }>({
     id: 'hcl:merge:files',
     schema: {
-      input: inputSchema,
-      output: z.object({
-        hcl: z.string(),
-      }),
+      input: {
+        type: 'object' as const,
+        required: ['aSourcePath', 'bSourcePath'],
+        properties: {
+          aSourcePath: { type: 'string', description: 'The path to the HCL file to be merged' },
+          bSourcePath: { type: 'string', description: 'The path to the HCL file to be merged' },
+          options: optionsJsonSchema,
+        },
+      },
+      output: {
+        type: 'object' as const,
+        properties: {
+          hcl: { type: 'string' },
+        },
+      },
     },
     async handler(ctx) {
       const input = inputSchema.safeParse(ctx.input);
@@ -241,7 +278,16 @@ export const createHclMergeFilesWriteAction = (): TemplateAction<{
   }>({
     id: 'hcl:merge:files:write',
     schema: {
-      input: inputSchema,
+      input: {
+        type: 'object' as const,
+        required: ['aSourcePath', 'bSourcePath', 'outputPath'],
+        properties: {
+          aSourcePath: { type: 'string', description: 'The path to the HCL file to be merged' },
+          bSourcePath: { type: 'string', description: 'The path to the HCL file to be merged' },
+          options: optionsJsonSchema,
+          outputPath: { type: 'string', description: 'The path to write the merged HCL content to' },
+        },
+      },
     },
     async handler(ctx) {
       const input = inputSchema.safeParse(ctx.input);
