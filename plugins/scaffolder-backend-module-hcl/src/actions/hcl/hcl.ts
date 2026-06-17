@@ -113,10 +113,11 @@ export const createHclMergeAction = (): TemplateAction<{
       },
       output: {
         type: 'object' as const,
+        required: ['hcl'],
         properties: {
           hcl: { type: 'string' },
         },
-      },
+      }
     },
     async handler(ctx) {
       const options = defaultOptions(ctx.input);
