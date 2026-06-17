@@ -297,13 +297,7 @@ module "my_module" {
   });
 });
 
-describe('action schemas are plain JSON Schema (Zod v4 compatibility)', () => {
-  // Backstage's createTemplateAction detects Zod schemas via "safeParseAsync in schema"
-  // and converts them with zod-to-json-schema, which silently breaks under Zod v4
-  // (producing { "type": "string" } instead of an object schema). By passing plain
-  // JSON Schema objects, we bypass this conversion entirely.
-  // See: https://github.com/seatgeek/backstage-plugins/issues/87
-
+describe('schema validation', () => {
   it('schema rejects invalid input (missing required fields)', () => {
     const action = createHclMergeAction();
     const schema = action.schema?.input;
