@@ -326,10 +326,11 @@ describe('schema validation', () => {
   it('schema accepts valid input', () => {
     const action = createHclMergeAction();
     const schema = action.schema?.input;
+    expect(schema).toBeDefined();
 
     const result = validate(
       { aSourceContent: 'foo', bSourceContent: 'bar' },
-      schema,
+      schema as any,
     );
     expect(result.valid).toBe(true);
   });
