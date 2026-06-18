@@ -117,7 +117,7 @@ export const createHclMergeAction = (): TemplateAction<{
         properties: {
           hcl: { type: 'string' },
         },
-      }
+      },
     },
     async handler(ctx) {
       const options = defaultOptions(ctx.input);
@@ -217,7 +217,7 @@ export const createHclMergeFilesAction = (): TemplateAction<{
         properties: {
           hcl: { type: 'string' },
         },
-      }
+      },
     },
     async handler(ctx) {
       const options = defaultOptions(ctx.input);
