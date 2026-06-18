@@ -313,10 +313,11 @@ describe('schema validation', () => {
   it('schema rejects wrong types', () => {
     const action = createHclMergeAction();
     const schema = action.schema?.input;
+    expect(schema).toBeDefined();
 
     const result = validate(
       { aSourceContent: 123, bSourceContent: true },
-      schema,
+      schema as any,
     );
     expect(result.valid).toBe(false);
     expect(result.errors.some(e => e.name === 'type')).toBe(true);
