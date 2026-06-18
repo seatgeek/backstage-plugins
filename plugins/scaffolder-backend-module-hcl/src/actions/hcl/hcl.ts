@@ -79,8 +79,9 @@ const optionsJsonSchema = {
 };
 
 function defaultOptions(input: { options?: JsonObject }): MergeOptions {
+  const mergeMapKeys = input.options?.mergeMapKeys;
   return {
-    mergeMapKeys: (input.options?.mergeMapKeys as boolean | undefined) ?? false,
+    mergeMapKeys: typeof mergeMapKeys === 'boolean' ? mergeMapKeys : false,
   };
 }
 
