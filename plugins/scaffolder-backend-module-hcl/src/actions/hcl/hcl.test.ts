@@ -301,9 +301,9 @@ describe('schema validation', () => {
   it('schema rejects invalid input (missing required fields)', () => {
     const action = createHclMergeAction();
     const schema = action.schema?.input;
+    expect(schema).toBeDefined();
 
-    const result = validate({}, schema);
-    expect(result.valid).toBe(false);
+    const result = validate({}, schema as any);
     expect(result.errors.length).toBeGreaterThan(0);
     expect(result.errors.some(e => e.message.includes('aSourceContent'))).toBe(
       true,
