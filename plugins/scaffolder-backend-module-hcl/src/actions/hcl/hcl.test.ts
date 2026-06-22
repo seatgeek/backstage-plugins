@@ -5,6 +5,7 @@
 import { mockServices } from '@backstage/backend-test-utils';
 import { randomBytes } from 'crypto';
 import { writeFileSync } from 'fs-extra';
+import { validate } from 'jsonschema';
 import { tmpdir } from 'os';
 import { PassThrough } from 'stream';
 import { createHclMergeAction, createHclMergeFilesAction } from './hcl';
@@ -293,5 +294,44 @@ module "my_module" {
 
     expect(mockCtx.output.mock.calls[0][0]).toEqual('hcl');
     expect(mockCtx.output.mock.calls[0][1]).toEqual(expected);
+  });
+});
+
+describe('schema validation', () => {
+  it('schema rejects invalid input (missing required fields)', () => {
+    const action = createHclMergeAction();
+    const schema = action.schema?.input;
+    expect(schema).toBeDefined();
+
+    const result = validate({}, schema as any);
+    expect(result.errors.length).toBeGreaterThan(0);
+    expect(result.errors.some(e => e.message.includes('aSourceContent'))).toBe(
+      true,
+    );
+  });
+
+  it('schema rejects wrong types', () => {
+    const action = createHclMergeAction();
+    const schema = action.schema?.input;
+    expect(schema).toBeDefined();
+
+    const result = validate(
+      { aSourceContent: 123, bSourceContent: true },
+      schema as any,
+    );
+    expect(result.valid).toBe(false);
+    expect(result.errors.some(e => e.name === 'type')).toBe(true);
+  });
+
+  it('schema accepts valid input', () => {
+    const action = createHclMergeAction();
+    const schema = action.schema?.input;
+    expect(schema).toBeDefined();
+
+    const result = validate(
+      { aSourceContent: 'foo', bSourceContent: 'bar' },
+      schema as any,
+    );
+    expect(result.valid).toBe(true);
   });
 });
